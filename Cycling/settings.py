@@ -11,10 +11,13 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+from ConfigParser import SafeConfigParser
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+CONF_FILE = (os.path.join(BASE_DIR, 'config.ini'))
+config = SafeConfigParser()
+config.read(CONF_FILE)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
@@ -72,11 +75,20 @@ WSGI_APPLICATION = 'Cycling.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
+DB_USER = config.get('DataBase', 'DB_USER')
+DB_PASSWORD = config.get('DataBase', 'PASSWORD')
+DB_HOST = config.get('DataBase', 'HOST')
+DB_PORT = config.get('DataBase', 'PORT')
+DB_NAME = config.get('DataBase', 'NAME')
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'HOST': DB_HOST,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASSWORD,
+        'NAME': DB_NAME,
+        'PORT': DB_PORT,
     }
 }
 
@@ -118,3 +130,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+ANGULAR_URL = '/ng/'
+
+ANGULAR_ROOT = os.path.join(BASE_DIR, 'ngAPP/')
