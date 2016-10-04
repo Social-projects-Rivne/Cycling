@@ -10,5 +10,5 @@ class Bicycle(models.Model):
 
     name = models.CharField(max_length=255, db_index=True)
     description = models.TextField(blank=True)
-    is_deleted = models.models.BooleanField(default=False)
+    is_deleted = models.BooleanField(default=False)
     owner_id = models.ForeignKey(User)

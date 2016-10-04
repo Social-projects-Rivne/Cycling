@@ -15,5 +15,5 @@ class User(models.Model):
     email = models.EmailField(unique=True, db_index=True)
     password = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
-    avatar = models.URLField()
-    role_id = models.CharField(max_length=1, choices=ROLES, db_index=True)
+    avatar = models.URLField(blank=True)
+    role_id = models.CharField(max_length=1, choices=ROLES, default=0, db_index=True)
