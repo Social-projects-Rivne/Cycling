@@ -17,3 +17,9 @@ class User(models.Model):
     is_active = models.BooleanField(default=True)
     avatar = models.URLField(blank=True)
     role_id = models.CharField(max_length=1, choices=ROLES, default=0, db_index=True)
+
+    class Meta:
+        """This class gives some options (metadata) attached to the model."""
+        
+        app_label = 'APP'
+        db_table = 'Users'

@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 
-from users import User
+from .users import User
 
 # Create your models here.
 
@@ -12,3 +12,9 @@ class Bicycle(models.Model):
     description = models.TextField(blank=True)
     is_deleted = models.BooleanField(default=False)
     owner_id = models.ForeignKey(User)
+
+    class Meta:
+        """This class gives some options (metadata) attached to the model."""
+        
+        app_label = 'APP'
+        db_table = 'Bicycles'
