@@ -1,8 +1,9 @@
+# -*- encoding: utf-8 -*-
+
 from django.shortcuts import render
 
-# Create your views here.
-from django.http import HttpResponse
-
-
 def index(request):
-    return HttpResponse("Hello, world. You're at the Cycling index.")
+    context = {
+        'message': "Привіт, світе! Ви на головній сторінці Рівненського велододатку.",
+        }
+    return render(request, 'APP/index.html', context)
