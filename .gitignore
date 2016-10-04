@@ -12,6 +12,7 @@ node_modules/
 bower_components/
 .npm
 .node_repl_history
+static/js/
 
 # Gulp and Grunt
 build/
