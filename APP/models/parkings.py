@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 
-from users import User
+from .users import User
 
 # Create your models here.
 
@@ -20,3 +20,9 @@ class Parking(models.Model):
     amount = models.PositiveSmallIntegerField(default=3)
     is_free = models.BooleanField(default=True)
     owner_id = models.ForeignKey(User)
+
+    class Meta:
+        """This class gives some options (metadata) attached to the model."""
+        
+        app_label = 'APP'
+        db_table = 'Parkings'
