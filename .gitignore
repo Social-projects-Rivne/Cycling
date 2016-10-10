@@ -2,6 +2,7 @@
 *.pyo
 *.egg-info
 *.ini
+*.log
 
 # Databases
 *.db

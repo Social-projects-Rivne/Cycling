@@ -1,5 +1,13 @@
-{% load static %}
-<script src="{% static 'js/app/something.js' %}"></script>
+<!DOCTYPE html>
+<html>
 
+<head></head>
 
-<h1>{{ message }}</h1>
+<body>
+    <h1>{{ message }}</h1>
+    <div id="app"></div>
+    {% load static %}
+    <script src="{% static 'js/app/build.min.js' %}"></script>
+</body>
+
+</html>
