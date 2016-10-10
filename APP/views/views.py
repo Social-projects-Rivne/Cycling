@@ -31,4 +31,3 @@ def registration(request):
 		        	            role_id=post_data['0'])
 			result_dict['Success'] = "Your registration has been succesfully done"
 		return JsonResponse(result_dict)
-		
