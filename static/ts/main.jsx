@@ -1,5 +1,10 @@
 import React from 'react';
-import Parent from './parent.jsx';
+import ReactDOM from 'react-dom';
 
-React.render(<Parent />, document.getElementById('app'));
+class World extends React.Component {
+  render() {
+    return <h1>World</h1>
+  }
+}
 
+ReactDOM.render(<World/>, document.getElementById('app'));
