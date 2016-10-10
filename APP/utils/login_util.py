@@ -31,13 +31,14 @@ class PasswordMaster(object):
         """
         Hash given password with sha512 and salt
         """
+        print password
         sha512 = hashlib.sha512()
         if not salt:
             salt = self.generate_salt()
         sha512.update("".join([
-            salt,
-            self.SALT_NAME,
-            password
+            salt.encode('utf8'),
+            self.SALT_NAME.encode('utf8'),
+            password.encode('utf8')
         ]))
         return "".join([salt, self.SALT_NAME, sha512.hexdigest()])
 
