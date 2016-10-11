@@ -10,8 +10,8 @@ from .places import Place
 class Attachment(models.Model):
 
     image_url = models.URLField()
-    parking_id = models.ForeignKey(Parking)
-    place_id = models.ForeignKey(Place)
+    parking = models.ForeignKey(Parking)
+    place = models.ForeignKey(Place)
 
     class Meta:
         """This class gives some options (metadata) attached to the model."""

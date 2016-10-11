@@ -14,7 +14,7 @@ class StolenBike(models.Model):
     lng = models.DecimalField(max_digits=9, decimal_places=6, null=True)
     day = models.DateField()
     is_found = models.BooleanField(default=False)
-    bike_id = models.ForeignKey(Bicycle)
+    bike = models.ForeignKey(Bicycle)
 
     class Meta:
         """This class gives some options (metadata) attached to the model."""

@@ -21,7 +21,7 @@ class Parking(models.Model):
     security = models.CharField(max_length=1, choices=IS_SECURE, default='0')
     amount = models.PositiveSmallIntegerField(default=3)
     is_free = models.BooleanField(default=True)
-    owner_id = models.ForeignKey(User)
+    owner = models.ForeignKey(User)
 
     class Meta:
         """This class gives some options (metadata) attached to the model."""
