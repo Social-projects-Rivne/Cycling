@@ -17,7 +17,9 @@ class Place(models.Model):
     HOURS = tuple((x,"%02d"%x) for x in xrange(24))
 
     name = models.CharField(max_length=255, db_index=True)
-    location = models.CharField(max_length=255)
+    # location = models.CharField(max_length=255)
+    lat = models.DecimalField(max_digits=8, decimal_places=6, null=True)
+    lng = models.DecimalField(max_digits=9, decimal_places=6, null=True)
     description = models.TextField(blank=True)
     from_hour = models.IntegerField(choices=HOURS, null=True, blank=True)
     to_hour = models.IntegerField(choices=HOURS, null=True, blank=True)
