@@ -7,6 +7,9 @@ from django.http import JsonResponse
 
 
 from APP.models import User
+from APP.utils import Validator
+
+_valid_inputs = Validator()
 
 def index(request):
     context = {
@@ -19,15 +22,19 @@ def registration(request):
 	if request.method == "POST":
 		post_data = json.load(request.body)
 		result_dict = dict()
-		if User.objects.filter(full_name=post_data['full_name']).exists():
-			result_dict['NameError'] = "Such full name already exists!"
-		if User.objects.filter(email=post_data['email']).exists():
-			result_dict['EmailError'] = "Such email already exists!"
-		if User.objects.filter(password=post_data['password']).exists():
-			result_dict['PassError'] = "Such password already exists!"
-		if not result_dict:
-			User.objects.create(full_name=post_data['full_name'],
-		    	                email=post_data['email'], password=post_data['password'],
-		        	            role_id=post_data['0'])
-			result_dict['Success'] = "Your registration has been succesfully done"
+		if _valid_inputs.full_name_validation(post_data['full_name'])\
+	    	and _valid_inputs.email_validation(post_data['email']):
+			if User.objects.filter(full_name=post_data['full_name']).exists():
+				result_dict['NameError'] = "Such full name already exists!"
+			if User.objects.filter(email=post_data['email']).exists():
+				result_dict['EmailError'] = "Such email already exists!"
+			if User.objects.filter(password=post_data['password']).exists():
+				result_dict['PassError'] = "Such password already exists!"
+			if not result_dict:
+				User.objects.create(full_name=post_data['full_name'],
+		    		                email=post_data['email'], password=post_data['password'],
+		        		            role_id=post_data['0'])
+				result_dict['Success'] = "Your registration has been succesfully done"
+		else:
+			result_dict['RulesError'] = "Error rules of input"
 		return JsonResponse(result_dict)
