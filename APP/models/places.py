@@ -22,7 +22,7 @@ class Place(models.Model):
     from_hour = models.IntegerField(choices=HOURS, null=True, blank=True)
     to_hour = models.IntegerField(choices=HOURS, null=True, blank=True)
     category_id = models.CharField(max_length=1, choices=CATEGORY, default='2')
-    owner_id = models.ForeignKey(User)
+    owner = models.ForeignKey(User)
 
     class Meta:
         """This class gives some options (metadata) attached to the model."""
