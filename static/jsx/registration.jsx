@@ -1,27 +1,89 @@
 var dict = []
 class FormComponent extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {};
+        this.changeName = this.changeName.bind(this);
+        this.changeEmail = this.changeEmail.bind(this);
+        this.changePassword = this.changePassword.bind(this);
+        this.changePassConfirm = this.changePassConfirm.bind(this);
+        this.submitAll = this.submitAll.bind(this);
+    }
+
+    changeName(event) {
+        this.setState({name: event.target.value});
+    }
+
+    changeEmail(event) {
+        this.setState({email: event.target.value});
+    }
+
+    changePassword(event) {
+        this.setState({password: event.target.value});
+    }
+
+    changePassConfirm(event) {
+        this.setState({password_confirm: event.target.value});
+    }
+
+    clearForm() {
+      this.setState({
+        name: '',
+        email: '',
+        password: '',
+        password_confirm: ''
+        
+      });
+    }
+
+    submitAll(event){
+        var self;
+        event.preventDefault();
+        if (this.state.password === this.state.password_confirm) {
+            self = this;
+            console.log(this.state);
+            var data = {
+                full_name: this.state.name,
+                email: this.state.email,
+                password: this.state.password,
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/some/url',
+               data: data
+            })
+            .done(function(data) {
+                self.clearForm()
+            })
+            .fail(function(jqXhr) {
+                console.log('failed to register');
+            });
+        }
+        else {
+            console.log("different passwords");
+        }
+    }
+
     render() {
         return (
-        <form className="form-horizontal">
+        <form onSubmit={this.submit} className="form-horizontal">
             <fieldset>
-                <Legend/>
-                <UserName name="Please, enter your super full name"/>
-                <Email name="Please, provide your E-mail"/>
-                <Pass name="Please, enter password"/>
-                <PassConfirm name="Please, confirm password"/>
-                <SuccessButton/>
+                <div id="legend">
+                    <legend>Register</legend>
+                </div>
+                <UserName label="Fullname:" valChange={this.changeName} val={this.state.name}/>
+                <Email label="Email:" valChange={this.changeEmail} val={this.state.email}/>
+                <Pass label="Password:" valChange={this.changePassword} val={this.state.password}/>
+                <PassConfirm label="Password confirm:" valChange={this.changePassConfirm} val={this.state.password_confirm}/>
+
+                <div className="control-group">
+                    <div className="controls">
+                        <button type="submit" className="btn btn-success" onClick={this.submitAll}>Register</button>
+                    </div>
+                </div>
+
             </fieldset>
         </form>
-        );
-    }
-}
-
-class Legend extends React.Component {
-    render() {
-        return(
-        <div id="legend">
-            <legend>Register</legend>
-        </div>
         );
     }
 }
@@ -29,26 +91,16 @@ class Legend extends React.Component {
 class UserName extends React.Component {
     constructor(props){
     super(props);    
-    this.state = {full_name: 'Your beautiful full name here!'};
-    this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleChange(event) {
-        this.setState({full_name: event.target.value});
-        dict.push({
-            full_name: event.target.value
-        })
-        console.log(dict);
+    this.state = {};
     }
 
     render() {
         return(
         <div className="control-group">
-            <label className="control-label" htmlFor="username">Username</label>
+            <label className="control-label">{this.props.label}</label>
             <div className="controls">
-                <input type="text" id="username" name="full_name"
-                 className="input-xlarge" value={this.state.full_name} onChange={this.handleChange}/>
-                <p className="help-block">{this.props.name}</p>
+                <input type="text" id="fullname" name="full_name"
+                 className="input-xlarge" onChange={this.props.valChange} value={this.props.val}/>
             </div>
         </div>
         );
@@ -59,22 +111,16 @@ class UserName extends React.Component {
 class Email extends React.Component {
     constructor(props) {
     super(props);    
-    this.state = {email: 'Your perfect email here!'};
-    this.handleChange = this.handleChange.bind(this);
+    this.state = {};
     }
 
-    handleChange(event) {
-        this.setState({email: event.target.value});
-        console.log(this.state)
-    }
     render() {
         return (
         <div className="control-group">
-            <label className="control-label" htmlFor="email"></label>
+            <label className="control-label">{this.props.label}</label>
             <div className="controls">
                 <input type="text" id="email" name="email" 
-                className="input-xlarge" value={this.state.email} onChange={this.handleChange}/>
-                <p className="help-block">{this.props.name}</p>
+                className="input-xlarge" onChange={this.props.valChange} value={this.props.val}/>
             </div>
         </div>
         );
@@ -84,22 +130,16 @@ class Email extends React.Component {
 class Pass extends React.Component {
     constructor(props) {
     super(props);    
-    this.state = {password: ''};
-    this.handleChange = this.handleChange.bind(this);
+    this.state = {};
     }
 
-    handleChange(event) {
-        this.setState({password: event.target.value});
-        console.log(this.state)
-    }
     render() {
         return (
         <div className="control-group">
-            <label className="control-label" htmlFor="password"></label>
+            <label className="control-label">{this.props.label}</label>
             <div className="controls">
                 <input type="password" id="password" name="password" className="input-xlarge" 
-                value={this.state.password} onChange={this.handleChange}/>
-                <p className="help-block">{this.props.name}</p>
+                onChange={this.props.valChange} value= {this.props.val}/>
             </div>
         </div>
         );
@@ -109,47 +149,20 @@ class Pass extends React.Component {
 class PassConfirm extends React.Component {
     constructor(props) {
     super(props);    
-    this.state = {password_confirm: ''};
-    this.handleChange = this.handleChange.bind(this);
+    this.state = {};
     }
 
-    handleChange(event) {
-        this.setState({password_confirm: event.target.value});
-        console.log(this.state)
-    }
     render() {
         return (
         <div className="control-group">
-            <label className="control-label"  htmlFor="password_confirm"></label>
+            <label className="control-label">{this.props.label}</label>
             <div className="controls">
                 <input type="password" id="password_confirm" name="password_confirm" className="input-xlarge" 
-                value={this.state.password_confirm} onChange={this.handleChange}/>
-                <p className="help-block">{this.props.name}</p>
+                onChange={this.props.valChange} value= {this.props.val}/>
             </div>
         </div>
         );
     }
 }
 
-class SuccessButton extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {formValues: []};
-    }
-
-    handleClick(event) {
-        event.preventDefault();
-    }
-
-    render() {
-        return (
-        <div className="control-group">
-            <div className="controls">
-                <button className="btn btn-success" onClick={this.handleClick}>Register</button>
-            </div>
-        </div>
-        );
-    }
-}
-
-ReactDOM.render(<FormComponent name="Please, enter your super full name!)"/>, document.getElementById('registration'));
+ReactDOM.render(<FormComponent/>, document.getElementById('registration'));
