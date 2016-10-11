@@ -9,7 +9,7 @@ from .bicycles import Bicycle
 class Image(models.Model):
 
     url = models.URLField()
-    bike_id = models.ForeignKey(Bicycle)
+    bike = models.ForeignKey(Bicycle)
 
     class Meta:
         """This class gives some options (metadata) attached to the model."""
