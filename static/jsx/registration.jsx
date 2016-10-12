@@ -1,7 +1,6 @@
 import React from 'react';
 
 
-var dict = []
 class FormComponent extends React.Component {
     constructor(props) {
         super(props);
@@ -43,6 +42,7 @@ class FormComponent extends React.Component {
 
     validateName(full_name) {    
         var re = /[A-Za-z\s_-]+$/;
+        return re.test(full_name);
     }
 
     validateEmail(email) {
@@ -65,17 +65,29 @@ class FormComponent extends React.Component {
             $.ajax({
                 type: 'POST',
                 url: '/registration',
-               data: data,
-               success: function(){
-                console.log("I am alive!");
-               } 
-            })
-            .done(function(data) {
+               data: {
+                data: data,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                error: function(xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+                },
+                success: function(response){
+                var data = $(response).find('body').html();
+                console.log(data);
+                }, 
+                error: function(xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+                }
+            });
+            /*.done(function(data) {
                 self.clearForm()
             })
             .fail(function(jqXhr) {
                 console.log('Failed to register');
-            });
+            });*/
         }
         else {
             console.log("Your values are incorrect");
@@ -86,8 +98,8 @@ class FormComponent extends React.Component {
         return (
         <form onSubmit={this.submit} className="form-horizontal">
             <fieldset>
-                <div id="legend">
-                    <legend>Register</legend>
+                <div className="header-div">
+                    <h2 className="register-header">Registration</h2>
                 </div>
                 <UserName label="Fullname:" valChange={this.changeName} val={this.state.name}/>
                 <Email label="Email:" valChange={this.changeEmail} val={this.state.email}/>
@@ -96,7 +108,7 @@ class FormComponent extends React.Component {
 
                 <div className="control-group">
                     <div className="controls">
-                        <button type="submit" className="btn btn-success" onClick={this.submitAll}>Register</button>
+                        <button type="submit" className="btn btn-success register-button" onClick={this.submitAll}>Register</button>
                     </div>
                 </div>
 
@@ -115,10 +127,10 @@ class UserName extends React.Component {
     render() {
         return(
         <div className="control-group">
-            <label className="control-label">{this.props.label}</label>
             <div className="controls">
-                <input type="text" id="fullname" name="full_name"
-                 className="input-xlarge" onChange={this.props.valChange} value={this.props.val}/>
+                <span className="material-icons input-icons">person_outline</span>
+                <input placeholder="Fullname" type="text" id="fullname" name="full_name"
+                 className="input-xlarge value-input" onChange={this.props.valChange} value={this.props.val}/>
             </div>
         </div>
         );
@@ -135,10 +147,10 @@ class Email extends React.Component {
     render() {
         return (
         <div className="control-group">
-            <label className="control-label">{this.props.label}</label>
             <div className="controls">
-                <input type="text" id="email" name="email" 
-                className="input-xlarge" onChange={this.props.valChange} value={this.props.val}/>
+                <span className="material-icons input-icons">email</span>
+                <input placeholder="Email" type="text" id="email" name="email" 
+                className="input-xlarge value-input " onChange={this.props.valChange} value={this.props.val}/>
             </div>
         </div>
         );
@@ -154,9 +166,10 @@ class Pass extends React.Component {
     render() {
         return (
         <div className="control-group">
-            <label className="control-label">{this.props.label}</label>
             <div className="controls">
-                <input type="password" id="password" name="password" className="input-xlarge" 
+                <span className="material-icons input-icons">lock_outline</span>
+                <input placeholder="Password" type="password" id="password" name="password" 
+                className="input-xlarge value-input" 
                 onChange={this.props.valChange} value= {this.props.val}/>
             </div>
         </div>
@@ -173,9 +186,10 @@ class PassConfirm extends React.Component {
     render() {
         return (
         <div className="control-group">
-            <label className="control-label">{this.props.label}</label>
             <div className="controls">
-                <input type="password" id="password_confirm" name="password_confirm" className="input-xlarge" 
+                <span className="material-icons input-icons">lock_outline</span>
+                <input placeholder="Re-type password" type="password" id="password_confirm" 
+                name="password_confirm" className="input-xlarge value-input" 
                 onChange={this.props.valChange} value= {this.props.val}/>
             </div>
         </div>

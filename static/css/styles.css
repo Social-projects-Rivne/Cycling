@@ -1,4 +1,76 @@
+textarea:hover, 
+input:hover, 
+textarea:active, 
+input:active, 
+textarea:focus, 
+input:focus,
+button:focus,
+button:active,
+button:hover,
+label:focus,
+.btn:active,
+.btn.active
+{
+    outline:0px !important;
+    -webkit-appearance:none;
+}
+
 .control-group
 {
 	text-align: center;
+}
+
+.value-input
+{
+	border-top: none;
+    border-right: none;
+    border-left: none;
+    border-bottom: 1px solid #ссс;
+    margin: 15px;
+    width: 300px;
+    line-height: 3;
+}
+
+.value-input:focus
+{
+	border-bottom: 1px solid #106CC8;
+}
+
+.input-icons
+{
+	position: relative;
+    top: 20px;
+    font-size: 35px;
+    color: #106CC8;
+}
+
+.header-div
+{
+	text-align: center;
+}
+
+.register-button
+{
+	background-color: #106CC8 !important;
+    color: #fff !important;
+    background-image: none !important;
+    opacity: .8;
+    width: 150px;
+    border-radius: 0px !important;
+    border: none !important;
+    margin-top: 35px;
+    font-size: 16px !important;
+    height: 40px;
+}
+
+.register-button:hover
+{
+	background-color: #106CC8 !important;
+	opacity: .9;
+}
+
+.register-button:active
+{
+	background-color: #106CC8 !important;
+	opacity: 1;
 }

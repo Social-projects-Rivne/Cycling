@@ -7,6 +7,7 @@ from django.core import serializers
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 
 from APP.models import User
@@ -25,6 +26,7 @@ def index(request):
         }
     return render(request, 'APP/index.html', context)
 
+@csrf_exempt
 def registration(request):
 	if request.method == "POST":
 		post_data = json.load(request.body)
