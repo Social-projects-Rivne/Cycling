@@ -5,8 +5,8 @@ var webpack = require('webpack-stream');
 
 var path = {
   HTML: 'APP/templates/APP/index.html',
-  ALL: ['static/ts/*.js', 'static/ts/**/*.js', 'static/ts/*.jsx', 'static/ts/**/*.jsx'],
-  JS: ['static/ts/*.js', 'static/ts/**/*.js', 'static/ts/*.jsx', 'static/ts/**/*.jsx'],
+  ALL: ['static/jsx/*.js', 'static/jsx/**/*.js', 'static/jsx/*.jsx', 'static/jsx/**/*.jsx'],
+  JS: ['static/jsx/*.js', 'static/jsx/**/*.js', 'static/jsx/*.jsx', 'static/jsx/**/*.jsx'],
   MINIFIED_OUT: 'build.min.js',
   DEST_BUILD: 'static/js/app',
 };
