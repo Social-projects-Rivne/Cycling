@@ -1,1 +1,13 @@
-<h1>{{ message }}</h1>
+<!DOCTYPE html>
+<html>
+
+<head></head>
+
+<body>
+    <h1>{{ message }}</h1>
+    <div id="app"></div>
+    {% load static %}
+    <script src="{% static 'js/app/bundle.js' %}"></script>
+</body>
+
+</html>
