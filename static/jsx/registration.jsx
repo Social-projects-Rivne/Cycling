@@ -1,3 +1,6 @@
+import React from 'react';
+
+
 var dict = []
 class FormComponent extends React.Component {
     constructor(props) {
@@ -8,6 +11,8 @@ class FormComponent extends React.Component {
         this.changePassword = this.changePassword.bind(this);
         this.changePassConfirm = this.changePassConfirm.bind(this);
         this.submitAll = this.submitAll.bind(this);
+        this.validateName = this.validateName.bind(this);
+        this.validateEmail = this.validateEmail.bind(this);
     }
 
     changeName(event) {
@@ -36,10 +41,20 @@ class FormComponent extends React.Component {
       });
     }
 
+    validateName(full_name) {    
+        var re = /[A-Za-z\s_-]+$/;
+    }
+
+    validateEmail(email) {
+        var re = /[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$/;
+        return re.test(email);
+    }
+
     submitAll(event){
         var self;
         event.preventDefault();
-        if (this.state.password === this.state.password_confirm) {
+        if ((this.state.password === this.state.password_confirm) 
+            && this.validateName(this.state.name) && this.validateEmail(this.state.email)) {
             self = this;
             console.log(this.state);
             var data = {
@@ -49,18 +64,21 @@ class FormComponent extends React.Component {
             }
             $.ajax({
                 type: 'POST',
-                url: '/some/url',
-               data: data
+                url: '/registration',
+               data: data,
+               success: function(){
+                console.log("I am alive!");
+               } 
             })
             .done(function(data) {
                 self.clearForm()
             })
             .fail(function(jqXhr) {
-                console.log('failed to register');
+                console.log('Failed to register');
             });
         }
         else {
-            console.log("different passwords");
+            console.log("Your values are incorrect");
         }
     }
 
@@ -165,4 +183,4 @@ class PassConfirm extends React.Component {
     }
 }
 
-ReactDOM.render(<FormComponent/>, document.getElementById('registration'));
+export {FormComponent};
