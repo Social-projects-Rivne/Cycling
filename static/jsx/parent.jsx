@@ -12,4 +12,4 @@ class Parent extends React.Component{
   }
 };
 
-export {Parent};
+export default Parent;
