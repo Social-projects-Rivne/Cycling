@@ -69,17 +69,9 @@ class FormComponent extends React.Component {
                 data: data,
                 csrfmiddlewaretoken: '{{ csrf_token }}'
                 },
-                error: function(xhr, status, error) {
-                var err = eval("(" + xhr.responseText + ")");
-                alert(err.Message);
-                },
                 success: function(response){
-                var data = $(response).find('body').html();
-                console.log(data);
-                }, 
-                error: function(xhr, status, error) {
-                var err = eval("(" + xhr.responseText + ")");
-                alert(err.Message);
+                    var data = $(response).find('body').html();
+                    console.log(data);
                 }
             });
             /*.done(function(data) {
