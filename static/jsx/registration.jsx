@@ -56,7 +56,7 @@ class FormComponent extends React.Component {
         if ((this.state.password === this.state.password_confirm) 
             && this.validateName(this.state.name) && this.validateEmail(this.state.email)) {
             self = this;
-            console.log(this.state);
+            //console.log(this.state);
             var data = {
                 full_name: this.state.name,
                 email: this.state.email,
@@ -65,13 +65,9 @@ class FormComponent extends React.Component {
             $.ajax({
                 type: 'POST',
                 url: '/registration',
-               data: {
                 data: data,
-                csrfmiddlewaretoken: '{{ csrf_token }}'
-                },
                 success: function(response){
-                    var data = $(response).find('body').html();
-                    console.log(data);
+                    console.log(response);
                 }
             });
             /*.done(function(data) {
