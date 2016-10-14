@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "jquery": "^2.2.3",
-    "leaflet": "^1.0.1",
+    "leaflet": "^0.7.7",
     "react": "^15.3.2",
     "react-cookie": "^0.4.8",
     "react-dom": "^15.3.2",
