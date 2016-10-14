@@ -38,10 +38,12 @@ class SideBar extends React.Component {
         this.state = {};
     }
     render() {
+        return (
         <div className="navmenu navmenu-default" role="navigation">
             <a className="navmenu-brand menu-title" href="#">Cycling</a>
             <ul className="nav navmenu-nav sidenav-ul">
-                <li><a href="#">Home</a></li>
+                <li><Link onlyActiveOnIndex activeStyle={{color:'#53acff'}} to='/'>Home</Link></li>
+                <li><Link activeStyle={{color:'#53acff'}} to='/registration'>Registration</Link></li>
                 <li><a href="#">View</a></li>
                 <li><a href="#">Display Objects</a></li>
                 <li><a href="#">Stolen Bycicles</a></li>
@@ -49,6 +51,7 @@ class SideBar extends React.Component {
                 <li><a href="#">Profile</a></li>
             </ul>
         </div>
+        );
     }
 }
 

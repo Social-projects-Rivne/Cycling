@@ -12,6 +12,7 @@ class FormComponent extends React.Component {
         this.submitAll = this.submitAll.bind(this);
         this.validateName = this.validateName.bind(this);
         this.validateEmail = this.validateEmail.bind(this);
+        this.showErrors = this.showErrors.bind(this);
     }
 
     changeName(event) {
@@ -50,6 +51,19 @@ class FormComponent extends React.Component {
         return re.test(email);
     }
 
+    showErrors(value) {
+        if(value === false) {
+            this.setState({
+                input_color: "border-bottom: 1px solid #E04B39 !important"
+            });
+        }
+        else{
+            this.setState({
+                input_color: "border-bottom: 1px solid #20e841 !important"
+            });
+        }
+    }
+
     submitAll(event){
         var self;
         event.preventDefault();
@@ -60,22 +74,18 @@ class FormComponent extends React.Component {
             var data = {
                 full_name: this.state.name,
                 email: this.state.email,
-                password: this.state.password,
+                password: this.state.password
             }
+            console.log(data);
             $.ajax({
                 type: 'POST',
-                url: '/registration',
+                url: 'v1/registration',
+                dataType: "json",
                 data: data,
                 success: function(response){
                     console.log(response);
                 }
             });
-            /*.done(function(data) {
-                self.clearForm()
-            })
-            .fail(function(jqXhr) {
-                console.log('Failed to register');
-            });*/
         }
         else {
             console.log("Your values are incorrect");
@@ -89,7 +99,8 @@ class FormComponent extends React.Component {
                 <div className="header-div">
                     <h2 className="register-header">Registration</h2>
                 </div>
-                <UserName label="Fullname:" valChange={this.changeName} val={this.state.name}/>
+                <UserName label="Fullname:" valChange={this.changeName}
+                 val={this.state.name} className={this.state.name_error}/>
                 <Email label="Email:" valChange={this.changeEmail} val={this.state.email}/>
                 <Pass label="Password:" valChange={this.changePassword} val={this.state.password}/>
                 <PassConfirm label="Password confirm:" valChange={this.changePassConfirm} val={this.state.password_confirm}/>
