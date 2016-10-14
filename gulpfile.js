@@ -11,9 +11,18 @@ var path = {
   DEST_BUILD: 'static/js/app',
 };
 
+function swallowError (error) {
+
+  // If you want details of the error in the console
+  console.log(error.toString())
+
+  this.emit('end')
+}
+
 gulp.task('transform', function() {
   return gulp.src(path.JS)
     .pipe(webpack( require('./webpack.config.js') ))
+    .on('error', swallowError)
     .pipe(gulp.dest(path.DEST_BUILD));
 });
 

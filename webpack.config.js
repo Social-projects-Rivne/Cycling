@@ -1,8 +1,11 @@
 var path = require('path');
 var webpack = require('webpack');
 
+
 module.exports = {
-  entry: './static/jsx/main.jsx',
+  entry: {
+    javascript: './static/jsx/main.jsx'
+  },
   output: { path: path.resolve('./static/js/app/'), 
       filename: 'bundle.js' 
     },

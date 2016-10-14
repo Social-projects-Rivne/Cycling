@@ -1,6 +1,5 @@
 # -*- encoding: utf-8 -*-
 
-
 import json
 
 from django.core import serializers
@@ -8,7 +7,6 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-
 
 from APP.models import User
 from APP.utils.validator import Validator
