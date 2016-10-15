@@ -1,6 +1,8 @@
 import React      from 'react';
 import { Map, TileLayer, Marker, Popup, LayersControl, FeatureGroup, Circle, ScaleControl } from 'react-leaflet';
+import layers_list from './layers.jsx';
 
+var pref = 'Satelite';
 
 class MapComponent extends React.Component {
   constructor() {
@@ -12,78 +14,40 @@ class MapComponent extends React.Component {
     };
   }
 
+  onOverlayadd(e){
+    console.log('overlay add')
+  };
+
+  onBaselayerchange(e){
+    console.log(e.name);
+    pref = e.name;
+  };
+
+  onOverlayremove(e){
+    console.log(e.name)
+  };
+
   render() {
     const position = [this.state.lat, this.state.lng];
     return (
-      <Map center={position} zoom={this.state.zoom} style={{height: '90vh', width:'99vw'}}>
+      <Map center={position} zoom={this.state.zoom} style={{height: '90vh', width:'99vw'}}
+              onOverlayadd={this.onOverlayadd}
+              onBaselayerchange={this.onBaselayerchange}
+              onOverlayremove={this.onOverlayremove}>
         <ScaleControl position='bottomright'></ScaleControl>
         <LayersControl position='topright'>
-          <LayersControl.BaseLayer name='MapBox'>
-            <TileLayer
-              attribution='Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>'
-              url='https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiY3ljbGluZyIsImEiOiJjaXU5cnVyMnkwMDE5Mm9wamtzYzkza21jIn0.khJEQSbAQ6FgecP4w1cFug'
-            />
-          </LayersControl.BaseLayer>
-          <LayersControl.BaseLayer name='OSM Standard'  checked={true}>
-            <TileLayer
-              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-              url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
-            />
-          </LayersControl.BaseLayer>
-          <LayersControl.BaseLayer name='Satelite'>
-            <TileLayer
-              attribution='Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>'
-              url='https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiY3ljbGluZyIsImEiOiJjaXU5cnVyMnkwMDE5Mm9wamtzYzkza21jIn0.khJEQSbAQ6FgecP4w1cFug'
-            />
-          </LayersControl.BaseLayer>
-          <LayersControl.BaseLayer name='OSM Greyscale'>
-            <TileLayer
-              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-              url='http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png'
-            />
-          </LayersControl.BaseLayer>
-          <LayersControl.BaseLayer name='OSM Positron'>
-            <TileLayer
-              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-              url='http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'
-            />
-          </LayersControl.BaseLayer>
-          <LayersControl.BaseLayer name='OSM Demo'>
-            <TileLayer
-              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-              url='https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png'
-            />
-          </LayersControl.BaseLayer>
-          <LayersControl.BaseLayer name='OSM Humanitarian'>
-            <TileLayer
-              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-              url='http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png'
-            />
-          </LayersControl.BaseLayer>
-          <LayersControl.BaseLayer name='OSM Hike&Bike'>
-            <TileLayer
-              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-              url='http://toolserver.org/tiles/hikebike/{z}/{x}/{y}.png'
-            />
-          </LayersControl.BaseLayer>
-          <LayersControl.BaseLayer name='OSM Black&White'>
-            <TileLayer
-              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-              url='http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png'
-            />
-          </LayersControl.BaseLayer>
-          <LayersControl.BaseLayer name='OSM Transport'>
-            <TileLayer
-              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-              url='http://{s}.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png'
-            />
-          </LayersControl.BaseLayer>
-          <LayersControl.BaseLayer name='OSM Landscape'>
-            <TileLayer
-              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-              url='http://{s}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png'
-            />
-          </LayersControl.BaseLayer>
+          {
+            layers_list.map((layer)=>(
+              <LayersControl.BaseLayer key={layer.name}
+                                       name={layer.name}
+                                       checked={layer.name === pref}>
+                <TileLayer
+                  attribution={layer.attribution}
+                  url={layer.url}
+                />
+              </LayersControl.BaseLayer>
+            ))
+          }
 
           <LayersControl.Overlay name='Marker with popup'>
             <Marker position={[51.51, -0.06]}>
