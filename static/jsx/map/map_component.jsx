@@ -27,13 +27,23 @@ class MapComponent extends React.Component {
     console.log(e.name)
   };
 
+  onBoundsChange(e){
+    console.log(this.getBounds());
+    console.log(this.getCenter());
+    console.log(this.getZoom());
+  };
+
   render() {
     const position = [this.state.lat, this.state.lng];
     return (
-      <Map center={position} zoom={this.state.zoom} style={{height: '90vh', width:'99vw'}}
+      <Map center={position} zoom={this.state.zoom} ref='map'
+              style={{height: '90vh', width:'99vw'}}
               onOverlayadd={this.onOverlayadd}
               onBaselayerchange={this.onBaselayerchange}
-              onOverlayremove={this.onOverlayremove}>
+              onOverlayremove={this.onOverlayremove}
+              // onMoveend={this.onBoundsChange}
+              onDragend={this.onBoundsChange}
+              onZoomend={this.onBoundsChange}>
         <ScaleControl position='bottomright'></ScaleControl>
         <LayersControl position='topright'>
           {
