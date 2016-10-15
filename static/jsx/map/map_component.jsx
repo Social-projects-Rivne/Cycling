@@ -15,7 +15,7 @@ class MapComponent extends React.Component {
   render() {
     const position = [this.state.lat, this.state.lng];
     return (
-      <Map center={position} zoom={this.state.zoom} style={{height: '100vh', width:'100vw'}}>
+      <Map center={position} zoom={this.state.zoom} style={{height: '70vh', width:'70vw'}}>
         <TileLayer
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'

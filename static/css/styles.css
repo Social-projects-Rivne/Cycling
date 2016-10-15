@@ -74,3 +74,73 @@ label:focus,
 	background-color: #106CC8 !important;
 	opacity: 1;
 }
+
+.main-header
+{
+    background-color: #106CC8;
+}
+
+.sidenav-ul
+{
+    float: left;
+    margin-top: 70px;
+    position: fixed;
+}
+
+.icon
+{
+    color: #fff;
+    float: left;
+    cursor: pointer;
+    margin-top: 13px;
+    margin-left: 8px;
+}
+
+.logo-line
+{
+    color: #fff !important;
+}
+
+.logo-line:hover
+{
+    color: #fff !important;
+    cursor: pointer;
+}
+
+.content-container
+{
+    margin-top: 80px;
+    float: left;
+}
+
+.registration-form
+{
+    margin-left: 475px;
+}
+
+.leaflet-container
+{
+    margin-left: 215px;
+}
+
+.header-button
+{
+    float: right !important;
+    margin-top: 8px;
+    margin-right: 10px;
+}
+
+.header-button a{
+    text-decoration: none !important;   
+}
+
+.header-button a:hover
+{
+    text-decoration: none !important;
+    cursor: pointer;
+}
+
+.navbar-header
+{
+    width: 100%;
+}
