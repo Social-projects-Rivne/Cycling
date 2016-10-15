@@ -11,7 +11,7 @@ class Bicycle(models.Model):
     name = models.CharField(max_length=255, db_index=True)
     description = models.TextField(blank=True)
     is_deleted = models.BooleanField(default=False)
-    owner_id = models.ForeignKey(User)
+    owner = models.ForeignKey(User)
 
     class Meta:
         """This class gives some options (metadata) attached to the model."""
