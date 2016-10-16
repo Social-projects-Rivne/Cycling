@@ -3,15 +3,73 @@ import { Map, TileLayer, Marker, Popup, LayersControl, FeatureGroup, Circle, Sca
 import layers_list from './layers.jsx';
 
 var pref = 'Satelite';
+var show_parkings = true;
+var show_places = true;
+var show_stolens = true;
 
 class MapComponent extends React.Component {
   constructor() {
     super();
     this.state = {
-      lat: 51.505,
-      lng: -0.09,
-      zoom: 13,
+      lat: 50.619776, //51.505,
+      lng: 26.251265, //-0.09,
+      zoom: 14,
+      parkings: [],
+      places: [],
+      stolens: []
     };
+    this.onBoundsChange = this.onBoundsChange.bind(this);
+    this.loadPointers = this.loadPointers.bind(this);
+    this.myAJAX = this.myAJAX.bind(this);
+  }
+
+  componentDidMount(){
+    // console.log(this.refs.map.leafletElement.getBounds());
+    let Bounds = this.refs.map.leafletElement.getBounds();
+    this.loadPointers(Bounds);
+  }
+
+  myAJAX(obj_type, ne, sw){
+    let res = [];
+    $.ajax({
+      type: 'GET',
+      url: '/v1/' + obj_type + '/search',
+      data: {ne:ne, sw:sw},
+      success: function(data){
+        console.log(data);
+        res = data;
+          } 
+    })
+    .fail(function(jqXHR) {
+      console.log('Failed to fetch ' + obj_type);
+    });
+    console.log(res);
+    return res;
+  }
+
+  loadPointers(bounds_obj){
+    // let ne = bounds_obj._northEast.lat.toPrecision(9) + ',' + bounds_obj._northEast.lng.toPrecision(9);
+    // let sw = bounds_obj._southWest.lat.toPrecision(9) + ',' + bounds_obj._southWest.lng.toPrecision(9);
+    // let new_parkings = [];
+    // if (show_parkings) {
+    //   new_parkings = this.myAJAX('parkings', ne, sw);
+    // };
+    // let new_places = [];
+    // if (show_places) {
+    //   new_places = this.myAJAX('places', ne, sw);
+    // };
+    // let new_stolens = [];
+    // if (show_stolens) {
+    //   new_stolens = this.myAJAX('stolen', ne, sw);
+    // };
+    // console.log(new_parkings);
+    // console.log(new_places);
+    // console.log(new_stolens);
+    // this.setState({
+    //   parkings: new_parkings,
+    //   places: new_places,
+    //   stolens: new_stolens
+    // });
   }
 
   onOverlayadd(e){
@@ -28,9 +86,10 @@ class MapComponent extends React.Component {
   };
 
   onBoundsChange(e){
-    console.log(this.getBounds());
-    console.log(this.getCenter());
-    console.log(this.getZoom());
+    let Bounds = e.target.getBounds();
+    this.loadPointers(Bounds);
+    // console.log(this.getCenter());
+    // console.log(this.getZoom());
   };
 
   render() {
@@ -60,7 +119,7 @@ class MapComponent extends React.Component {
           }
 
           <LayersControl.Overlay name='Marker with popup'>
-            <Marker position={[51.51, -0.06]}>
+            <Marker position={[50.625, 26.26]}>
               <Popup>
                 <span>A pretty CSS3 popup. <br/> Easily customizable.</span>
               </Popup>
@@ -71,7 +130,7 @@ class MapComponent extends React.Component {
               <Popup>
                 <span>Popup in FeatureGroup</span>
               </Popup>
-              <Circle center={[51.51, -0.06]} radius={200} />
+              <Circle center={[50.625, 26.26]} radius={200} />
             </FeatureGroup>
           </LayersControl.Overlay>
         </LayersControl>

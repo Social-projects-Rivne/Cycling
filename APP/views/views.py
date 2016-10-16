@@ -63,14 +63,14 @@ def get_points(request, model_cls):
             entities = entities.filter(lng__lte=sw_point[1]).filter(lng__gte=ne_point[1])
         else:
             entities = entities.filter(lng__lte=ne_point[1]).filter(lng__gte=sw_point[1])
-        print entities
+        # print entities
         if sw_point[0] > ne_point[0]:
             entities = entities.filter(lat__lte=sw_point[0]).filter(lat__gte=ne_point[0])
         else:
             entities = entities.filter(lat__lte=ne_point[0]).filter(lat__gte=sw_point[0])
 
         data = serializers.serialize("json", entities)
-        # print entities[0].description
+        # print data
         return HttpResponse(data, content_type="application/json")
 
 def get_places_by_points(request):
