@@ -17,12 +17,12 @@ label:focus,
 
 .control-group
 {
-	text-align: center;
+    text-align: center;
 }
 
 .value-input
 {
-	border-top: none;
+    border-top: none;
     border-right: none;
     border-left: none;
     border-bottom: 1px solid #ccc;
@@ -33,12 +33,12 @@ label:focus,
 
 .value-input:focus
 {
-	border-bottom: 1px solid #106CC8;
+    border-bottom: 1px solid #106CC8;
 }
 
 .input-icons
 {
-	position: relative;
+    position: relative;
     top: 20px;
     font-size: 35px;
     color: #106CC8;
@@ -46,12 +46,12 @@ label:focus,
 
 .header-div
 {
-	text-align: center;
+    text-align: center;
 }
 
 .register-button
 {
-	background-color: #106CC8 !important;
+    background-color: #106CC8 !important;
     color: #fff !important;
     background-image: none !important;
     opacity: .8;
@@ -65,14 +65,14 @@ label:focus,
 
 .register-button:hover
 {
-	background-color: #106CC8 !important;
-	opacity: .9;
+    background-color: #106CC8 !important;
+    
 }
 
 .register-button:active
 {
-	background-color: #106CC8 !important;
-	opacity: 1;
+    background-color: #106CC8 !important;
+    opacity: 1;
 }
 
 .main-header
@@ -80,7 +80,7 @@ label:focus,
     background-color: #106CC8;
 }
 
-.sidenav-ul
+.sidebar-nav
 {
     float: left;
     margin-top: 70px;
@@ -107,20 +107,14 @@ label:focus,
     cursor: pointer;
 }
 
-.content-container
-{
-    margin-top: 80px;
-    float: left;
-}
-
 .registration-form
 {
-    margin-left: 475px;
+    margin-top: 51px;
 }
 
 .leaflet-container
 {
-    margin-left: 215px;
+    margin-top: 51px;
 }
 
 .header-button

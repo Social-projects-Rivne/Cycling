@@ -89,12 +89,12 @@ class FormComponent extends React.Component {
         }
         else {
             console.log("Your values are incorrect");
+            this.state.showErrors(validateName);
         }
     }
 
     render() {
         return (
-        <div className="content-container">
         <form onSubmit={this.submit} className="form-horizontal registration-form">
             <fieldset>
                 <div className="header-div">
@@ -114,7 +114,6 @@ class FormComponent extends React.Component {
 
             </fieldset>
         </form>
-        </div>
         );
     }
 }

@@ -7,6 +7,7 @@
       rel="stylesheet">
 	<link rel="shortcut icon" href="favicon.ico">
 	<link rel="stylesheet" href="../../../static/css/styles.css">
+	<link rel="stylesheet" href="../../../static/css/simple-sidebar.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css">
 	
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
@@ -23,6 +24,12 @@
 
 	<div id="app"></div>
 
+    <script>
+        $("#menu-toggle").click(function (e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+    </script>
 	{% load staticfiles %}
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="{% static 'js/app/bundle.js' %}"></script>
