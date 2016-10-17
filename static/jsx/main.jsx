@@ -10,11 +10,24 @@ import { FormComponent }  from './registration.jsx';
 import Parent             from './parent.jsx';
 
 class APP extends React.Component{
+    constructor(props) {
+        super(props);    
+        this.state = {
+          "showHideSidenav":""
+        };
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick() {
+      var css = (this.state.showHideSidenav === "") ? "toggled" : ""
+      this.setState({"showHideSidenav":css});
+    }
+
     render(){
       return (
-        <div id="wrapper">
-                <Header/>
-                <SideBar/>
+        <div className={this.state.showHideSidenav} id="wrapper">
+              <Header onButtonClick={this.handleClick}/>
+              <SideBar/>
               <div className="page-content-wrapper">
                 {this.props.children}
               </div>
@@ -23,25 +36,14 @@ class APP extends React.Component{
     }
 }
 
-class Header extends React.Component {
-    constructor(props) {
-        super(props);    
-        this.state = {
-          "showHideSidenav":"hidden"
-        };
-        this.handleClick = this.handleClick.bind(this);
-    }
 
-    handleClick() {
-      var css = (this.props.showHideSidenav === "hidden") ? "toggled" : "hidden";
-      this.setState({"showHideSidenav":css});
-    }
+class Header extends React.Component {
 
     render() {
         return(
             <div className="navbar navbar-fixed-top main-header" role="navigation">
               <div className="navbar-header">
-                  <a onClick={this.handleClick} id="menu-toggle" className="logo-a"><span className="icon material-icons">menu</span></a>
+                  <a onClick={this.props.onButtonClick} id="menu-toggle" className="logo-a"><span className="icon material-icons">menu</span></a>
                   <Link className="navbar-brand logo-line" to='/'>Cycling</Link>
                   <button className="btn btn-info header-button"><Link to='/registration'>Registration</Link></button>
               </div>
