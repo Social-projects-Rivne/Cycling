@@ -4,6 +4,10 @@ class FormComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            error_message_name: "",
+            error_message_email: "",
+            error_message_pass: "",
+            registration_process: "Registration",
             icon_color_name: true,
             icon_color_email: true,
             icon_color_password: true
@@ -16,6 +20,7 @@ class FormComponent extends React.Component {
         this.validateName = this.validateName.bind(this);
         this.validateEmail = this.validateEmail.bind(this);
         this.showErrors = this.showErrors.bind(this);
+        this.ajaxSuccess = this.ajaxSuccess.bind(this);
     }
 
     changeName(event) {
@@ -45,7 +50,7 @@ class FormComponent extends React.Component {
     }
 
     validateName(full_name) {    
-        var re = /[A-Za-z\s_-]+$/;
+        var re = /^(?:[\u00c0-\u01ffa-zA-Z'-]){2,}(?:\s[\u00c0-\u01ffa-zA-Z'-]{2,})+$/i;
         return re.test(full_name);
     }
 
@@ -77,7 +82,7 @@ class FormComponent extends React.Component {
             });
         }
 
-        if(this.state.password === this.state.password_confirm) {
+        if((this.state.password === this.state.password_confirm) && (this.state.password)) {
             this.setState({
                 icon_color_password: true
             });
@@ -89,8 +94,47 @@ class FormComponent extends React.Component {
         }
     }
 
+    ajaxSuccess(response) {
+        if(response["NameError"] === 1){
+            this.setState({
+                error_message_name: "Such full name already exists!"
+            });
+        }
+        else{
+            this.setState({
+                error_message_name: ""
+            });
+        };
+        if(response["EmailError"] === 1){
+            this.setState({
+                error_message_email: "Such email already exists!"
+            });
+        }
+        else{
+            this.setState({
+                error_message_email: ""
+            });
+        };
+        if(response["PassError"] === 1){
+            this.setState({
+                error_message_pass: "Such password already exists!"
+            });
+        }
+        else{
+            this.setState({
+                error_message_pass: ""
+            });
+        };
+        if(response["Success"] === 1) {
+            this.setState({
+                registration_process: "Congratulations! You have been successfully registrated."
+            });
+        }
+    }
+
     submitAll(event){
         var self;
+        var ajaxSuccess=this.ajaxSuccess;
         event.preventDefault();
         if ((this.state.password === this.state.password_confirm) 
             && this.validateName(this.state.name) && this.validateEmail(this.state.email)) {
@@ -100,19 +144,13 @@ class FormComponent extends React.Component {
                 email: this.state.email,
                 password: this.state.password
             }
-            console.log(data);
             $.ajax({
                 type: 'POST',
                 url: 'v1/registration',
                 dataType: "json",
                 data: data,
-                success: function(response){
-                    console.log(response);
-                }
+                success: ajaxSuccess
             });
-        }
-        else {
-            console.log("Your values are incorrect");
         }
         this.showErrors(this.validateName(this.state.name), this.validateEmail(this.state.email));
     }
@@ -122,12 +160,12 @@ class FormComponent extends React.Component {
         <form onSubmit={this.submit} className="form-horizontal registration-form">
             <fieldset>
                 <div className="header-div">
-                    <h2 className="register-header">Registration</h2>
+                    <h2 className="register-header">{this.state.registration_process}</h2>
                 </div>
-                <UserName iconProp={this.state.icon_color_name} valChange={this.changeName}
+                <UserName error_message={this.state.error_message_name} iconProp={this.state.icon_color_name} valChange={this.changeName}
                  val={this.state.name} className={this.state.name_error}/>
-                <Email iconProp={this.state.icon_color_email} valChange={this.changeEmail} val={this.state.email}/>
-                <Pass iconProp={this.state.icon_color_password} valChange={this.changePassword} val={this.state.password}/>
+                <Email error_message={this.state.error_message_email} iconProp={this.state.icon_color_email} valChange={this.changeEmail} val={this.state.email}/>
+                <Pass error_message={this.state.error_message_pass} iconProp={this.state.icon_color_password} valChange={this.changePassword} val={this.state.password}/>
                 <PassConfirm iconProp={this.state.icon_color_password} valChange={this.changePassConfirm} val={this.state.password_confirm}/>
 
                 <div className="control-group">
@@ -135,7 +173,6 @@ class FormComponent extends React.Component {
                         <button type="submit" className="btn btn-success register-button" onClick={this.submitAll}>Register</button>
                     </div>
                 </div>
-
             </fieldset>
         </form>
         );
@@ -169,6 +206,7 @@ class UserName extends React.Component {
                 <span style={this.changeColor()} className="material-icons input-icons">person_outline</span>
                 <input placeholder="Fullname" type="text" id="fullname" name="full_name"
                  className="input-xlarge value-input" onChange={this.props.valChange} value={this.props.val}/>
+                 <p style={{color: '#E04B39'}}>{this.props.error_message}</p>
             </div>
         </div>
         );
@@ -203,6 +241,7 @@ class Email extends React.Component {
                 <span style={this.changeColor()} className="material-icons input-icons">email</span>
                 <input placeholder="Email" type="text" id="email" name="email" 
                 className="input-xlarge value-input " onChange={this.props.valChange} value={this.props.val}/>
+                <p style={{color: '#E04B39'}}>{this.props.error_message}</p>
             </div>
         </div>
         );
@@ -237,6 +276,7 @@ class Pass extends React.Component {
                 <input placeholder="Password" type="password" id="password" name="password" 
                 className="input-xlarge value-input" 
                 onChange={this.props.valChange} value= {this.props.val}/>
+                <p style={{color: '#E04B39'}}>{this.props.error_message}</p>
             </div>
         </div>
         );

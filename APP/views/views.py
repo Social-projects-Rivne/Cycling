@@ -19,7 +19,7 @@ from APP.models.stolen_bikes import StolenBike
 from APP.utils.validator import Validator
 
 _valid_inputs = Validator()
-
+_password_master = PasswordMaster()
 
 def index(request):
     context = {
@@ -46,9 +46,8 @@ def login(request):
     if not user:
         return JsonResponse({"error": "User with specified email not found"})
 
-    password_master = PasswordMaster()
-    if password_master.check_password(data['password'], user.password):
-        user.token = password_master.generate_token()
+    if _password_master.check_password(data['password'], user.password):
+        user.token = _password_master.generate_token()
     else:
         return JsonResponse({"error": "Invalid password!"})
 
@@ -97,24 +96,23 @@ def need_token(decorated_func):
 @csrf_exempt
 def registration(request):
     if request.method == "POST":
-        print "Our post", request.POST["full_name"]
         result_dict = dict()
         obj_filter = User.objects.filter
         if _valid_inputs.full_name_validation(request.POST['full_name'])\
             and _valid_inputs.email_validation(request.POST['email']):
             if obj_filter(full_name=request.POST["full_name"]).exists():
-                result_dict['NameError'] = "Such full name already exists!"
+                result_dict['NameError'] = 1
             if obj_filter(email=request.POST["email"]).exists():
-                result_dict['EmailError'] = "Such email already exists!"
+                result_dict['EmailError'] = 1
             if obj_filter(password=request.POST["password"]).exists():
-                result_dict['PassError'] = "Such password already exists!"
+                result_dict['PassError'] = 1
             if not result_dict:
                 User.objects.create(full_name=request.POST['full_name'],
                                     email=request.POST['email'], password=request.POST['password'],
-                                    role_id='0')
-                result_dict['Success'] = "true"
+                                    role_id='0', token=_password_master.generate_token())
+                result_dict['Success'] = 1
         else:
-            result_dict['RulesError'] = "Error rules of input"
+            result_dict['RulesError'] = 1
         return JsonResponse(result_dict)
 
 def get_points(request, model_cls):
