@@ -1,12 +1,12 @@
 import React from 'react';
 
-
 class FormComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            rightStyle: {borderBottom: '1px solid #E04B39 !important'},
-            wrongStyle: {borderBottom: '1px solid #20e841 !important'}
+            icon_color_name: true,
+            icon_color_email: true,
+            icon_color_password: true
         };
         this.changeName = this.changeName.bind(this);
         this.changeEmail = this.changeEmail.bind(this);
@@ -57,34 +57,34 @@ class FormComponent extends React.Component {
     showErrors(name, email) {
         if(name === false) {
             this.setState({
-                name_color: this.state.rightStyle
+                icon_color_name: false
             });
         }
         else{
             this.setState({
-                name_color: this.state.wrongStyle
+                icon_color_name: true
             });
         }
 
         if(email === false) {
             this.setState({
-                email_color: this.state.rightStyle
+                icon_color_email: false
             });
         }
         else{
             this.setState({
-                email_color: this.state.wrongStyle
+                icon_color_email: true
             });
         }
 
         if(this.state.password === this.state.password_confirm) {
             this.setState({
-                password_color: this.state.rightStyle
+                icon_color_password: true
             });
         }
         else{
             this.setState({
-                password_color: this.state.wrongStyle
+                icon_color_password: false
             });
         }
     }
@@ -107,30 +107,11 @@ class FormComponent extends React.Component {
                 dataType: "json",
                 data: data,
                 success: function(response){
-                    //let responseResult = JSON.parse(response);
                     console.log(response);
                 }
             });
-            
-            this.setState({
-                  icon_color: {color: '#20e841'}
-            });
-            
-            /*if(this.responseResult['Success'] === 'true') {
-                this.setState({
-                    icon_color: {color: '#20e841'}
-                });
-            }
-            else{
-                this.setState({
-                    icon_color: {color: '#E04B39'}
-                }); 
-            }*/
         }
         else {
-            this.setState({
-                icon_color: {color: '#E04B39'}
-            });
             console.log("Your values are incorrect");
         }
         this.showErrors(this.validateName(this.state.name), this.validateEmail(this.state.email));
@@ -143,11 +124,11 @@ class FormComponent extends React.Component {
                 <div className="header-div">
                     <h2 className="register-header">Registration</h2>
                 </div>
-                <UserName styleProp={this.state.name_color} iconProp={this.state.icon_color} valChange={this.changeName}
+                <UserName iconProp={this.state.icon_color_name} valChange={this.changeName}
                  val={this.state.name} className={this.state.name_error}/>
-                <Email styleProp={this.state.email_color} iconProp={this.state.icon_color} valChange={this.changeEmail} val={this.state.email}/>
-                <Pass  styleProp={this.state.password_color} iconProp={this.state.icon_color} valChange={this.changePassword} val={this.state.password}/>
-                <PassConfirm styleProp={this.state.password_color} iconProp={this.state.icon_color} valChange={this.changePassConfirm} val={this.state.password_confirm}/>
+                <Email iconProp={this.state.icon_color_email} valChange={this.changeEmail} val={this.state.email}/>
+                <Pass iconProp={this.state.icon_color_password} valChange={this.changePassword} val={this.state.password}/>
+                <PassConfirm iconProp={this.state.icon_color_password} valChange={this.changePassConfirm} val={this.state.password_confirm}/>
 
                 <div className="control-group">
                     <div className="controls">
@@ -165,14 +146,28 @@ class UserName extends React.Component {
     constructor(props){
     super(props);    
     this.state = {};
+    this.changeColor = this.changeColor.bind(this);
+    }
+
+    changeColor() {
+        if(this.props.iconProp === true){
+            return {
+                color: '#106CC8'
+            }
+        }
+        else{
+            return {
+                color: '#E04B39'
+            }
+        }
     }
 
     render() {
         return(
         <div className="control-group">
             <div className="controls">
-                <span style={this.props.iconProp} className="material-icons input-icons">person_outline</span>
-                <input style={this.props.styleProp} placeholder="Fullname" type="text" id="fullname" name="full_name"
+                <span style={this.changeColor()} className="material-icons input-icons">person_outline</span>
+                <input placeholder="Fullname" type="text" id="fullname" name="full_name"
                  className="input-xlarge value-input" onChange={this.props.valChange} value={this.props.val}/>
             </div>
         </div>
@@ -185,14 +180,28 @@ class Email extends React.Component {
     constructor(props) {
     super(props);    
     this.state = {};
+    this.changeColor = this.changeColor.bind(this);
+    }
+
+    changeColor() {
+        if(this.props.iconProp){
+            return {
+                color: '#106CC8'
+            }
+        }
+        else{
+            return {
+                color: '#E04B39'
+            }
+        }
     }
 
     render() {
         return (
         <div className="control-group">
             <div className="controls">
-                <span style={this.props.iconProp} className="material-icons input-icons">email</span>
-                <input style={this.props.styleProp} placeholder="Email" type="text" id="email" name="email" 
+                <span style={this.changeColor()} className="material-icons input-icons">email</span>
+                <input placeholder="Email" type="text" id="email" name="email" 
                 className="input-xlarge value-input " onChange={this.props.valChange} value={this.props.val}/>
             </div>
         </div>
@@ -204,14 +213,28 @@ class Pass extends React.Component {
     constructor(props) {
     super(props);    
     this.state = {};
+    this.changeColor = this.changeColor.bind(this);
+    }
+
+    changeColor() {
+        if(this.props.iconProp){
+            return {
+                color: '#106CC8'
+            }
+        }
+        else{
+            return {
+                color: '#E04B39'
+            }
+        }
     }
 
     render() {
         return (
         <div className="control-group">
             <div className="controls">
-                <span style={this.props.iconProp} className="material-icons input-icons">lock_outline</span>
-                <input style={this.props.styleProp} placeholder="Password" type="password" id="password" name="password" 
+                <span style={this.changeColor()} className="material-icons input-icons">lock_outline</span>
+                <input placeholder="Password" type="password" id="password" name="password" 
                 className="input-xlarge value-input" 
                 onChange={this.props.valChange} value= {this.props.val}/>
             </div>
@@ -224,14 +247,28 @@ class PassConfirm extends React.Component {
     constructor(props) {
     super(props);    
     this.state = {};
+    this.changeColor = this.changeColor.bind(this);
+    }
+
+    changeColor() {
+        if(this.props.iconProp){
+            return {
+                color: '#106CC8'
+            }
+        }
+        else{
+            return {
+                color: '#E04B39'
+            }
+        }
     }
 
     render() {
         return (
         <div className="control-group">
             <div className="controls">
-                <span style={this.props.iconProp} className="material-icons input-icons">lock_outline</span>
-                <input style={this.props.styleProp} placeholder="Re-type password" type="password" id="password_confirm" 
+                <span style={this.changeColor()} className="material-icons input-icons">lock_outline</span>
+                <input placeholder="Re-type password" type="password" id="password_confirm" 
                 name="password_confirm" className="input-xlarge value-input" 
                 onChange={this.props.valChange} value= {this.props.val}/>
             </div>
