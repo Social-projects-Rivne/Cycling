@@ -96,7 +96,7 @@ class MapComponent extends React.Component {
     const position = [this.state.lat, this.state.lng];
     return (
       <Map center={position} zoom={this.state.zoom} ref='map'
-              style={{height: '90vh', width:'99vw'}}
+              style={{height: '100vh', width:'100vw'}}
               onOverlayadd={this.onOverlayadd}
               onBaselayerchange={this.onBaselayerchange}
               onOverlayremove={this.onOverlayremove}
