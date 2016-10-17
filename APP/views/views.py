@@ -1,12 +1,13 @@
 # -*- encoding: utf-8 -*-
 
 from django.core import serializers
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse, Http404
 from django.shortcuts import render
 
-from APP.models.parkings import Parking
-from APP.models.places import Place
-from APP.models.stolen_bikes import StolenBike
+from APP.models import User, Bicycle, StolenBike, Parking, Place, Image, Attachment
+#from APP.models.parkings import Parking
+#from APP.models.places import Place
+#from APP.models.stolen_bikes import StolenBike
 
 
 def index(request):
@@ -76,4 +77,82 @@ def get_stolen_bikes_by_points(request):
     latitude is first, longitude - second
     """
     return get_points(request, StolenBike)
+
+
+def get_user_data(request, user_id):
+    """Gets User data from db (except password column) and returns it
+    as JsonResponse"""
+    try:
+        # what about to use .filter instead of .get? cause .values loads all
+        # usrs and only then select from them pk=user_id.
+        # think bout it, pls
+        user_data = User.objects.values('full_name', 'email', 'is_active',
+                                'avatar', 'role_id' ).get(pk=user_id)
+        user_data['is_logged_in'] = True if user_data['email'] in request.session else False
+
+    #except User.DoesNotExist:
+    except User.DoesNotExist:
+        # output message if usr doesn't exist. Or 404 if there is
+        # attempt to visit page with this id. 
+        #  404! 
+        raise Http404("No user with such id in the database.")
+    return JsonResponse(user_data)
+
+def get_user_bikes_data(request, user_id):
+    """Gets bicycles data from db using id and returns it as JsonResponse"""
+    try:
+        # retrieve only non deleted vehicles
+        user_bikes_list = list(Bicycle.objects.filter(owner_id=user_id, is_deleted=False).values('id', 'name', 'description', 'owner_id'))
+    except:
+        # some stuff if db is unreachable
+        # 500
+        pass
+    for bike in user_bikes_list:
+        try:
+            bike['images_urls'] = list(Image.objects.filter(bike_id=bike['id']).values('url'))
+            if not bike['images_urls']:
+                bike['images_urls'] = None
+        except TypeError:
+            bike['images_urls'] = None
+
+        try:
+            bike['is_stolen'] = StolenBike.objects.filter(bike_id=bike['id']).exists()
+        except:
+            # some shit
+            pass
+    return JsonResponse(user_bikes_list, safe = False)
+
+def get_user_parkings_data(request, user_id):
+    """Gets data from db about Parkings and their images from
+    Attachments and output it as JsonResponse"""
+    try:
+        user_parks_list = list(Parking.objects.filter(owner_id=user_id).values())
+    except:
+        # some stuff if db is unreachable
+        pass
+    for parking in user_parks_list:
+        try:
+            parking['images_urls'] = list(Attachment.objects.filter(parking_id=parking['id'])).values('image_url')
+            if not parking['images_urls']:
+                parking['images_urls'] = None
+        except:
+            parking['images_urls'] = None
+    return JsonResponse(user_parks_list, safe = False)
     
+
+def get_user_places_data(request, user_id):
+    """Gets data from db about user's Places and their images from 
+    Attachments and output it as JsonResponse."""
+    try:
+        user_places_list = list(Place.objects.filter(owner_id=user_id).values())
+    except:
+        # some stuff if db is unreachable
+        pass
+    for place in user_places_list:
+        try:
+            place['images_url'] = list(Attachment.objects.filter(place_id=place['id']).values('image_url'))
+            if not place['image_url']:
+                place['image_url'] = None
+        except:
+            place['image_url'] = None
+    return JsonResponse(user_places_list, safe = False)
