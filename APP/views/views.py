@@ -6,6 +6,7 @@ from django.core import serializers
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 from APP.models import User
 from APP.utils.validator import Validator
@@ -23,23 +24,24 @@ def index(request):
         }
     return render(request, 'APP/index.html', context)
 
+@csrf_exempt
 def registration(request):
 	if request.method == "POST":
-		post_data = json.load(request.body)
+		print "Our post", request.POST["full_name"]
 		result_dict = dict()
-		obj_filter = User.objects.filter()	
-		if _valid_inputs.full_name_validation(post_data['full_name'])\
-	    	and _valid_inputs.email_validation(post_data['email']):
-			if obj_filter(full_name=post_data['full_name']).exists():
+		obj_filter = User.objects.filter
+		if _valid_inputs.full_name_validation(request.POST['full_name'])\
+	    	and _valid_inputs.email_validation(request.POST['email']):
+			if obj_filter(full_name=request.POST["full_name"]).exists():
 				result_dict['NameError'] = "Such full name already exists!"
-			if obj_filter(email=post_data['email']).exists():
+			if obj_filter(email=request.POST["email"]).exists():
 				result_dict['EmailError'] = "Such email already exists!"
-			if obj_filter(password=post_data['password']).exists():
+			if obj_filter(password=request.POST["password"]).exists():
 				result_dict['PassError'] = "Such password already exists!"
 			if not result_dict:
-				User.objects.create(full_name=post_data['full_name'],
-		    		                email=post_data['email'], password=post_data['password'],
-		        		            role_id=post_data['0'])
+				User.objects.create(full_name=request.POST['full_name'],
+		    		                email=request.POST['email'], password=request.POST['password'],
+		        		            role_id='0')
 				result_dict['Success'] = "Your registration has been succesfully done"
 		else:
 			result_dict['RulesError'] = "Error rules of input"

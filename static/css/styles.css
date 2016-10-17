@@ -1,4 +1,140 @@
+textarea:hover, 
+input:hover, 
+textarea:active, 
+input:active, 
+textarea:focus, 
+input:focus,
+button:focus,
+button:active,
+button:hover,
+label:focus,
+.btn:active,
+.btn.active
+{
+    outline:0px !important;
+    -webkit-appearance:none;
+}
+
 .control-group
 {
-	text-align: center;
+    text-align: center;
+}
+
+.value-input
+{
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-bottom: 1px solid #ccc;
+    margin: 15px;
+    width: 300px;
+    line-height: 3;
+}
+
+.value-input:focus
+{
+    border-bottom: 1px solid #106CC8;
+}
+
+.input-icons
+{
+    position: relative;
+    top: 20px;
+    font-size: 35px;
+    color: #106CC8;
+}
+
+.header-div
+{
+    text-align: center;
+}
+
+.register-button
+{
+    background-color: #106CC8 !important;
+    color: #fff !important;
+    background-image: none !important;
+    opacity: .8;
+    width: 150px;
+    border-radius: 0px !important;
+    border: none !important;
+    margin-top: 35px;
+    font-size: 16px !important;
+    height: 40px;
+}
+
+.register-button:hover
+{
+    background-color: #106CC8 !important;
+    
+}
+
+.register-button:active
+{
+    background-color: #106CC8 !important;
+    opacity: 1;
+}
+
+.main-header
+{
+    background-color: #106CC8;
+}
+
+.sidebar-nav
+{
+    float: left;
+    margin-top: 70px;
+    position: fixed;
+}
+
+.icon
+{
+    color: #fff;
+    float: left;
+    cursor: pointer;
+    margin-top: 13px;
+    margin-left: 8px;
+}
+
+.logo-line
+{
+    color: #fff !important;
+}
+
+.logo-line:hover
+{
+    color: #fff !important;
+    cursor: pointer;
+}
+
+.registration-form
+{
+    margin-top: 51px;
+}
+
+.leaflet-container
+{
+    margin-top: 51px;
+}
+
+.header-button
+{
+    float: right !important;
+    margin-top: 8px;
+    margin-right: 10px;
+}
+
+.header-button a{
+    text-decoration: none !important;   
+}
+
+.header-button a:hover
+{
+    text-decoration: none !important;
+    cursor: pointer;
+}
+
+.navbar-header
+{
+    width: 100%;
 }
