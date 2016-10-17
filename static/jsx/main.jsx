@@ -69,7 +69,7 @@ class SideBar extends React.Component {
                 <li><a href="#">Display Objects</a></li>
                 <li><a href="#">Stolen Bycicles</a></li>
                 <li><a href="#">Races Table</a></li>
-                <li><Link onlyActiveOnIndex activeStyle={{color:'#53acff'}} to='/profile'>ProfileHome</Link></li>
+                <li><Link onlyActiveOnIndex activeStyle={{color:'#53acff'}} to='/profile'>Profile</Link></li>
             </ul>
         </div>
         );
@@ -85,7 +85,7 @@ ReactDOM.render(
          <IndexRoute component = {Parent} />
          <Route path = "home" component = {Parent} />
          <Route path = "/registration" component = {FormComponent} />
-         <Route path = "/registration" component = {Profile} />
+         <Route path = "/profile" component = {Profile} />
          <Route path='*' component={NotFound} />
       </Route>
   </Router>),
