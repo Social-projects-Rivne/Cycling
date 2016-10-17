@@ -3,7 +3,6 @@ from django.conf.urls import url
 from .views import views
 
 urlpatterns = [
-    url(r'^$', views.index, name='index'),
     url(r'^v1/login$', views.login, name='login'),
     url(r'^v1/registration$', views.registration),
     url(r'^v1/places/search$', views.get_places_by_points, name='get_points'),

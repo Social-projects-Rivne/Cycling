@@ -29,9 +29,8 @@ def index(request):
 
 
 @csrf_exempt
-@require_http_methods(['POST'])
 def login(request):
-
+    print "HELLOW"
     try:
         data = json.loads(request.body)
     except ValueError:
@@ -100,8 +99,8 @@ def registration(request):
         print "Our post", request.POST["full_name"]
         result_dict = dict()
         obj_filter = User.objects.filter
-        if _valid_inputs.full_name_validation(request.POST['full_name'])\
-            and _valid_inputs.email_validation(request.POST['email']):
+        if _valid_inputs.full_name_validation(request.POST['full_name']) and \
+           _valid_inputs.email_validation(request.POST['email']):
             if obj_filter(full_name=request.POST["full_name"]).exists():
                 result_dict['NameError'] = "Such full name already exists!"
             if obj_filter(email=request.POST["email"]).exists():
@@ -109,13 +108,16 @@ def registration(request):
             if obj_filter(password=request.POST["password"]).exists():
                 result_dict['PassError'] = "Such password already exists!"
             if not result_dict:
-                User.objects.create(full_name=request.POST['full_name'],
-                                    email=request.POST['email'], password=request.POST['password'],
-                                    role_id='0')
+                User.objects.create(
+                    full_name=request.POST['full_name'],
+                    email=request.POST['email'],
+                    password=request.POST['password'],
+                    role_id='0')
                 result_dict['Success'] = "true"
         else:
             result_dict['RulesError'] = "Error rules of input"
         return JsonResponse(result_dict)
+
 
 def get_points(request, model_cls):
     """Returns entities with location within rectangle
@@ -157,6 +159,7 @@ def get_places_by_points(request):
     print ''
     return get_points(request, Place)
 
+
 def get_parkings_by_points(request):
     """Returns parking places with a location within rectangle
     of sw and ne points, where:
@@ -167,6 +170,7 @@ def get_parkings_by_points(request):
     latitude is first, longitude - second
     """
     return get_points(request, Parking)
+
 
 def get_stolen_bikes_by_points(request):
     """Returns stolen bikes with a location within rectangle

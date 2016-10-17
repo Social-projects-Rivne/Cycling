@@ -40,11 +40,11 @@ class FormComponent extends React.Component {
         email: '',
         password: '',
         password_confirm: ''
-        
+
       });
     }
 
-    validateName(full_name) {    
+    validateName(full_name) {
         var re = /[A-Za-z\s_-]+$/;
         return re.test(full_name);
     }
@@ -92,7 +92,7 @@ class FormComponent extends React.Component {
     submitAll(event){
         var self;
         event.preventDefault();
-        if ((this.state.password === this.state.password_confirm) 
+        if ((this.state.password === this.state.password_confirm)
             && this.validateName(this.state.name) && this.validateEmail(this.state.email)) {
             self = this;
             var data = {
@@ -144,7 +144,7 @@ class FormComponent extends React.Component {
 
 class UserName extends React.Component {
     constructor(props){
-    super(props);    
+    super(props);
     this.state = {};
     this.changeColor = this.changeColor.bind(this);
     }
@@ -178,7 +178,7 @@ class UserName extends React.Component {
 
 class Email extends React.Component {
     constructor(props) {
-    super(props);    
+    super(props);
     this.state = {};
     this.changeColor = this.changeColor.bind(this);
     }
@@ -201,7 +201,7 @@ class Email extends React.Component {
         <div className="control-group">
             <div className="controls">
                 <span style={this.changeColor()} className="material-icons input-icons">email</span>
-                <input placeholder="Email" type="text" id="email" name="email" 
+                <input placeholder="Email" type="text" id="email" name="email"
                 className="input-xlarge value-input " onChange={this.props.valChange} value={this.props.val}/>
             </div>
         </div>
@@ -211,7 +211,7 @@ class Email extends React.Component {
 
 class Pass extends React.Component {
     constructor(props) {
-    super(props);    
+    super(props);
     this.state = {};
     this.changeColor = this.changeColor.bind(this);
     }
@@ -234,8 +234,8 @@ class Pass extends React.Component {
         <div className="control-group">
             <div className="controls">
                 <span style={this.changeColor()} className="material-icons input-icons">lock_outline</span>
-                <input placeholder="Password" type="password" id="password" name="password" 
-                className="input-xlarge value-input" 
+                <input placeholder="Password" type="password" id="password" name="password"
+                className="input-xlarge value-input"
                 onChange={this.props.valChange} value= {this.props.val}/>
             </div>
         </div>
@@ -245,7 +245,7 @@ class Pass extends React.Component {
 
 class PassConfirm extends React.Component {
     constructor(props) {
-    super(props);    
+    super(props);
     this.state = {};
     this.changeColor = this.changeColor.bind(this);
     }
@@ -268,8 +268,8 @@ class PassConfirm extends React.Component {
         <div className="control-group">
             <div className="controls">
                 <span style={this.changeColor()} className="material-icons input-icons">lock_outline</span>
-                <input placeholder="Re-type password" type="password" id="password_confirm" 
-                name="password_confirm" className="input-xlarge value-input" 
+                <input placeholder="Re-type password" type="password" id="password_confirm"
+                name="password_confirm" className="input-xlarge value-input"
                 onChange={this.props.valChange} value= {this.props.val}/>
             </div>
         </div>

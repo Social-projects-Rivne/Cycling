@@ -7,11 +7,12 @@ import { Router,
   IndexRoute }            from 'react-router';
 import ReactDOM           from 'react-dom';
 import { FormComponent }  from './registration.jsx';
+import { LoginComponent } from './login.jsx';
 import Parent             from './parent.jsx';
 
 class APP extends React.Component{
     constructor(props) {
-        super(props);    
+        super(props);
         this.state = {
           "showHideSidenav":""
         };
@@ -54,10 +55,10 @@ class Header extends React.Component {
 
 class SideBar extends React.Component {
     constructor(props) {
-        super(props);    
+        super(props);
         this.state = {};
     }
-    
+
     render() {
         return (
         <div id="sidebar-wrapper" role="navigation">
@@ -83,6 +84,7 @@ ReactDOM.render(
       <Route path = "/" component = {APP}>
          <IndexRoute component = {Parent} />
          <Route path = "home" component = {Parent} />
+         <Route path = "/login" component = {LoginComponent} />
          <Route path = "/registration" component = {FormComponent} />
          <Route path='*' component={NotFound} />
       </Route>
