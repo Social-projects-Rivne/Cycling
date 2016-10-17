@@ -9,7 +9,6 @@ For installing required libs and frameworks execute next commands:
 ```sh
     git clone https://github.com/Social-projects-Rivne/Cycling
     sudo apt-get install build-essential python-dev libmysqlclient-dev
-    sudo apt-get install libjpeg-dev
     pip install -r requirements.txt
 ```
 

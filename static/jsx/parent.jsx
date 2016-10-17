@@ -1,15 +1,14 @@
 import React from 'react';
-import {Child} from './child.jsx';
+import MapContainer from './map/container.jsx';
 
 class Parent extends React.Component{
   render(){
     return (
       <div>
-        <div> This is the parent. </div>
-        <Child name="child"/>
+        <MapContainer name="map-container" />
       </div>
     )
   }
 };
 
-export {Parent};
+export default Parent;
