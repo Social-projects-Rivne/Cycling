@@ -42,7 +42,7 @@ def registration(request):
 				User.objects.create(full_name=request.POST['full_name'],
 		    		                email=request.POST['email'], password=request.POST['password'],
 		        		            role_id='0')
-				result_dict['Success'] = "Your registration has been succesfully done"
+				result_dict['Success'] = "true"
 		else:
 			result_dict['RulesError'] = "Error rules of input"
 		return JsonResponse(result_dict)
