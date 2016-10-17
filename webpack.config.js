@@ -6,8 +6,8 @@ module.exports = {
   entry: {
     javascript: './static/jsx/main.jsx'
   },
-  output: { path: path.resolve('./static/js/app/'), 
-      filename: 'bundle.js' 
+  output: { path: path.resolve('./static/js/app/'),
+      filename: 'bundle.js'
     },
   module: {
     loaders: [
