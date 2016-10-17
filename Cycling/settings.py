@@ -15,21 +15,6 @@ from ConfigParser import SafeConfigParser
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-# Module for parsing configuration file.
-# Configuration file should have name 'config.ini'.
-# Also 'config.ini' file should be in the same catalog with config.py file.
-
-# Example of configuraion file:
-
-# [DataBase]
-# ENGINE: mysql
-# DB_USER: cycling_user
-# PASSWORD: secretpass
-# HOST: localhost
-# PORT: 3306
-# NAME: CYCLINGDB
-
 CONF_FILE = (os.path.join(BASE_DIR, 'config.ini'))
 config = SafeConfigParser()
 config.read(CONF_FILE)
@@ -43,7 +28,7 @@ SECRET_KEY = '+#alll+=%$)3(0@yy*tgf264m)h-lx*sdytyst#%c$=-yf8u&o'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -146,3 +131,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = ((os.path.join(BASE_DIR, 'static')),
+                    (os.path.join(BASE_DIR, 'node_modules')),
+                   )
+
+#                [latitude , longitude]
+RIVNE_LOCATION = [50.619776, 26.251265]

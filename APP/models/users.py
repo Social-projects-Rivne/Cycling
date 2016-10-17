@@ -16,7 +16,7 @@ class User(models.Model):
     email = models.EmailField(unique=True, db_index=True)
     password = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
-    avatar = models.URLField(blank=True)
+    avatar = models.URLField(blank=True, default="http://placehold.it/250x250")
     role_id = models.CharField(max_length=1, choices=ROLES, default=0, db_index=True)
     token = models.CharField(max_length=255, db_index=True, default=None)
 
