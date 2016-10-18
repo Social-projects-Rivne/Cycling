@@ -126,13 +126,26 @@ label:focus,
 }
 
 .header-button a{
-    text-decoration: none !important;   
+    text-decoration: none !important;
+    color: #fff;   
 }
 
 .header-button a:hover
 {
     text-decoration: none !important;
+    color: #fff;
     cursor: pointer;
+}
+
+.header-button a:focus
+{
+    color: #fff;
+    cursor: pointer;
+}
+
+.header-button a:active
+{
+    color: #fff;
 }
 
 .navbar-header
