@@ -66,6 +66,7 @@ label:focus,
 .register-button:hover
 {
     background-color: #106CC8 !important;
+    opacity: .9;
     
 }
 
