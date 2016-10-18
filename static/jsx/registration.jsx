@@ -1,26 +1,18 @@
 import React from 'react';
 
+import {EmailInput} from './input/email_input.jsx';
+import {PasswordInput} from './input/password_input.jsx';
+import {FullNameInput} from './input/full_name_input.jsx';
+import {Validator} from './validator.jsx';
+
 class FormComponent extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            error_message_name: "",
-            error_message_email: "",
-            error_message_pass: "",
-            registration_process: "Registration",
-            icon_color_name: true,
-            icon_color_email: true,
-            icon_color_password: true
-        };
-        this.changeName = this.changeName.bind(this);
-        this.changeEmail = this.changeEmail.bind(this);
-        this.changePassword = this.changePassword.bind(this);
-        this.changePassConfirm = this.changePassConfirm.bind(this);
-        this.submitAll = this.submitAll.bind(this);
-        this.validateName = this.validateName.bind(this);
-        this.validateEmail = this.validateEmail.bind(this);
-        this.showErrors = this.showErrors.bind(this);
+        this.state = {};
         this.ajaxSuccess = this.ajaxSuccess.bind(this);
+        this.submitAll = this.submitAll.bind(this);
+        this.clearForm = this.clearForm.bind(this);
+        this.validator = new Validator();
     }
 
     changeName(event) {
@@ -39,7 +31,7 @@ class FormComponent extends React.Component {
         this.setState({password_confirm: event.target.value});
     }
 
-    clearForm() {
+    /*clearForm() {
       this.setState({
         name: '',
         email: '',
@@ -47,112 +39,53 @@ class FormComponent extends React.Component {
         password_confirm: ''
 
       });
-    }
-
-    validateName(full_name) {    
-        var re = /^(?:[\u00c0-\u01ffa-zA-Z'-]){2,}(?:\s[\u00c0-\u01ffa-zA-Z'-]{2,})+$/i;
-        return re.test(full_name);
-    }
-
-    validateEmail(email) {
-        var re = /[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$/;
-        return re.test(email);
-    };
-
-    showErrors(name, email) {
-        if(name === false) {
-            this.setState({
-                icon_color_name: false
-            });
-        }
-        else{
-            this.setState({
-                icon_color_name: true
-            });
-        }
-
-        if(email === false) {
-            this.setState({
-                icon_color_email: false
-            });
-        }
-        else{
-            this.setState({
-                icon_color_email: true
-            });
-        }
-
-        if((this.state.password === this.state.password_confirm) && (this.state.password)) {
-            this.setState({
-                icon_color_password: true
-            });
-        }
-        else{
-            this.setState({
-                icon_color_password: false
-            });
-        }
-    }
+    }*/
 
     ajaxSuccess(response) {
-        if(response["NameError"] === 1){
+        if(response['EmailError'] === 1){
             this.setState({
-                error_message_name: "Such full name already exists!"
+                email_exist: false
             });
         }
-        else{
-            this.setState({
-                error_message_name: ""
-            });
-        };
-        if(response["EmailError"] === 1){
-            this.setState({
-                error_message_email: "Such email already exists!"
-            });
-        }
-        else{
-            this.setState({
-                error_message_email: ""
-            });
-        };
-        if(response["PassError"] === 1){
-            this.setState({
-                error_message_pass: "Such password already exists!"
-            });
-        }
-        else{
-            this.setState({
-                error_message_pass: ""
-            });
-        };
-        if(response["Success"] === 1) {
-            this.setState({
-                registration_process: "Congratulations! You have been successfully registrated."
-            });
+        else if(response['Success'] === 1){
+            //this.clearForm();
+            console.log(response);
         }
     }
 
-    submitAll(event){
-        var self;
-        var ajaxSuccess=this.ajaxSuccess;
+    submitAll(event) {
         event.preventDefault();
-        if ((this.state.password === this.state.password_confirm)
-            && this.validateName(this.state.name) && this.validateEmail(this.state.email)) {
-            self = this;
-            var data = {
-                full_name: this.state.name,
-                email: this.state.email,
-                password: this.state.password
-            }
-            $.ajax({
-                type: 'POST',
-                url: 'v1/registration',
-                dataType: "json",
-                data: data,
-                success: ajaxSuccess
-            });
+        let ajaxSuccess=this.ajaxSuccess;        
+        let self;
+        self = this;
+        let valid_name = this.validator.validateName(this.name);
+        let valid_pass = this.validator.validatePassword(this.password);
+        let valid_email = this.validator.validateEmail(this.email);
+        let valid_confirm_password = (this.password === this.password_confirm);
+
+        if (!valid_name || !valid_email || !valid_pass || !valid_confirm_password){
+          this.setState({
+            name_error: !valid_name,
+            email_error: !valid_email,
+            password_error: !valid_pass,
+            password_confirm_error: !valid_confirm_password
+          });
+          return;
         }
-        this.showErrors(this.validateName(this.state.name), this.validateEmail(this.state.email));
+
+        let data = {
+            full_name: this.name,
+            email: this.email,
+            password: this.password
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: 'api/v1/registration',
+            dataType: "json",
+            data: data,
+            success: ajaxSuccess
+        });
     }
 
     render() {
@@ -162,12 +95,10 @@ class FormComponent extends React.Component {
                 <div className="header-div">
                     <h2 className="register-header">{this.state.registration_process}</h2>
                 </div>
-                <UserName error_message={this.state.error_message_name} iconProp={this.state.icon_color_name} valChange={this.changeName}
-                 val={this.state.name} className={this.state.name_error}/>
-                <Email error_message={this.state.error_message_email} iconProp={this.state.icon_color_email} valChange={this.changeEmail} val={this.state.email}/>
-                <Pass error_message={this.state.error_message_pass} iconProp={this.state.icon_color_password} valChange={this.changePassword} val={this.state.password}/>
-                <PassConfirm iconProp={this.state.icon_color_password} valChange={this.changePassConfirm} val={this.state.password_confirm}/>
-
+                <FullNameInput value={this.name} name="name" id="name-input-field" father={this} error={this.state.name_error}/>
+                <EmailInput value={this.email} name="email" id="email-input-field" father={this} error={this.state.email_error}/>
+                <PasswordInput value={this.password} name="password" id="password-input-field" father={this} error={this.state.password_error}/>                
+                <PasswordInput value={this.password_confirm} name="password_confirm" id="password-confirm-input-field" father={this} error={this.state.password_confirm_error}/>
                 <div className="control-group">
                     <div className="controls">
                         <button type="submit" className="btn btn-success register-button" onClick={this.submitAll}>Register</button>
@@ -207,76 +138,6 @@ class UserName extends React.Component {
                 <input placeholder="Fullname" type="text" id="fullname" name="full_name"
                  className="input-xlarge value-input" onChange={this.props.valChange} value={this.props.val}/>
                  <p style={{color: '#E04B39'}}>{this.props.error_message}</p>
-            </div>
-        </div>
-        );
-    }
-}
-
-
-class Email extends React.Component {
-    constructor(props) {
-    super(props);
-    this.state = {};
-    this.changeColor = this.changeColor.bind(this);
-    }
-
-    changeColor() {
-        if(this.props.iconProp){
-            return {
-                color: '#106CC8'
-            }
-        }
-        else{
-            return {
-                color: '#E04B39'
-            }
-        }
-    }
-
-    render() {
-        return (
-        <div className="control-group">
-            <div className="controls">
-                <span style={this.changeColor()} className="material-icons input-icons">email</span>
-                <input placeholder="Email" type="text" id="email" name="email"
-                className="input-xlarge value-input " onChange={this.props.valChange} value={this.props.val}/>
-                <p style={{color: '#E04B39'}}>{this.props.error_message}</p>
-            </div>
-        </div>
-        );
-    }
-}
-
-class Pass extends React.Component {
-    constructor(props) {
-    super(props);
-    this.state = {};
-    this.changeColor = this.changeColor.bind(this);
-    }
-
-    changeColor() {
-        if(this.props.iconProp){
-            return {
-                color: '#106CC8'
-            }
-        }
-        else{
-            return {
-                color: '#E04B39'
-            }
-        }
-    }
-
-    render() {
-        return (
-        <div className="control-group">
-            <div className="controls">
-                <span style={this.changeColor()} className="material-icons input-icons">lock_outline</span>
-                <input placeholder="Password" type="password" id="password" name="password"
-                className="input-xlarge value-input"
-                onChange={this.props.valChange} value= {this.props.val}/>
-                <p style={{color: '#E04B39'}}>{this.props.error_message}</p>
             </div>
         </div>
         );

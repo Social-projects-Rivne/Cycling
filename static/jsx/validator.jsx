@@ -2,6 +2,10 @@ class Validator {
 
     constructor(){}
 
+    validateName(full_name) {    
+      return /([a-zA-Z\-]+){3,}\s+([a-zA-Z\-]+){3,}/.test(full_name);
+    }
+
     validateEmail(email){
       return /[A-Za-z0-9\.\+_-]+\@[A-Za-z0-9\._-]+\.[a-zA-Z]*$/.test(email);
     }

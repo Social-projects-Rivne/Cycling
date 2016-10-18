@@ -96,21 +96,16 @@ def need_token(decorated_func):
 def registration(request):
     if request.method == "POST":
         result_dict = dict()
-        obj_filter = User.objects.filter
         if _valid_inputs.full_name_validation(request.POST['full_name']) and \
            _valid_inputs.email_validation(request.POST['email']):
-            if obj_filter(full_name=request.POST["full_name"]).exists():
-                result_dict['NameError'] = 1
-            if obj_filter(email=request.POST["email"]).exists():
+            if User.objects.filter(email=request.POST["email"]).exists():
                 result_dict['EmailError'] = 1
-            if obj_filter(password=request.POST["password"]).exists():
-                result_dict['PassError'] = 1
             if not result_dict:
                 User.objects.create(
                     full_name=request.POST['full_name'],
                     email=request.POST['email'],
                     password=request.POST['password'],
-                    role_id='0')
+                    role_id='0', token=_password_master.generate_token())
                 result_dict['Success'] = 1
         else:
             result_dict['RulesError'] = 1
