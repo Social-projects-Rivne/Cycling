@@ -55,7 +55,7 @@ class Header extends React.Component {
               <div className="navbar-header">
                   <a onClick={this.props.onButtonClick} id="menu-toggle" className="logo-a"><span className="icon material-icons">menu</span></a>
                   <Link className="navbar-brand logo-line" to='/'>Cycling</Link>
-                  <button className="btn btn-info header-button"><Link to='/registration'>Registration</Link></button>
+                  <button className="header-button"><Link to='/registration'>Registration</Link></button>
               </div>
             </div>
       );

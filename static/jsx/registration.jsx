@@ -17,7 +17,8 @@ class RegistrationComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            registration_process: "Registration"
+            registration_process: "Registration",
+            isRegistrated: false
         };
         this.ajaxSuccess = this.ajaxSuccess.bind(this);
         this.submitAll = this.submitAll.bind(this);
@@ -32,7 +33,7 @@ class RegistrationComponent extends React.Component {
         this.setState({
             password_confirm_error: false,
             password_error: false
-        })
+        });
         if(response['EmailError'] === 1){
             this.setState({
                 email_error: true
@@ -41,9 +42,8 @@ class RegistrationComponent extends React.Component {
         }
         else if(response['Success'] === 1){
             this.setState({
-                registration_process: "You have been sucessfully registrated!",
-                email_error: false
-            })
+                isRegistrated: true
+            });
         }
     }
 
@@ -92,11 +92,12 @@ class RegistrationComponent extends React.Component {
 
     render() {
         //Render form component
+        if(this.state.isRegistrated === false) {
         return (
         <form onSubmit={this.submit} className="form-horizontal registration-form">
             <fieldset>
                 <div className="header-div">
-                    <h2 className="register-header">{this.state.registration_process}</h2>
+                    <h2>Registration</h2>
                 </div>
                 <FullNameInput value={this.name} name="name" id="name-input-field" father={this} error={this.state.name_error}/>
                 <EmailInput value={this.email} name="email" id="email-input-field" father={this} error={this.state.email_error}/>
@@ -110,6 +111,14 @@ class RegistrationComponent extends React.Component {
             </fieldset>
         </form>
         );
+        }
+        else{
+            return (
+                <div className="header-div registrated">
+                    <h2>You have been successfully registrated!</h2>
+                </div>
+            );
+        }
     }
 }
 

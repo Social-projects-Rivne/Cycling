@@ -49,6 +49,11 @@ label:focus,
     text-align: center;
 }
 
+.header-div.registrated
+{
+    color: #7CFC00;
+}
+
 .register-button
 {
     background-color: #106CC8 !important;
@@ -108,31 +113,40 @@ label:focus,
     cursor: pointer;
 }
 
-.registration-form
-{
-    margin-top: 51px;
-}
-
-.leaflet-container
+.page-content-wrapper
 {
     margin-top: 51px;
 }
 
 .header-button
 {
-    float: right !important;
+    float: right;
     margin-top: 8px;
     margin-right: 10px;
+    background-color: #1E90FF;
+    color: #fff;
+    opacity: .9;
+    width: 120px;
+    border: none;
+    font-size: 16px;
+    height: 35px;
 }
 
-.header-button a{
+.header-button:active
+{
+    opacity: 1;
+}
+
+.header-button a
+{
     text-decoration: none !important;   
+    color: #fff;
 }
 
 .header-button a:hover
 {
     text-decoration: none !important;
-    cursor: pointer;
+    color: #fff;
 }
 
 .navbar-header
