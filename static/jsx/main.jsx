@@ -83,7 +83,7 @@ ReactDOM.render(
   (<Router history = {browserHistory}>
       <Route path = "/" component = {APP}>
          <IndexRoute component = {Parent} />
-         <Route path = "home" component = {Parent} />
+         <Route path = "home" component = {Parent}/>
          <Route path = "/login" component = {LoginComponent} />
          <Route path = "/registration" component = {FormComponent} />
          <Route path='*' component={NotFound} />

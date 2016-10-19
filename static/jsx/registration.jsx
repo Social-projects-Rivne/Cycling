@@ -103,7 +103,7 @@ class FormComponent extends React.Component {
             console.log(data);
             $.ajax({
                 type: 'POST',
-                url: 'v1/registration',
+                url: 'api/v1/registration',
                 dataType: "json",
                 data: data,
                 success: function(response){

@@ -8,15 +8,14 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 from django.http import HttpResponse
 
-from ..models import *
-from ..utils.login_util import PasswordMaster
-from ..utils.json_parser import json_parse_error, json_agr_missing
-
+from APP.utils.login_util import PasswordMaster
+from APP.utils.json_parser import json_parse_error, json_agr_missing
 from APP.models import User
 from APP.models.parkings import Parking
 from APP.models.places import Place
 from APP.models.stolen_bikes import StolenBike
 from APP.utils.validator import Validator
+from APP.utils.need_token import need_token
 
 _valid_inputs = Validator()
 
@@ -30,7 +29,7 @@ def index(request):
 
 @csrf_exempt
 def login(request):
-    print "HELLOW"
+    print request.body
     try:
         data = json.loads(request.body)
     except ValueError:
@@ -59,40 +58,6 @@ def login(request):
         'token': user.token})
 
 
-def need_token(decorated_func):
-    """
-    This is decorator which check if parameters contain valid token
-    """
-    def wrapper(*args, **kwargs):
-        """
-        Wrapper to function
-        """
-        print args
-        print kwargs
-        if 'request' in kwargs:
-            request_raw = kwargs.get('request').body
-            print 'kwargs: ', request_raw
-        else:
-            if len(args) != 0:
-                request_raw = args[0]
-                print request_raw.body
-        if request_raw:
-            request_json = json.loads(request_raw)
-            if 'token' in request_json:
-                user = User.models.filter(
-                    token=request_json.get('token')).first()
-
-                if user:
-                    return decorated_func(*args, **kwargs)
-                else:
-                    return JsonResponse({'error': 'No token found'})
-
-            else:
-                return json_agr_missing('token')
-
-    return wrapper
-
-
 @csrf_exempt
 def registration(request):
     if request.method == "POST":
@@ -101,19 +66,26 @@ def registration(request):
         obj_filter = User.objects.filter
         if _valid_inputs.full_name_validation(request.POST['full_name']) and \
            _valid_inputs.email_validation(request.POST['email']):
-            if obj_filter(full_name=request.POST["full_name"]).exists():
-                result_dict['NameError'] = "Such full name already exists!"
             if obj_filter(email=request.POST["email"]).exists():
                 result_dict['EmailError'] = "Such email already exists!"
-            if obj_filter(password=request.POST["password"]).exists():
-                result_dict['PassError'] = "Such password already exists!"
-            if not result_dict:
-                User.objects.create(
-                    full_name=request.POST['full_name'],
-                    email=request.POST['email'],
-                    password=request.POST['password'],
-                    role_id='0')
-                result_dict['Success'] = "true"
+            else:
+                try:
+                    # handle token generation and password hashing
+                    password_master = PasswordMaster()
+                    token = password_master.generate_token()
+                    raw_password = request.POST['password']
+                    password = password_master.hash_password(raw_password)
+                    user = User.objects.create(
+                        full_name=request.POST['full_name'],
+                        email=request.POST['email'],
+                        password=password,
+                        role_id='0',
+                        token=token)
+                    result_dict['Success'] = "true"
+                    result_dict['token'] = token
+                    result_dict['id'] = user.id
+                except Exception, error:
+                    print error
         else:
             result_dict['RulesError'] = "Error rules of input"
         return JsonResponse(result_dict)
