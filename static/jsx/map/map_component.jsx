@@ -1,6 +1,7 @@
-import React      from 'react';
+import React        from 'react';
 import { Map, TileLayer, Marker, Popup, LayersControl, FeatureGroup, Circle, ScaleControl } from 'react-leaflet';
-import layers_list from './layers.jsx';
+import layers_list  from './layers.jsx';
+import stolenMarker from './stolen_marker.jsx'
 
 var pref = 'Satelite';
 var show_parkings = true;
@@ -20,57 +21,87 @@ class MapComponent extends React.Component {
     };
     this.onBoundsChange = this.onBoundsChange.bind(this);
     this.loadPointers = this.loadPointers.bind(this);
-    this.myAJAX = this.myAJAX.bind(this);
+    // this.myAJAX = this.myAJAX.bind(this);
   }
 
   componentDidMount(){
     // console.log(this.refs.map.leafletElement.getBounds());
     let Bounds = this.refs.map.leafletElement.getBounds();
     this.loadPointers(Bounds);
-  }
+  };
 
-  myAJAX(obj_type, ne, sw){
-    let res = [];
-    $.ajax({
-      type: 'GET',
-      url: '/v1/' + obj_type + '/search',
-      data: {ne:ne, sw:sw},
-      success: function(data){
-        console.log(data);
-        res = data;
-          } 
-    })
-    .fail(function(jqXHR) {
-      console.log('Failed to fetch ' + obj_type);
-    });
-    console.log(res);
-    return res;
-  }
+  componentWillUnmount() {
+    this.serverRequest.abort();
+  };
+
+  // myAJAX(obj_type, ne, sw){
+  //   this.serverRequest = $.get(
+  //     {
+  //       url: '/v1/' + obj_type + '/search',
+  //       data: {ne:ne, sw:sw}
+  //     },
+  //     function (data) {
+  //       console.log(data);
+  //     }.bind(this));
+  // };
+
+  // myAJAX(obj_type, ne, sw, compnnt){
+  //   $.ajax({
+  //     type: 'GET',
+  //     url: '/v1/' + obj_type + '/search',
+  //     data: {ne:ne, sw:sw},
+  //     success: function(data){
+  //         let my_madness = {
+  //           'parkings': this.states.parkings,
+  //           'places': this.states.places,
+  //           'stolen': this.states.stolen
+  //         };
+  //       compnnt.setState({my_madness[obj_type]: data});
+  //       console.log(compnnt.state);
+  //       } 
+  //   })
+  //   .fail(function(jqXHR) {
+  //     console.log('Failed to fetch ' + obj_type);
+  //   });
+  // }
 
   loadPointers(bounds_obj){
-    // let ne = bounds_obj._northEast.lat.toPrecision(9) + ',' + bounds_obj._northEast.lng.toPrecision(9);
-    // let sw = bounds_obj._southWest.lat.toPrecision(9) + ',' + bounds_obj._southWest.lng.toPrecision(9);
-    // let new_parkings = [];
-    // if (show_parkings) {
-    //   new_parkings = this.myAJAX('parkings', ne, sw);
-    // };
-    // let new_places = [];
-    // if (show_places) {
-    //   new_places = this.myAJAX('places', ne, sw);
-    // };
-    // let new_stolens = [];
-    // if (show_stolens) {
-    //   new_stolens = this.myAJAX('stolen', ne, sw);
-    // };
-    // console.log(new_parkings);
-    // console.log(new_places);
-    // console.log(new_stolens);
-    // this.setState({
-    //   parkings: new_parkings,
-    //   places: new_places,
-    //   stolens: new_stolens
-    // });
-  }
+    let ne = bounds_obj._northEast.lat.toPrecision(9) + ',' + bounds_obj._northEast.lng.toPrecision(9);
+    let sw = bounds_obj._southWest.lat.toPrecision(9) + ',' + bounds_obj._southWest.lng.toPrecision(9);
+    let params = {ne:ne, sw:sw};
+    if (show_parkings) {
+      this.serverRequest = $.get(
+      {
+        url: '/v1/parkings/search',
+        data: {ne:ne, sw:sw}
+      },
+      function (data) {
+        this.setState({parkings: data});
+      }.bind(this));
+    };
+    
+    if (show_places) {
+      this.serverRequest = $.get(
+      {
+        url: '/v1/places/search',
+        data: {ne:ne, sw:sw}
+      },
+      function (data) {
+        this.setState({places: data});
+      }.bind(this));
+    };
+    
+    if (show_stolens) {
+      this.serverRequest = $.get(
+      {
+        url: '/v1/stolen/search',
+        data: {ne:ne, sw:sw}
+      },
+      function (data) {
+          this.setState({stolens: data});
+      }.bind(this));
+    };
+  };
 
   onOverlayadd(e){
     console.log('overlay add')
@@ -125,6 +156,11 @@ class MapComponent extends React.Component {
               </Popup>
             </Marker>
           </LayersControl.Overlay>
+          <LayersControl.Overlay name='Stolen bikes'>
+            {
+              stolenMarker(this.state.stolens)
+            }
+          </LayersControl.Overlay>
           <LayersControl.Overlay name='Feature group' checked={true} >
             <FeatureGroup color='purple'>
               <Popup>
@@ -134,11 +170,6 @@ class MapComponent extends React.Component {
             </FeatureGroup>
           </LayersControl.Overlay>
         </LayersControl>
-        <Marker position={position}>
-          <Popup>
-            <span>A pretty CSS3 popup. <br/> Easily customizable.</span>
-          </Popup>
-        </Marker>
       </Map>
     );
   }
