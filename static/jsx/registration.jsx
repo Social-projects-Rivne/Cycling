@@ -5,13 +5,23 @@ import {PasswordInput} from './input/password_input.jsx';
 import {FullNameInput} from './input/full_name_input.jsx';
 import {Validator} from './validator.jsx';
 
-class FormComponent extends React.Component {
+class RegistrationComponent extends React.Component {
+    /*
+     * React component of registration form
+     * that use our reusable inputs. When submit
+     * button is pressed, it validate credentials
+     * and in case of error make icons red or in case of success
+     * send requst to server by ajax and registrate user,
+     * or make red icon, if something is wrong on server
+     */
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            registration_process: "Registration",
+            email_exist: true
+        };
         this.ajaxSuccess = this.ajaxSuccess.bind(this);
         this.submitAll = this.submitAll.bind(this);
-        this.clearForm = this.clearForm.bind(this);
         this.validator = new Validator();
     }
 
@@ -31,29 +41,31 @@ class FormComponent extends React.Component {
         this.setState({password_confirm: event.target.value});
     }
 
-    /*clearForm() {
-      this.setState({
-        name: '',
-        email: '',
-        password: '',
-        password_confirm: ''
-
-      });
-    }*/
-
     ajaxSuccess(response) {
+        /*
+         * In case of error from server show it to user,
+         * in case of success change form header
+         */
         if(response['EmailError'] === 1){
             this.setState({
-                email_exist: false
+                email_error: true
             });
+            console.log(response);
         }
         else if(response['Success'] === 1){
-            //this.clearForm();
-            console.log(response);
+            this.setState({
+                registration_process: "You have been sucessfully registrated!",
+                email_error: false
+            })
         }
     }
 
     submitAll(event) {
+        /* 
+         * When submit button is ckliked it validate
+         * input values and send to server in case of success.
+         * If something is wrong, it show it to user
+         */
         event.preventDefault();
         let ajaxSuccess=this.ajaxSuccess;        
         let self;
@@ -63,6 +75,7 @@ class FormComponent extends React.Component {
         let valid_email = this.validator.validateEmail(this.email);
         let valid_confirm_password = (this.password === this.password_confirm);
 
+        //Validate input values.
         if (!valid_name || !valid_email || !valid_pass || !valid_confirm_password){
           this.setState({
             name_error: !valid_name,
@@ -73,12 +86,14 @@ class FormComponent extends React.Component {
           return;
         }
 
+        //Prepare data for sending to server.
         let data = {
             full_name: this.name,
             email: this.email,
             password: this.password
         }
 
+        //In case of success validation, send data to server
         $.ajax({
             type: 'POST',
             url: 'api/v1/registration',
@@ -89,6 +104,7 @@ class FormComponent extends React.Component {
     }
 
     render() {
+        //Render form component
         return (
         <form onSubmit={this.submit} className="form-horizontal registration-form">
             <fieldset>
@@ -110,72 +126,4 @@ class FormComponent extends React.Component {
     }
 }
 
-class UserName extends React.Component {
-    constructor(props){
-    super(props);
-    this.state = {};
-    this.changeColor = this.changeColor.bind(this);
-    }
-
-    changeColor() {
-        if(this.props.iconProp === true){
-            return {
-                color: '#106CC8'
-            }
-        }
-        else{
-            return {
-                color: '#E04B39'
-            }
-        }
-    }
-
-    render() {
-        return(
-        <div className="control-group">
-            <div className="controls">
-                <span style={this.changeColor()} className="material-icons input-icons">person_outline</span>
-                <input placeholder="Fullname" type="text" id="fullname" name="full_name"
-                 className="input-xlarge value-input" onChange={this.props.valChange} value={this.props.val}/>
-                 <p style={{color: '#E04B39'}}>{this.props.error_message}</p>
-            </div>
-        </div>
-        );
-    }
-}
-
-class PassConfirm extends React.Component {
-    constructor(props) {
-    super(props);
-    this.state = {};
-    this.changeColor = this.changeColor.bind(this);
-    }
-
-    changeColor() {
-        if(this.props.iconProp){
-            return {
-                color: '#106CC8'
-            }
-        }
-        else{
-            return {
-                color: '#E04B39'
-            }
-        }
-    }
-
-    render() {
-        return (
-        <div className="control-group">
-            <div className="controls">
-                <span style={this.changeColor()} className="material-icons input-icons">lock_outline</span>
-                <input placeholder="Re-type password" type="password" id="password_confirm"
-                name="password_confirm" className="input-xlarge value-input"
-                onChange={this.props.valChange} value= {this.props.val}/>
-            </div>
-        </div>
-        );
-    }
-}
-
-export {FormComponent};
+export {RegistrationComponent};

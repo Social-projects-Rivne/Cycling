@@ -94,6 +94,13 @@ def need_token(decorated_func):
 
 @csrf_exempt
 def registration(request):
+    """Receive json with user credentials,
+    validate and in case of success add user
+    with that credentials to database
+    and return json with success
+    or error in case of error
+    """
+
     if request.method == "POST":
         result_dict = dict()
         if _valid_inputs.full_name_validation(request.POST['full_name']) and \
