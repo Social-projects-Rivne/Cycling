@@ -149,6 +149,17 @@ label:focus,
     color: #fff;
 }
 
+.header-button a:focus
+{
+    color: #fff;
+    cursor: pointer;
+}
+
+.header-button a:active
+{
+    color: #fff;
+}
+
 .navbar-header
 {
     width: 100%;
