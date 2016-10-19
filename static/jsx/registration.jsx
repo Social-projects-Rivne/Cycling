@@ -17,28 +17,11 @@ class RegistrationComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            registration_process: "Registration",
-            email_exist: true
+            registration_process: "Registration"
         };
         this.ajaxSuccess = this.ajaxSuccess.bind(this);
         this.submitAll = this.submitAll.bind(this);
         this.validator = new Validator();
-    }
-
-    changeName(event) {
-        this.setState({name: event.target.value});
-    }
-
-    changeEmail(event) {
-        this.setState({email: event.target.value});
-    }
-
-    changePassword(event) {
-        this.setState({password: event.target.value});
-    }
-
-    changePassConfirm(event) {
-        this.setState({password_confirm: event.target.value});
     }
 
     ajaxSuccess(response) {
@@ -46,6 +29,10 @@ class RegistrationComponent extends React.Component {
          * In case of error from server show it to user,
          * in case of success change form header
          */
+        this.setState({
+            password_confirm_error: false,
+            password_error: false
+        })
         if(response['EmailError'] === 1){
             this.setState({
                 email_error: true
