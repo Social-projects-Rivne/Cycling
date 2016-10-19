@@ -3,6 +3,7 @@
 *.egg-info
 *.ini
 *.log
+.vscode/
 
 # Databases
 *.db
