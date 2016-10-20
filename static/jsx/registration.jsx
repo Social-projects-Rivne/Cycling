@@ -99,27 +99,27 @@ class RegistrationComponent extends React.Component {
         //Render form component
         if(this.state.isRegistrated === false) {
         return (
-        <form onSubmit={this.submit} className="form-horizontal registration-form">
-            <fieldset>
-                <div className="header-div">
-                    <h2>Registration</h2>
-                </div>
-                <FullNameInput value={this.name} name="name"
-                id="name-input-field" father={this} error={this.state.name_error}/>
-                <EmailInput value={this.email} name="email"
-                id="email-input-field" father={this} error={this.state.email_error}/>
-                <PasswordInput value={this.password} name="password"
-                id="password-input-field" father={this} error={this.state.password_error}/>                
-                <PasswordInput value={this.password_confirm} name="password_confirm"
-                id="password-confirm-input-field" father={this} error={this.state.password_confirm_error}/>
-                <div className="control-group">
-                    <div className="controls">
-                        <button type="submit" className="btn btn-success register-button" onClick={this.submitAll}>Register</button>
+            <form onSubmit={this.submit} className="form-horizontal registration-form">
+                <fieldset>
+                    <div className="header-div">
+                        <h2>Registration</h2>
                     </div>
-                </div>
-            </fieldset>
-        </form>
-        );
+                    <FullNameInput value={this.name} name="name"
+                    id="name-input-field" father={this} error={this.state.name_error}/>
+                    <EmailInput value={this.email} name="email"
+                    id="email-input-field" father={this} error={this.state.email_error}/>
+                    <PasswordInput value={this.password} name="password"
+                    id="password-input-field" father={this} error={this.state.password_error}/>                
+                    <PasswordInput value={this.password_confirm} name="password_confirm"
+                    id="password-confirm-input-field" father={this} error={this.state.password_confirm_error}/>
+                    <div className="control-group">
+                        <div className="controls">
+                            <button type="submit" className="btn btn-success register-button" onClick={this.submitAll}>Register</button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+            );
         }
         else{
             return (
@@ -129,6 +129,5 @@ class RegistrationComponent extends React.Component {
             );
         }
     }
-}
 
 export {RegistrationComponent};

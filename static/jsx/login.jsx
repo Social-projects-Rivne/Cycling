@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Link } from 'react-router';
+
 import { EmailInput } from './input/email_input.jsx';
 import { PasswordInput } from './input/password_input.jsx';
 import { Validator } from './validator.jsx';
@@ -39,45 +41,26 @@ export class LoginComponent extends React.Component {
           password: this.password
         };
 
-
+        let context = this;
         $.ajax({
                 type: 'POST',
                 url: 'api/v1/login',
+                contentType: 'application/json',
                 dataType: "json",
-                data: data,
+                data: JSON.stringify(data),
                 success: function(response) {
-
+                    console.log("Server responsed with: ");
                     console.log(response);
                     if ("error" in response) {
                       console.log(response.error);
                     }
                     else {
-                      // save token in local storage
+                      localStorage['token'] = response.token;
+                      localStorage['id'] = response.id;
+                      window.location.href= "/";
                     }
                 }
             });
-
-        // if ((this.state.password === this.state.password_confirm)
-        //     && this.validateName(this.state.name) && this.validateEmail(this.state.email)) {
-        //     self = this;
-        //     var data = {
-        //         email: this.email,
-        //         password: this.password
-        //     }
-        //     console.log(data);
-        //     $.ajax({
-        //         type: 'POST',
-        //         url: 'v1/login',
-        //         dataType: "json",
-        //         data: data,
-        //         success: function(response){
-        //             console.log(response);
-        //         }
-        //     });
-        // }
-        // else {
-        //     console.log("Your values are incorrect");
-        // }
     }
 
     render() {

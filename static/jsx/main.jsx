@@ -8,7 +8,8 @@ import { Router,
 import ReactDOM           from 'react-dom';
 import { RegistrationComponent }  from './registration.jsx';
 import { LoginComponent } from './login.jsx';
-import Parent             from './parent.jsx';
+import Home               from './home.jsx';
+
 
 class APP extends React.Component{
     /*
@@ -93,8 +94,8 @@ ReactDOM.render(
   //React routing
   (<Router history = {browserHistory}>
       <Route path = "/" component = {APP}>
-         <IndexRoute component = {Parent} />
-         <Route path = "home" component = {Parent} />
+         <IndexRoute component = {Home} />
+         <Route path = "home" component = {Home}/>
          <Route path = "/login" component = {LoginComponent} />
          <Route path = "/registration" component = {RegistrationComponent} />
          <Route path='*' component={NotFound} />

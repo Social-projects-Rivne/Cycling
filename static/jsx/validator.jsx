@@ -1,7 +1,7 @@
 class Validator {
 
     constructor(){}
-
+    
     validateName(full_name) {    
       return /([a-zA-Z\-]+){3,}\s+([a-zA-Z\-]+){3,}/.test(full_name);
     }

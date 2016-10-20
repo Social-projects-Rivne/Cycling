@@ -1,7 +1,7 @@
 import React from 'react';
 import MapContainer from './map/container.jsx';
 
-class Parent extends React.Component{
+class Home extends React.Component{
   render(){
     return (
       <div>
@@ -11,4 +11,4 @@ class Parent extends React.Component{
   }
 };
 
-export default Parent;
+export default Home;
