@@ -116,6 +116,7 @@ def registration(request):
                 result_dict['Success'] = 1
         else:
             result_dict['RulesError'] = 1
+        print result_dict
         return JsonResponse(result_dict)
 
 

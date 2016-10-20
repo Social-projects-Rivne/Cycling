@@ -38,12 +38,17 @@ class RegistrationComponent extends React.Component {
             this.setState({
                 email_error: true
             });
-            console.log(response);
         }
         else if(response['Success'] === 1){
             this.setState({
                 isRegistrated: true
             });
+        }
+        else if(response['RulesError'] === 1){
+            console.log("Validation is not right");
+        }
+        else{
+            console.log("Some other error");
         }
     }
 
@@ -83,7 +88,7 @@ class RegistrationComponent extends React.Component {
         //In case of success validation, send data to server
         $.ajax({
             type: 'POST',
-            url: '/registration',
+            url: 'api/registration',
             dataType: "json",
             data: data,
             success: ajaxSuccess
@@ -99,10 +104,14 @@ class RegistrationComponent extends React.Component {
                 <div className="header-div">
                     <h2>Registration</h2>
                 </div>
-                <FullNameInput value={this.name} name="name" id="name-input-field" father={this} error={this.state.name_error}/>
-                <EmailInput value={this.email} name="email" id="email-input-field" father={this} error={this.state.email_error}/>
-                <PasswordInput value={this.password} name="password" id="password-input-field" father={this} error={this.state.password_error}/>                
-                <PasswordInput value={this.password_confirm} name="password_confirm" id="password-confirm-input-field" father={this} error={this.state.password_confirm_error}/>
+                <FullNameInput value={this.name} name="name"
+                id="name-input-field" father={this} error={this.state.name_error}/>
+                <EmailInput value={this.email} name="email"
+                id="email-input-field" father={this} error={this.state.email_error}/>
+                <PasswordInput value={this.password} name="password"
+                id="password-input-field" father={this} error={this.state.password_error}/>                
+                <PasswordInput value={this.password_confirm} name="password_confirm"
+                id="password-confirm-input-field" father={this} error={this.state.password_confirm_error}/>
                 <div className="control-group">
                     <div className="controls">
                         <button type="submit" className="btn btn-success register-button" onClick={this.submitAll}>Register</button>
