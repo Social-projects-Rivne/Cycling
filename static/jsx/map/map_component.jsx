@@ -1,5 +1,5 @@
 import React        from 'react';
-import { Map, TileLayer, Marker, Popup, LayersControl, FeatureGroup, Circle, ScaleControl } from 'react-leaflet';
+import { Map, TileLayer, Marker, Popup, LayersControl, FeatureGroup, Circle, ScaleControl, ZoomControl } from 'react-leaflet';
 import layers_list  from './layers.jsx';
 import stolenMarkers from './markers/stolen_bikes_markers.jsx'
 import parkingsMarkers from './markers/parkings_markers.jsx'
@@ -117,19 +117,27 @@ class MapComponent extends React.Component {
     // console.log(this.getZoom());
   };
 
+  // onMoveend(e){
+  //   console.log(this.getCenter());
+  //   // console.log(this.getZoom());
+  // };
+
   render() {
     const position = [this.state.lat, this.state.lng];
     return (
-      <Map center={position} zoom={this.state.zoom} ref='map'
+      <Map center={position} zoom={this.state.zoom}
+              zoomControl={false} 
+              ref='map'
               style={{height: '100vh', width:'100vw'}}
               onOverlayadd={this.onOverlayadd}
               onBaselayerchange={this.onBaselayerchange}
               onOverlayremove={this.onOverlayremove}
-              // onMoveend={this.onBoundsChange}
-              onDragend={this.onBoundsChange}
+              onMoveend={this.onBoundsChange}
+              // onDragend={this.onBoundsChange}
               onZoomend={this.onBoundsChange}>
         <ScaleControl position='bottomright'></ScaleControl>
-        <LayersControl position='topright'>
+        <ZoomControl position='bottomleft'></ZoomControl>
+        <LayersControl position='topleft'>
           {
             layers_list.map((layer)=>(
               <LayersControl.BaseLayer key={layer.name}

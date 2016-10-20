@@ -11,7 +11,9 @@ let placesMarkers = function(places){
         return(
           <Marker position={position} key={i}>
             <Popup>
-              <span>A pretty CSS3 popup. <br/> {place.fields}</span>
+              <span>Place (category: {place.fields.category_id}). <br/>
+                  Name: {place.fields.name}.<br/>
+                  Added: {place.fields.owner}.</span>
             </Popup>
           </Marker>
         );

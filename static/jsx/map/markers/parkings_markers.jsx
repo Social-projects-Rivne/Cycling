@@ -11,7 +11,8 @@ let parkingsMarkers = function(parkings){
         return(
           <Marker position={position} key={i}>
             <Popup>
-              <span>A pretty CSS3 popup. <br/> Easily customizable.</span>
+              <span>Parking (amount: {parkng.fields.amount}). <br/>
+                  Name: {parkng.fields.name}.</span>
             </Popup>
           </Marker>
         );

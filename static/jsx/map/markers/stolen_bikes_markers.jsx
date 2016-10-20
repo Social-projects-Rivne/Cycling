@@ -11,7 +11,7 @@ let stolenMarkers = function(bikes){
         return(
           <Marker position={position} key={i}>
             <Popup>
-              <span>A pretty CSS3 popup. <br/> Easily customizable.</span>
+              <span>Stolen bicycle. <br/> Day: {bike.fields.day}.</span>
             </Popup>
           </Marker>
         );
