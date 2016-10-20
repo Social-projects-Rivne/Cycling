@@ -49,7 +49,7 @@ class MapComponent extends React.Component {
     
     this.serverRequest1 = $.get(
     {
-      url: '/v1/parkings/search',
+      url: '/parkings/search',
       data: {ne:ne, sw:sw}
     },
     function (data) {
@@ -59,7 +59,7 @@ class MapComponent extends React.Component {
       
     this.serverRequest2 = $.get(
     {
-      url: '/v1/places/search',
+      url: '/places/search',
       data: {ne:ne, sw:sw}
     },
     function (data) {
@@ -68,7 +68,7 @@ class MapComponent extends React.Component {
   
     this.serverRequest3 = $.get(
     {
-      url: '/v1/stolen/search',
+      url: '/stolen/search',
       data: {ne:ne, sw:sw}
     },
     function (data) {
