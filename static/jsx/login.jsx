@@ -20,12 +20,13 @@ export class LoginComponent extends React.Component {
 
     login(event){
         event.preventDefault();
+        console.log("CLICK");
         let valid_pass = this.validator.validatePassword(this.password);
         let valid_email = this.validator.validateEmail(this.email);
+        console.log(valid_pass + " " + valid_email);
 
         // if one of params is false, than we can`t accept input...
         // prepare new state
-
         if (!valid_pass || !valid_email){
           console.log(valid_email + " " + valid_pass);
           this.setState({
@@ -50,25 +51,44 @@ export class LoginComponent extends React.Component {
                     console.log("Server responsed with: ");
                     console.log(response);
                     if ("error" in response) {
-                      console.log(response.error);
+                      if (response.code === 103 || response.code === 104){
+                        context.setState({error_message: response.error});
+                      }
                     }
                     else {
-
                       localStorage['token'] = response.token;
                       localStorage['id'] = response.id;
                       window.location.href= "/";
                     }
+                },
+                error: function(response) {
+                  console.log(response);
                 }
+
             });
     }
 
-    render() {
+    getErrorLabel() {
+      if (this.state.error_message){
         return (
+          <center>
+            <div className="label label-danger">{this.state.error_message}</div>
+          </center>
+        );
+      }
+      else {
+        return null;
+      }
+    }
+    render() {
+      return (
+        <div>
           <form onSubmit={this.submit} className="form-horizontal registration-form">
               <fieldset>
                   <div className="header-div">
                       <h2 className="register-header">Login</h2>
                   </div>
+                  {this.getErrorLabel()}
                   <EmailInput value={this.email} name="email" id="email-input-field" father={this} error={this.state.email_error}/>
                   <PasswordInput value={this.password} name="password" id="password-input-field" father={this} error={this.state.password_error}/>
                   <div className="control-group">
@@ -76,10 +96,11 @@ export class LoginComponent extends React.Component {
                           <button type="submit" className="btn btn-success register-button" onClick={this.login}>Login</button>
                       </div>
                   </div>
-
               </fieldset>
           </form>
-        );
+
+        </div>
+      );
 
     }
 }

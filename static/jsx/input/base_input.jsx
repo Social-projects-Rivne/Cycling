@@ -1,13 +1,16 @@
 import React from 'react';
 
 
+// this input should be used as basic component
+// required props:
+// name - this prop is name of variable that represents value of input in father
+// father - ref to father class which should handle this input value
 class BaseInput extends React.Component {
 
   constructor(props) {
     super(props);
 
-    this.state = {
-    };
+    this.state = {};
 
     // setting up default values
     if ("error" in this.props)

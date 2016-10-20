@@ -29,26 +29,57 @@ def index(request):
 
 @csrf_exempt
 def login(request):
-    print request.body
+    """
+    This method handle user authentification on server.
+    This mean it generate token to user.
+    Request body:
+    {
+        "email": <user email>,
+        "password": <user password>,
+    }
+    Success response body:
+    {
+        "token": <newly generated token>,
+        "id": <user id>
+    }
+    Error response body:
+    {
+        "error": <error text message>,
+        "code": <error code>
+    }
+    Error codes (json parse error not included):
+      101* - missing email
+      102* - missing password
+      103 - missing user with specified email
+      104 - invalid password
+
+    * - this errors should be handled by client side ...
+    """
     try:
         data = json.loads(request.body)
     except ValueError:
         return json_parse_error()
 
     if 'email' not in data:
-        return json_agr_missing('email')
+        return json_agr_missing('email', 101)
     if 'password' not in data:
-        return json_agr_missing('password')
+        return json_agr_missing('password', 102)
 
     user = User.objects.filter(email=data['email']).first()
     if not user:
-        return JsonResponse({"error": "User with specified email not found"})
+        return JsonResponse({
+            "error": "User with specified email not found",
+            "code": 103
+            })
 
     password_master = PasswordMaster()
     if password_master.check_password(data['password'], user.password):
         user.token = password_master.generate_token()
     else:
-        return JsonResponse({"error": "Invalid password!"})
+        return JsonResponse({
+            "error": "Invalid password!",
+            "code": 104
+            })
 
     user.save()
 
