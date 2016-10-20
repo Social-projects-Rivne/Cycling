@@ -8,7 +8,7 @@ import { Router,
 import ReactDOM           from 'react-dom';
 import { FormComponent }  from './registration.jsx';
 import { LoginComponent } from './login.jsx';
-import Parent             from './parent.jsx';
+import Home             from './home.jsx';
 
 class APP extends React.Component{
     constructor(props) {
@@ -82,11 +82,12 @@ const NotFound = () => (
 ReactDOM.render(
   (<Router history = {browserHistory}>
       <Route path = "/" component = {APP}>
-         <IndexRoute component = {Parent} />
-         <Route path = "home" component = {Parent}/>
+         <IndexRoute component = {Home} />
+         <Route path = "home" component = {Home}/>
          <Route path = "/login" component = {LoginComponent} />
          <Route path = "/registration" component = {FormComponent} />
          <Route path='*' component={NotFound} />
       </Route>
   </Router>),
   document.getElementById('app'));
+

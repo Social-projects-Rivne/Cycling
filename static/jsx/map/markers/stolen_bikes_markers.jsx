@@ -1,23 +1,24 @@
 import React        from 'react';
-import { Marker, Popup } from 'react-leaflet';
+import { LayersControl, Marker, Popup } from 'react-leaflet';
 
 
-let stolenMarker = function(bikes){
+let stolenMarkers = function(bikes){
+  console.log('Stolen bikes: ', bikes.length);
   if (bikes){
-    return (
-      bikes.map(function(bike, i){
+    let my_array = bikes.map(function(bike, i){
         const position = [parseFloat(bike.fields.lat), parseFloat(bike.fields.lng)];
-        console.log(position);
+        // console.log(position);
         return(
           <Marker position={position} key={i}>
             <Popup>
               <span>A pretty CSS3 popup. <br/> Easily customizable.</span>
             </Popup>
           </Marker>
-        )
+        );
         }
-      )
-    )
+      );
+
+    return my_array;
   }else{
     return (
       null
@@ -25,4 +26,4 @@ let stolenMarker = function(bikes){
   }
 }
 
-export default stolenMarker;
+export default stolenMarkers;

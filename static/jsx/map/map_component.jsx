@@ -1,10 +1,12 @@
 import React        from 'react';
 import { Map, TileLayer, Marker, Popup, LayersControl, FeatureGroup, Circle, ScaleControl } from 'react-leaflet';
 import layers_list  from './layers.jsx';
-import stolenMarker from './stolen_marker.jsx'
+import stolenMarkers from './markers/stolen_bikes_markers.jsx'
+import parkingsMarkers from './markers/parkings_markers.jsx'
+import placesMarkers from './markers/places_markers.jsx'
 
 var pref = 'Satelite';
-var show_parkings = true;
+var show_parkings = false;
 var show_places = true;
 var show_stolens = true;
 
@@ -21,7 +23,7 @@ class MapComponent extends React.Component {
     };
     this.onBoundsChange = this.onBoundsChange.bind(this);
     this.loadPointers = this.loadPointers.bind(this);
-    // this.myAJAX = this.myAJAX.bind(this);
+    this.abortRequests = this.abortRequests.bind(this);
   }
 
   componentDidMount(){
@@ -31,80 +33,61 @@ class MapComponent extends React.Component {
   };
 
   componentWillUnmount() {
-    this.serverRequest.abort();
+    this.abortRequests();
   };
 
-  // myAJAX(obj_type, ne, sw){
-  //   this.serverRequest = $.get(
-  //     {
-  //       url: '/v1/' + obj_type + '/search',
-  //       data: {ne:ne, sw:sw}
-  //     },
-  //     function (data) {
-  //       console.log(data);
-  //     }.bind(this));
-  // };
-
-  // myAJAX(obj_type, ne, sw, compnnt){
-  //   $.ajax({
-  //     type: 'GET',
-  //     url: '/v1/' + obj_type + '/search',
-  //     data: {ne:ne, sw:sw},
-  //     success: function(data){
-  //         let my_madness = {
-  //           'parkings': this.states.parkings,
-  //           'places': this.states.places,
-  //           'stolen': this.states.stolen
-  //         };
-  //       compnnt.setState({my_madness[obj_type]: data});
-  //       console.log(compnnt.state);
-  //       } 
-  //   })
-  //   .fail(function(jqXHR) {
-  //     console.log('Failed to fetch ' + obj_type);
-  //   });
-  // }
+  abortRequests(){
+    this.serverRequest1.abort();
+    this.serverRequest2.abort();
+    this.serverRequest3.abort();
+  }
 
   loadPointers(bounds_obj){
     let ne = bounds_obj._northEast.lat.toPrecision(9) + ',' + bounds_obj._northEast.lng.toPrecision(9);
     let sw = bounds_obj._southWest.lat.toPrecision(9) + ',' + bounds_obj._southWest.lng.toPrecision(9);
     let params = {ne:ne, sw:sw};
-    if (show_parkings) {
-      this.serverRequest = $.get(
-      {
-        url: '/v1/parkings/search',
-        data: {ne:ne, sw:sw}
-      },
-      function (data) {
-        this.setState({parkings: data});
-      }.bind(this));
-    };
     
-    if (show_places) {
-      this.serverRequest = $.get(
-      {
-        url: '/v1/places/search',
-        data: {ne:ne, sw:sw}
-      },
-      function (data) {
-        this.setState({places: data});
-      }.bind(this));
-    };
-    
-    if (show_stolens) {
-      this.serverRequest = $.get(
-      {
-        url: '/v1/stolen/search',
-        data: {ne:ne, sw:sw}
-      },
-      function (data) {
-          this.setState({stolens: data});
-      }.bind(this));
-    };
+    this.serverRequest1 = $.get(
+    {
+      url: '/v1/parkings/search',
+      data: {ne:ne, sw:sw}
+    },
+    function (data) {
+      this.setState({parkings: data});
+      // console.log(this.state.parkings.length);
+    }.bind(this));
+      
+    this.serverRequest2 = $.get(
+    {
+      url: '/v1/places/search',
+      data: {ne:ne, sw:sw}
+    },
+    function (data) {
+      this.setState({places: data});
+    }.bind(this));
+  
+    this.serverRequest3 = $.get(
+    {
+      url: '/v1/stolen/search',
+      data: {ne:ne, sw:sw}
+    },
+    function (data) {
+        this.setState({stolens: data});
+    }.bind(this));
   };
 
   onOverlayadd(e){
-    console.log('overlay add')
+     switch (e.name) {
+      case 'Parkings':
+        show_parkings = true;
+        break;
+      case 'Places':
+        show_places = true;
+        break;
+      case 'Stolen bicycles':
+        show_stolens = true;
+        break;
+    };
   };
 
   onBaselayerchange(e){
@@ -113,10 +96,21 @@ class MapComponent extends React.Component {
   };
 
   onOverlayremove(e){
-    console.log(e.name)
+    switch (e.name) {
+      case 'Parkings':
+        show_parkings = false;
+        break;
+      case 'Places':
+        show_places = false;
+        break;
+      case 'Stolen bicycles':
+        show_stolens = false;
+        break;
+    };
   };
 
   onBoundsChange(e){
+    this.abortRequests();
     let Bounds = e.target.getBounds();
     this.loadPointers(Bounds);
     // console.log(this.getCenter());
@@ -149,27 +143,25 @@ class MapComponent extends React.Component {
             ))
           }
 
-          <LayersControl.Overlay name='Marker with popup'>
-            <Marker position={[50.625, 26.26]}>
-              <Popup>
-                <span>A pretty CSS3 popup. <br/> Easily customizable.</span>
-              </Popup>
-            </Marker>
+          <LayersControl.Overlay name='Parkings' checked={show_parkings} >
+            <FeatureGroup color='green'>
+              {parkingsMarkers(this.state.parkings)}
+            </FeatureGroup>
           </LayersControl.Overlay>
-          <LayersControl.Overlay name='Stolen bikes'>
-            {
-              stolenMarker(this.state.stolens)
-            }
+
+          <LayersControl.Overlay name='Places' checked={show_places} >
+            <FeatureGroup color='blue'>
+              {placesMarkers(this.state.places)}
+            </FeatureGroup>
           </LayersControl.Overlay>
-          <LayersControl.Overlay name='Feature group' checked={true} >
+
+          <LayersControl.Overlay name='Stolen bicycles' checked={show_stolens} >
             <FeatureGroup color='purple'>
-              <Popup>
-                <span>Popup in FeatureGroup</span>
-              </Popup>
-              <Circle center={[50.625, 26.26]} radius={200} />
+              {stolenMarkers(this.state.stolens)}
             </FeatureGroup>
           </LayersControl.Overlay>
         </LayersControl>
+        
       </Map>
     );
   }
