@@ -5,7 +5,7 @@ import stolenMarkers from './markers/stolen_bikes_markers.jsx'
 import parkingsMarkers from './markers/parkings_markers.jsx'
 import placesMarkers from './markers/places_markers.jsx'
 
-var pref = 'Satelite';
+var pref = 'MapBox';
 var show_parkings = false;
 var show_places = true;
 var show_stolens = true;

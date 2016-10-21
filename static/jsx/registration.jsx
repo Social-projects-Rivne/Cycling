@@ -129,5 +129,7 @@ class RegistrationComponent extends React.Component {
             );
         }
     }
+}
+
 
 export {RegistrationComponent};
