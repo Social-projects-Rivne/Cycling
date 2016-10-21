@@ -122,6 +122,10 @@ class MapComponent extends React.Component {
   //   // console.log(this.getZoom());
   // };
 
+  onMouseClick(e){
+    console.log(e.latlng)
+  };
+
   render() {
     const position = [this.state.lat, this.state.lng];
     return (
@@ -134,7 +138,8 @@ class MapComponent extends React.Component {
               onOverlayremove={this.onOverlayremove}
               onMoveend={this.onBoundsChange}
               // onDragend={this.onBoundsChange}
-              onZoomend={this.onBoundsChange}>
+              onZoomend={this.onBoundsChange}
+              onClick={this.onMouseClick}>
         <ScaleControl position='bottomright'></ScaleControl>
         <ZoomControl position='bottomleft'></ZoomControl>
         <LayersControl position='topleft'>
