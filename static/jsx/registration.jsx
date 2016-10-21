@@ -3,7 +3,9 @@ import React from 'react';
 import {EmailInput} from './input/email_input.jsx';
 import {PasswordInput} from './input/password_input.jsx';
 import {FullNameInput} from './input/full_name_input.jsx';
+import {FormPopup} from './popup/form_popup.jsx'
 import {Validator} from './validator.jsx';
+
 
 class RegistrationComponent extends React.Component {
     /*
@@ -104,12 +106,16 @@ class RegistrationComponent extends React.Component {
                     <div className="header-div">
                         <h2>Registration</h2>
                     </div>
+                    <FormPopup value="Here would be criterias for name"/>
                     <FullNameInput value={this.name} name="name"
                     id="name-input-field" father={this} error={this.state.name_error}/>
+                    <FormPopup value="Here would be criterias for name"/>
                     <EmailInput value={this.email} name="email"
                     id="email-input-field" father={this} error={this.state.email_error}/>
+                    <FormPopup value="Here would be criterias for name"/>
                     <PasswordInput value={this.password} name="password"
                     id="password-input-field" father={this} error={this.state.password_error}/>                
+                    <FormPopup value="Here would be criterias for name"/>
                     <PasswordInput value={this.password_confirm} name="password_confirm"
                     id="password-confirm-input-field" father={this} error={this.state.password_confirm_error}/>
                     <div className="control-group">
