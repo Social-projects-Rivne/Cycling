@@ -12,7 +12,7 @@ export class FormPopup extends React.Component {
 
   render() {
     return (
-      <p className="triangle-border">{this.state.value}</p>
+      <p style={this.props.styleProp} className="triangle-border">{this.state.value}</p>
     );
   }
 }

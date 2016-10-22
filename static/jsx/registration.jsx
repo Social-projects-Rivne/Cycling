@@ -34,7 +34,8 @@ class RegistrationComponent extends React.Component {
          */
         this.setState({
             password_confirm_error: false,
-            password_error: false
+            password_error: false,
+            name_error: false,
         });
         if(response['EmailError'] === 1){
             this.setState({
@@ -106,16 +107,17 @@ class RegistrationComponent extends React.Component {
                     <div className="header-div">
                         <h2>Registration</h2>
                     </div>
-                    <FormPopup value="Here would be criterias for name"/>
+                    <FormPopup value="Not numbers, only uppercase, lowercase letters,
+                     '-' and apostrophe are allowed"/>
                     <FullNameInput value={this.name} name="name"
                     id="name-input-field" father={this} error={this.state.name_error}/>
-                    <FormPopup value="Here would be criterias for name"/>
+                    <FormPopup value="Standart email style, for example - youremail@gmail.com"/>
                     <EmailInput value={this.email} name="email"
                     id="email-input-field" father={this} error={this.state.email_error}/>
-                    <FormPopup value="Here would be criterias for name"/>
+                    <FormPopup value="Length more that 8, contains uppercase, 
+                    contains lowercase, contains number"/>
                     <PasswordInput value={this.password} name="password"
                     id="password-input-field" father={this} error={this.state.password_error}/>                
-                    <FormPopup value="Here would be criterias for name"/>
                     <PasswordInput value={this.password_confirm} name="password_confirm"
                     id="password-confirm-input-field" father={this} error={this.state.password_confirm_error}/>
                     <div className="control-group">

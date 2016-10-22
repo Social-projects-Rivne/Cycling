@@ -170,34 +170,46 @@ label:focus,
 
 .triangle-border {
     position: absolute;
-    padding: 15px;
-    margin: 1em 0 3em;
-    margin-right: 30px;
-    border: 5px solid #106CC8;
+    padding: 3px;
+    margin: 2em 0 3em;
+    border: 2px solid #106CC8;
     color: #333;
     background: #fff;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
     width: 150px;
-    height: 15px;
+    height: 50px;
     font-size: 10px;
+    margin-left: 160px;
 }
 
-.triangle-border:before {
+.triangle-border:before 
+{
     content: "";
     position: absolute;
-    bottom: -20px;
-    left: 40px;
-    border-width: 20px 20px 0;
     border-style: solid;
-    border-color: #106cc8 transparent;
     display: block;
     width: 0;
-    top: 10px;
+    top: 15px;
     bottom: auto;
     left: auto;
-    right: -30px;
-    border-width: 15px 0 15px 30px;
+    right: -17px;
+    border-width: 7px 0px 7px 17px;
     border-color: transparent #106cc8;
+}
+
+.triangle-border:after
+{
+    content: "";
+    position: absolute;
+    border-style: solid;
+    display: block;
+    width: 0;
+    top: 13px;
+    bottom: auto;
+    left: auto;
+    right: -13px;
+    border-width: 9px 0 9px 21px;
+    border-color: transparent #fff;
 }
