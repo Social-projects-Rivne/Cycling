@@ -54,7 +54,8 @@ class Header extends React.Component {
       return(
             <div className="navbar navbar-fixed-top main-header" role="navigation">
               <div className="navbar-header">
-                  <a onClick={this.props.onButtonClick} id="menu-toggle" className="logo-a"><span className="icon material-icons">menu</span></a>
+                  <a onClick={this.props.onButtonClick} id="menu-toggle" className="logo-a">
+                  <span className="icon material-icons">menu</span></a>
                   <Link className="navbar-brand logo-line" to='/'>Cycling</Link>
                   <div className="header-button"><Link to='/registration'>Registration</Link></div>
               </div>
