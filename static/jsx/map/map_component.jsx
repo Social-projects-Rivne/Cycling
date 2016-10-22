@@ -1,9 +1,10 @@
-import React        from 'react';
+import React                from 'react';
 import { Map, TileLayer, Marker, Popup, LayersControl, FeatureGroup, Circle, ScaleControl, ZoomControl } from 'react-leaflet';
-import layers_list  from './layers.jsx';
-import stolenMarkers from './markers/stolen_bikes_markers.jsx'
-import parkingsMarkers from './markers/parkings_markers.jsx'
-import placesMarkers from './markers/places_markers.jsx'
+import layers_list          from './layers.jsx';
+import stolenMarkers        from './markers/stolen_bikes_markers.jsx'
+import parkingsMarkers      from './markers/parkings_markers.jsx'
+import placesMarkers        from './markers/places_markers.jsx'
+import CreatePointerPopup   from './popups/create_pointer.jsx'
 
 var pref = 'Satelite';
 var show_parkings = false;
@@ -16,7 +17,7 @@ class MapComponent extends React.Component {
     this.state = {
       lat: 50.619776, //51.505,
       lng: 26.251265, //-0.09,
-      zoom: 14,
+      zoom: 16,
       parkings: [],
       places: [],
       stolens: []
@@ -123,7 +124,15 @@ class MapComponent extends React.Component {
   // };
 
   onMouseClick(e){
-    console.log(e.latlng)
+    console.log(e.latlng);
+    // this.openPopup(CreatePointerPopup(), e.latlng);
+    $('#myModal').modal();
+    console.log(localStorage['token']);
+  };
+
+  onRightClick(e){
+    console.log(e.latlng);
+    this.openPopup("Right click", e.latlng, {minWidth:300, className:"test"});
   };
 
   render() {
@@ -139,7 +148,8 @@ class MapComponent extends React.Component {
               onMoveend={this.onBoundsChange}
               // onDragend={this.onBoundsChange}
               onZoomend={this.onBoundsChange}
-              onClick={this.onMouseClick}>
+              onClick={this.onMouseClick}
+              onContextmenu={this.onRightClick}>
         <ScaleControl position='bottomright'></ScaleControl>
         <ZoomControl position='bottomleft'></ZoomControl>
         <LayersControl position='topleft'>
