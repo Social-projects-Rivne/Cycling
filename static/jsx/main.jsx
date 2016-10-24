@@ -9,6 +9,7 @@ import ReactDOM           from 'react-dom';
 import { RegistrationComponent }  from './registration.jsx';
 import { LoginComponent } from './login.jsx';
 import Home               from './home.jsx';
+import { MarkerDetails } from './marker_detail_page.jsx';
 
 
 class APP extends React.Component{
@@ -99,6 +100,7 @@ ReactDOM.render(
          <Route path = "home" component = {Home}/>
          <Route path = "/login" component = {LoginComponent} />
          <Route path = "/registration" component = {RegistrationComponent} />
+         <Route path = "/marker_details" component = {MarkerDetails} />
          <Route path='*' component={NotFound} />
       </Route>
   </Router>),
