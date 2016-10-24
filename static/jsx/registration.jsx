@@ -3,7 +3,6 @@ import React from 'react';
 import {EmailInput} from './input/email_input.jsx';
 import {PasswordInput} from './input/password_input.jsx';
 import {FullNameInput} from './input/full_name_input.jsx';
-import {FormPopup} from './popup/form_popup.jsx'
 import {Validator} from './validator.jsx';
 
 
@@ -107,19 +106,20 @@ class RegistrationComponent extends React.Component {
                     <div className="header-div">
                         <h2>Registration</h2>
                     </div>
-                    <FormPopup value="Not numbers, only uppercase, lowercase letters,
-                     '-' and apostrophe are allowed"/>
                     <FullNameInput value={this.name} name="name"
                     id="name-input-field" father={this} error={this.state.name_error}/>
-                    <FormPopup value="Standart email style, for example - youremail@gmail.com"/>
+                    <p className="form-tip">Not numbers, only uppercase, lowercase letters,
+                     '-' and apostrophe are allowed</p>
                     <EmailInput value={this.email} name="email"
                     id="email-input-field" father={this} error={this.state.email_error}/>
-                    <FormPopup value="Length more that 8, contains uppercase, 
-                    contains lowercase, contains number"/>
+                    <p className="form-tip">Standart email style, for example - youremail@gmail.com</p>
                     <PasswordInput value={this.password} name="password"
                     id="password-input-field" father={this} error={this.state.password_error}/>                
+                    <p className="form-tip">Length more that 8, contains uppercase, 
+                    contains lowercase, contains number</p>
                     <PasswordInput value={this.password_confirm} name="password_confirm"
                     id="password-confirm-input-field" father={this} error={this.state.password_confirm_error}/>
+                    <p className="form-tip">Re-type password</p>
                     <div className="control-group">
                         <div className="controls">
                             <button type="submit" className="btn btn-success register-button" onClick={this.submitAll}>Register</button>
