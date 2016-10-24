@@ -174,7 +174,6 @@ def get_parkings_by_points(request):
     """
     return get_points(request, Parking)
 
-
 def get_stolen_bikes_by_points(request):
     """Returns stolen bikes with a location within rectangle
     of sw and ne points, where:
@@ -185,3 +184,36 @@ def get_stolen_bikes_by_points(request):
     latitude is first, longitude - second
     """
     return get_points(request, StolenBike)
+
+
+@csrf_exempt
+def get_categories(request):
+    """
+    This method returns all posible categories.
+    Response example:
+    {
+    "response": [
+        {
+            "id": "0",
+            "name": "store"
+        },
+        {
+            "id": "1",
+            "name": "service"
+        },
+        {
+            "id": "2",
+            "name": "cafe"
+        }
+    ]
+    }
+    Error code:
+      105 - unsupported method type
+    """
+    if request.method != "GET":
+        return JsonResponse({"error": "Unsupported method", "code": 105})
+
+    result = []
+    for category_id, category_name in Place.CATEGORY:
+        result.append({"id": category_id, "name": category_name})
+    return JsonResponse({"response": result})
