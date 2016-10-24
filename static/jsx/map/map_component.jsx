@@ -4,7 +4,7 @@ import layers_list          from './layers.jsx';
 import stolenMarkers        from './markers/stolen_bikes_markers.jsx'
 import parkingsMarkers      from './markers/parkings_markers.jsx'
 import placesMarkers        from './markers/places_markers.jsx'
-import CreatePointerPopup   from './popups/create_pointer.jsx'
+import createPointerPopup, {MyPopup} from './popups/create_pointer.jsx'
 
 var pref = 'Satelite';
 var show_parkings = false;
@@ -12,8 +12,8 @@ var show_places = true;
 var show_stolens = true;
 
 class MapComponent extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       lat: 50.619776, //51.505,
       lng: 26.251265, //-0.09,
@@ -25,6 +25,7 @@ class MapComponent extends React.Component {
     this.onBoundsChange = this.onBoundsChange.bind(this);
     this.loadPointers = this.loadPointers.bind(this);
     this.abortRequests = this.abortRequests.bind(this);
+    this.onMouseClick = this.onMouseClick.bind(this);
   }
 
   componentDidMount(){
@@ -124,10 +125,12 @@ class MapComponent extends React.Component {
   // };
 
   onMouseClick(e){
-    console.log(e.latlng);
-    // this.openPopup(CreatePointerPopup(), e.latlng);
-    $('#myModal').modal();
-    console.log(localStorage['token']);
+    // console.log(e.latlng);
+    // this.openPopup(createPointerPopup(), e.latlng);
+    // this.openPopup(MyPopup.setLatLng(e.latlng));
+    // $('#myModal').modal();
+    // console.log(localStorage['token']);
+    this.props.father.refs.modal.show();
   };
 
   onRightClick(e){

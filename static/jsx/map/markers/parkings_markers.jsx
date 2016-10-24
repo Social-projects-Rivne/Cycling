@@ -11,7 +11,7 @@ let RedIcon = L.Icon.Default.extend({
   }
 });
 let redIcon = new RedIcon();
-console.log(redIcon.iconUrl); 
+// console.log(redIcon.iconUrl); 
 /*
 //Other things we could have changed
   iconSize:     [25, 41], // size of the icon
