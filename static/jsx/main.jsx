@@ -21,7 +21,7 @@ class APP extends React.Component{
         this.state = {
           "showHideSidenav":""
         };
-        console.log("!!!");
+
         this.handleClick = this.handleClick.bind(this);
     }
 
@@ -110,7 +110,6 @@ class SideBar extends React.Component {
       let stateObj = {};
       stateObj["active_category_" + id] = !this.state["active_category_" + id];
       this.setState(stateObj);
-      console.log(this.state);
     }
 
     render() {
@@ -148,7 +147,7 @@ class SideBar extends React.Component {
 class Category extends React.Component {
 
   render() {
-    console.log("RENDER", this.props.categoryName, this.props.isActive);
+
     if (this.props.isActive){
       var styleObj = {
         backgroundColor: "#ff0000"
