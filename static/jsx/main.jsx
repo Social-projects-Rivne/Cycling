@@ -16,6 +16,7 @@ class APP extends React.Component{
         this.state = {
           "showHideSidenav":""
         };
+        console.log("!!!");
         this.handleClick = this.handleClick.bind(this);
     }
 
@@ -29,6 +30,7 @@ class APP extends React.Component{
         <div className={this.state.showHideSidenav} id="wrapper">
               <Header onButtonClick={this.handleClick}/>
               <SideBar/>
+
               <div className="page-content-wrapper">
                 {this.props.children}
               </div>
@@ -56,17 +58,73 @@ class Header extends React.Component {
 class SideBar extends React.Component {
     constructor(props) {
         super(props);
+
         this.state = {};
+        // this.handleCategoryClick = this.handleCategoryClick.bind(this);
+    }
+
+    /*
+    * This method fetch all categories from server and update state
+    */
+    getCategories() {
+      let context = this;
+      $.ajax({
+              type: 'GET',
+              url: 'api/v1/categories',
+              contentType: 'application/json',
+              dataType: "json",
+              success: function(response) {
+                  console.log("Server responsed with: ");
+                  console.log(response);
+                  if ("response" in response) {
+                      context.setState({
+                        categories: response.response
+                      });
+                  }
+
+              },
+              error: function(response) {
+                console.log(response);
+              }
+
+          });
+    }
+
+    componentDidMount() {
+      this.getCategories();
+    }
+
+    handleCategoryClick(id) {
+      // TODO make ajax places data refresh
+      let stateObj = {};
+      stateObj["active_category_" + id] = !this.state["active_category_" + id];
+      this.setState(stateObj);
+      console.log(this.state);
     }
 
     render() {
+        let context = this;
+        let categories_list;
+        if (this.state.categories) {
+
+            categories_list = this.state.categories.map(function(category, index){
+              if (context.state["active_category_" + category.id] == null)
+                context.state["active_category_" + category.id] = true;
+              return (<Category categoryName={category.name} isActive={context.state["active_category_" + category.id]}
+                                onClick={context.handleCategoryClick.bind(context, category.id)} key={index}/>);
+            });
+        }
         return (
         <div id="sidebar-wrapper" role="navigation">
             <ul className="sidebar-nav">
                 <li className="sidebar-brand"><a to='/'>Welcome</a></li>
                 <li><Link onlyActiveOnIndex activeStyle={{color:'#53acff'}} to='/'>Home</Link></li>
                 <li><a href="#">View</a></li>
-                <li><a href="#">Display Objects</a></li>
+                <li><a href="#">Display Objects</a>
+                  <ul className="sidenav-ul">
+                    {categories_list}
+                  </ul>
+                </li>
                 <li><a href="#">Stolen Bycicles</a></li>
                 <li><a href="#">Races Table</a></li>
                 <li><a href="#">Profile</a></li>
@@ -75,6 +133,25 @@ class SideBar extends React.Component {
         );
     }
 };
+
+class Category extends React.Component {
+
+  render() {
+    console.log("RENDER", this.props.categoryName, this.props.isActive);
+    if (this.props.isActive){
+      var styleObj = {
+        backgroundColor: "#ff0000"
+      };
+    }
+    else {
+        backgroundColor: "#000000"
+    }
+    return (
+      <li style={styleObj}><a href="#" onClick={this.props.onClick}>{this.props.categoryName}</a></li>
+    );
+  }
+
+}
 
 const NotFound = () => (
   <h1>404.. This page is not found!</h1>)

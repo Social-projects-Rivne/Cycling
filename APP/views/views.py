@@ -127,28 +127,72 @@ def get_points(request, model_cls):
     of sw and ne points. For more info on points look
     into similar methods of particular models
     mdl_cls - model class e.g. Place or SolenBike
+
+    If we looking for Place we can filter points by category...
+    If there is no categories JSON parameter it returns all categories.
+    To filter points by categories use:
+    {
+        "categories": [
+            {"id": 1},
+            {"id": 3},
+        ],
+        "sw": "0, 0",
+        "ne": "100, 100"
+    }
+
     """
 
     def str_to_point(txt_point):
         return [float(x) for x in txt_point.split(',')]
 
     if request.method == 'GET':
-        sw_point = str_to_point(request.GET.get('sw', '44.3, 37.2'))
-        ne_point = str_to_point(request.GET.get('ne', '44.1, 37.4'))
+
+        try:
+            data = json.loads(request.body)
+        except ValueError:
+            return json_parse_error()
+
+        if "sw" in data:
+            sw_point = str_to_point(data["sw"])
+        else:
+            sw_point = str_to_point("44.3, 37.2")
+        if "ne" in data:
+            ne_point = str_to_point(data["ne"])
+        else:
+            ne_point = str_to_point("44.1, 37.4")
+
         entities = model_cls.objects
+
+        # if we taking places
+        if model_cls == Place:
+            # if user specified categories to filter
+            if "categories" in data:
+                category_ids = [
+                    str(data['categories'][i]['id'])
+                    for i in range(len(data['categories']))]
+
+                print category_ids
+
+                entities = entities.filter(category_id__in=category_ids)
+
         if sw_point[1] > ne_point[1]:
-            entities = entities.filter(lng__lte=sw_point[1]).filter(lng__gte=ne_point[1])
+            entities = entities.filter(
+                lng__lte=sw_point[1]).filter(lng__gte=ne_point[1])
         else:
-            entities = entities.filter(lng__lte=ne_point[1]).filter(lng__gte=sw_point[1])
-        # print entities
+            entities = entities.filter(
+                lng__lte=ne_point[1]).filter(lng__gte=sw_point[1])
+
         if sw_point[0] > ne_point[0]:
-            entities = entities.filter(lat__lte=sw_point[0]).filter(lat__gte=ne_point[0])
+            entities = entities.filter(
+                lat__lte=sw_point[0]).filter(lat__gte=ne_point[0])
         else:
-            entities = entities.filter(lat__lte=ne_point[0]).filter(lat__gte=sw_point[0])
+            entities = entities.filter(
+                lat__lte=ne_point[0]).filter(lat__gte=sw_point[0])
 
         data = serializers.serialize("json", entities)
         # print data
         return HttpResponse(data, content_type="application/json")
+
 
 def get_places_by_points(request):
     """Returns places with a location within rectangle
@@ -173,6 +217,7 @@ def get_parkings_by_points(request):
     latitude is first, longitude - second
     """
     return get_points(request, Parking)
+
 
 def get_stolen_bikes_by_points(request):
     """Returns stolen bikes with a location within rectangle
