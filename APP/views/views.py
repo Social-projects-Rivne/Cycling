@@ -84,6 +84,9 @@ def registration(request):
         return JsonResponse(result_dict)
 
 
+def marker_details(request):
+    pass
+
 def get_points(request, model_cls):
     """Returns entities with location within rectangle
     of sw and ne points. For more info on points look
