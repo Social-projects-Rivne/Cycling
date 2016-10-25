@@ -1,280 +1,143 @@
 import React from 'react';
 
-class FormComponent extends React.Component {
+import {EmailInput} from './input/email_input.jsx';
+import {PasswordInput} from './input/password_input.jsx';
+import {FullNameInput} from './input/full_name_input.jsx';
+import {Validator} from './validator.jsx';
+
+
+class RegistrationComponent extends React.Component {
+    /*
+     * React component of registration form
+     * that use our reusable inputs. When submit
+     * button is pressed, it validate credentials
+     * and in case of error make icons red or in case of success
+     * send requst to server by ajax and registrate user,
+     * or make red icon, if something is wrong on server
+     */
     constructor(props) {
         super(props);
         this.state = {
-            icon_color_name: true,
-            icon_color_email: true,
-            icon_color_password: true
+            registration_process: "Registration",
+            isRegistrated: false
         };
-        this.changeName = this.changeName.bind(this);
-        this.changeEmail = this.changeEmail.bind(this);
-        this.changePassword = this.changePassword.bind(this);
-        this.changePassConfirm = this.changePassConfirm.bind(this);
+        this.ajaxSuccess = this.ajaxSuccess.bind(this);
         this.submitAll = this.submitAll.bind(this);
-        this.validateName = this.validateName.bind(this);
-        this.validateEmail = this.validateEmail.bind(this);
-        this.showErrors = this.showErrors.bind(this);
+        this.validator = new Validator();
     }
 
-    changeName(event) {
-        this.setState({name: event.target.value});
-    }
-
-    changeEmail(event) {
-        this.setState({email: event.target.value});
-    }
-
-    changePassword(event) {
-        this.setState({password: event.target.value});
-    }
-
-    changePassConfirm(event) {
-        this.setState({password_confirm: event.target.value});
-    }
-
-    clearForm() {
-      this.setState({
-        name: '',
-        email: '',
-        password: '',
-        password_confirm: ''
-
-      });
-    }
-
-    validateName(full_name) {
-        var re = /[A-Za-z\s_-]+$/;
-        return re.test(full_name);
-    }
-
-    validateEmail(email) {
-        var re = /[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$/;
-        return re.test(email);
-    };
-
-    showErrors(name, email) {
-        if(name === false) {
+    ajaxSuccess(response) {
+        /*
+         * In case of error from server show it to user,
+         * in case of success change form header
+         */
+        this.setState({
+            password_confirm_error: false,
+            password_error: false,
+            name_error: false,
+        });
+        if(response['EmailError'] === 1){
             this.setState({
-                icon_color_name: false
+                email_error: true
             });
+        }
+        else if(response['Success'] === 1){
+            this.setState({
+                isRegistrated: true
+            });
+        }
+        else if(response['RulesError'] === 1){
+            console.log("Validation is not right");
         }
         else{
-            this.setState({
-                icon_color_name: true
-            });
-        }
-
-        if(email === false) {
-            this.setState({
-                icon_color_email: false
-            });
-        }
-        else{
-            this.setState({
-                icon_color_email: true
-            });
-        }
-
-        if(this.state.password === this.state.password_confirm) {
-            this.setState({
-                icon_color_password: true
-            });
-        }
-        else{
-            this.setState({
-                icon_color_password: false
-            });
+            console.log("Some other error");
         }
     }
 
-    submitAll(event){
-        var self;
+    submitAll(event) {
+        /* 
+         * When submit button is ckliked it validate
+         * input values and send to server in case of success.
+         * If something is wrong, it show it to user
+         */
         event.preventDefault();
-        if ((this.state.password === this.state.password_confirm)
-            && this.validateName(this.state.name) && this.validateEmail(this.state.email)) {
-            self = this;
-            var data = {
-                full_name: this.state.name,
-                email: this.state.email,
-                password: this.state.password
-            }
-            console.log(data);
-            $.ajax({
-                type: 'POST',
-                url: 'api/v1/registration',
-                dataType: "json",
-                data: data,
-                success: function(response){
-                    console.log(response);
-                }
-            });
+        let ajaxSuccess=this.ajaxSuccess;        
+        let self;
+        self = this;
+        let valid_name = this.validator.validateName(this.name);
+        let valid_pass = this.validator.validatePassword(this.password);
+        let valid_email = this.validator.validateEmail(this.email);
+        let valid_confirm_password = (this.password === this.password_confirm);
+
+        //Validate input values.
+        if (!valid_name || !valid_email || !valid_pass || !valid_confirm_password){
+          this.setState({
+            name_error: !valid_name,
+            email_error: !valid_email,
+            password_error: !valid_pass,
+            password_confirm_error: !valid_confirm_password
+          });
+          return;
         }
-        else {
-            console.log("Your values are incorrect");
+
+        //Prepare data for sending to server.
+        let data = {
+            full_name: this.name,
+            email: this.email,
+            password: this.password
         }
-        this.showErrors(this.validateName(this.state.name), this.validateEmail(this.state.email));
+
+        //In case of success validation, send data to server
+        $.ajax({
+            type: 'POST',
+            url: 'api/registration',
+            dataType: "json",
+            data: data,
+            success: ajaxSuccess
+        });
     }
 
     render() {
+        //Render form component
+        if(this.state.isRegistrated === false) {
         return (
-        <form onSubmit={this.submit} className="form-horizontal registration-form">
-            <fieldset>
-                <div className="header-div">
-                    <h2 className="register-header">Registration</h2>
-                </div>
-                <UserName iconProp={this.state.icon_color_name} valChange={this.changeName}
-                 val={this.state.name} className={this.state.name_error}/>
-                <Email iconProp={this.state.icon_color_email} valChange={this.changeEmail} val={this.state.email}/>
-                <Pass iconProp={this.state.icon_color_password} valChange={this.changePassword} val={this.state.password}/>
-                <PassConfirm iconProp={this.state.icon_color_password} valChange={this.changePassConfirm} val={this.state.password_confirm}/>
-
-                <div className="control-group">
-                    <div className="controls">
-                        <button type="submit" className="btn btn-success register-button" onClick={this.submitAll}>Register</button>
+            <form onSubmit={this.submit} className="form-horizontal registration-form">
+                <fieldset>
+                    <div className="header-div">
+                        <h2>Registration</h2>
                     </div>
+                    <FullNameInput value={this.name} name="name"
+                    id="name-input-field" father={this} error={this.state.name_error}/>
+                    <p className="form-tip">Not numbers, only uppercase, lowercase letters,
+                     '-' and apostrophe are allowed</p>
+                    <EmailInput value={this.email} name="email"
+                    id="email-input-field" father={this} error={this.state.email_error}/>
+                    <p className="form-tip">Standart email style, for example - youremail@gmail.com</p>
+                    <PasswordInput value={this.password} name="password"
+                    id="password-input-field" father={this} error={this.state.password_error}/>                
+                    <p className="form-tip">Length more that 8, contains uppercase, 
+                    contains lowercase, contains number</p>
+                    <PasswordInput value={this.password_confirm} name="password_confirm"
+                    id="password-confirm-input-field" father={this} error={this.state.password_confirm_error}/>
+                    <p className="form-tip">Re-type password</p>
+                    <div className="control-group">
+                        <div className="controls">
+                            <button type="submit" className="btn btn-success register-button" onClick={this.submitAll}>Register</button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+            );
+        }
+        else{
+            return (
+                <div className="header-div registrated">
+                    <h2>You have been successfully registrated!</h2>
                 </div>
-
-            </fieldset>
-        </form>
-        );
-    }
-}
-
-class UserName extends React.Component {
-    constructor(props){
-    super(props);
-    this.state = {};
-    this.changeColor = this.changeColor.bind(this);
-    }
-
-    changeColor() {
-        if(this.props.iconProp === true){
-            return {
-                color: '#106CC8'
-            }
+            );
         }
-        else{
-            return {
-                color: '#E04B39'
-            }
-        }
-    }
-
-    render() {
-        return(
-        <div className="control-group">
-            <div className="controls">
-                <span style={this.changeColor()} className="material-icons input-icons">person_outline</span>
-                <input placeholder="Fullname" type="text" id="fullname" name="full_name"
-                 className="input-xlarge value-input" onChange={this.props.valChange} value={this.props.val}/>
-            </div>
-        </div>
-        );
     }
 }
 
 
-class Email extends React.Component {
-    constructor(props) {
-    super(props);
-    this.state = {};
-    this.changeColor = this.changeColor.bind(this);
-    }
-
-    changeColor() {
-        if(this.props.iconProp){
-            return {
-                color: '#106CC8'
-            }
-        }
-        else{
-            return {
-                color: '#E04B39'
-            }
-        }
-    }
-
-    render() {
-        return (
-        <div className="control-group">
-            <div className="controls">
-                <span style={this.changeColor()} className="material-icons input-icons">email</span>
-                <input placeholder="Email" type="text" id="email" name="email"
-                className="input-xlarge value-input " onChange={this.props.valChange} value={this.props.val}/>
-            </div>
-        </div>
-        );
-    }
-}
-
-class Pass extends React.Component {
-    constructor(props) {
-    super(props);
-    this.state = {};
-    this.changeColor = this.changeColor.bind(this);
-    }
-
-    changeColor() {
-        if(this.props.iconProp){
-            return {
-                color: '#106CC8'
-            }
-        }
-        else{
-            return {
-                color: '#E04B39'
-            }
-        }
-    }
-
-    render() {
-        return (
-        <div className="control-group">
-            <div className="controls">
-                <span style={this.changeColor()} className="material-icons input-icons">lock_outline</span>
-                <input placeholder="Password" type="password" id="password" name="password"
-                className="input-xlarge value-input"
-                onChange={this.props.valChange} value= {this.props.val}/>
-            </div>
-        </div>
-        );
-    }
-}
-
-class PassConfirm extends React.Component {
-    constructor(props) {
-    super(props);
-    this.state = {};
-    this.changeColor = this.changeColor.bind(this);
-    }
-
-    changeColor() {
-        if(this.props.iconProp){
-            return {
-                color: '#106CC8'
-            }
-        }
-        else{
-            return {
-                color: '#E04B39'
-            }
-        }
-    }
-
-    render() {
-        return (
-        <div className="control-group">
-            <div className="controls">
-                <span style={this.changeColor()} className="material-icons input-icons">lock_outline</span>
-                <input placeholder="Re-type password" type="password" id="password_confirm"
-                name="password_confirm" className="input-xlarge value-input"
-                onChange={this.props.valChange} value= {this.props.val}/>
-            </div>
-        </div>
-        );
-    }
-}
-
-export {FormComponent};
+export {RegistrationComponent};

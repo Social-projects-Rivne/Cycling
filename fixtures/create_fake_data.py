@@ -32,6 +32,7 @@ for user in users:
              is_active=True,
              avatar=user['avatar'],
              role_id=0,
+             token='',
         )
     u.save()
     users_list.append(u)
@@ -84,7 +85,7 @@ for i in xrange(50):
     b.save()
 
 parkings_list = []
-for i in xrange(10000):    
+for i in xrange(200):
     p = Parking(
                 name=addresses[i]['name'],
                 lat=rand_lat(),
@@ -107,15 +108,21 @@ for i in xrange(200):
                 from_hour=random.choice(range(7,12)),
                 to_hour=random.choice(range(17,24)),
                 owner=random.choice(users_list),
+                category_id=random.choice(['0', '1', '2']),
                 )
     p.save()
     places_list.append(p)
 
-for i in xrange(10000):
+for i in xrange(100):
     a = Attachment(
                    image_url=random.choice(users)['avatar'],
                    parking=random.choice(parkings_list),
-                   place=random.choice(places_list),
                    )
     a.save()
 
+for i in xrange(100):
+    a = Attachment(
+                   image_url=random.choice(users)['avatar'],
+                   place=random.choice(places_list),
+                   )
+    a.save()

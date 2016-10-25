@@ -18,7 +18,7 @@ from APP.utils.validator import Validator
 from APP.utils.need_token import need_token
 
 _valid_inputs = Validator()
-
+_password_master = PasswordMaster()
 
 def index(request):
     context = {
@@ -72,9 +72,8 @@ def login(request):
             "code": 103
             })
 
-    password_master = PasswordMaster()
-    if password_master.check_password(data['password'], user.password):
-        user.token = password_master.generate_token()
+    if _password_master.check_password(data['password'], user.password):
+        user.token = _password_master.generate_token()
     else:
         return JsonResponse({
             "error": "Invalid password!",
@@ -91,34 +90,28 @@ def login(request):
 
 @csrf_exempt
 def registration(request):
+    """Receive json with user credentials,
+    validate and in case of success add user
+    with that credentials to database
+    and return json with success
+    or error in case of error
+    """
+
     if request.method == "POST":
-        print "Our post", request.POST["full_name"]
         result_dict = dict()
-        obj_filter = User.objects.filter
         if _valid_inputs.full_name_validation(request.POST['full_name']) and \
            _valid_inputs.email_validation(request.POST['email']):
-            if obj_filter(email=request.POST["email"]).exists():
-                result_dict['EmailError'] = "Such email already exists!"
-            else:
-                try:
-                    # handle token generation and password hashing
-                    password_master = PasswordMaster()
-                    token = password_master.generate_token()
-                    raw_password = request.POST['password']
-                    password = password_master.hash_password(raw_password)
-                    user = User.objects.create(
-                        full_name=request.POST['full_name'],
-                        email=request.POST['email'],
-                        password=password,
-                        role_id='0',
-                        token=token)
-                    result_dict['Success'] = "true"
-                    result_dict['token'] = token
-                    result_dict['id'] = user.id
-                except Exception, error:
-                    print error
+            if User.objects.filter(email=request.POST["email"]).exists():
+                result_dict['EmailError'] = 1
+            if not result_dict:
+                User.objects.create(
+                    full_name=request.POST['full_name'],
+                    email=request.POST['email'],
+                    password=request.POST['password'],
+                    role_id='0', token=_password_master.generate_token())
+                result_dict['Success'] = 1
         else:
-            result_dict['RulesError'] = "Error rules of input"
+            result_dict['RulesError'] = 1
         return JsonResponse(result_dict)
 
 
