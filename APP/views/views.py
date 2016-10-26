@@ -123,50 +123,28 @@ def get_points(request, model_cls):
 
     If we looking for Place we can filter points by category...
     If there is no categories JSON parameter it returns all categories.
-    To filter points by categories use:
-    {
-        "categories": [
-            {"id": 1},
-            {"id": 3},
-        ],
-        "sw": "0, 0",
-        "ne": "100, 100"
-    }
-
+    Params:
+    sw - (optional)
+    ne - (optional)
+    categories - (optional) default all, format [1, 3, 4] where 1, 3, 4 - ids.
     """
 
     def str_to_point(txt_point):
         return [float(x) for x in txt_point.split(',')]
 
     if request.method == 'GET':
-
-        try:
-            data = json.loads(request.body)
-        except ValueError:
-            return json_parse_error()
-
-        if "sw" in data:
-            sw_point = str_to_point(data["sw"])
-        else:
-            sw_point = str_to_point("44.3, 37.2")
-        if "ne" in data:
-            ne_point = str_to_point(data["ne"])
-        else:
-            ne_point = str_to_point("44.1, 37.4")
+        sw_point = str_to_point(request.GET.get('sw', '44.3, 37.2'))
+        ne_point = str_to_point(request.GET.get('ne', '44.1, 37.4'))
 
         entities = model_cls.objects
 
         # if we taking places
         if model_cls == Place:
             # if user specified categories to filter
-            if "categories" in data:
-                category_ids = [
-                    str(data['categories'][i]['id'])
-                    for i in range(len(data['categories']))]
-
-                print category_ids
-
-                entities = entities.filter(category_id__in=category_ids)
+            categories = request.GET.get('categories', None)
+            print categories
+            if categories:
+                entities = entities.filter(category_id__in=categories)
 
         if sw_point[1] > ne_point[1]:
             entities = entities.filter(

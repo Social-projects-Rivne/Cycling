@@ -46,30 +46,41 @@ class MapComponent extends React.Component {
     let ne = bounds_obj._northEast.lat.toPrecision(9) + ',' + bounds_obj._northEast.lng.toPrecision(9);
     let sw = bounds_obj._southWest.lat.toPrecision(9) + ',' + bounds_obj._southWest.lng.toPrecision(9);
     let params = {ne:ne, sw:sw};
-    
+
     this.serverRequest1 = $.get(
     {
-      url: '/parkings/search',
+      url: 'api/v1/parkings/search',
       data: {ne:ne, sw:sw}
     },
     function (data) {
       this.setState({parkings: data});
       // console.log(this.state.parkings.length);
     }.bind(this));
-      
+
+    // forming data object for places
+    let placeParamsObject = {ne:ne, sw:sw};
+    if (this.props.categories) {
+      placeParamsObject.categories =  this.getActiveCategoriesString();
+    }
+    // console.log("Formed active categories request: ", placeParamsObject);
+
     this.serverRequest2 = $.get(
     {
-      url: '/places/search',
-      data: {ne:ne, sw:sw}
-    },
-    function (data) {
-      this.setState({places: data});
-    }.bind(this));
-  
+      url: 'api/v1/places/search',
+      data: placeParamsObject,
+      success: function (data) {
+        this.setState({places: data});
+      }.bind(this),
+      error: function(response) {
+        console.log("get places error:\n", response);
+      }
+
+    });
+
     this.serverRequest3 = $.get(
     {
-      url: '/stolen/search',
-      data: {ne:ne, sw:sw}
+      url: 'api/v1/stolen/search',
+      data: JSON.stringify({ne:ne, sw:sw})
     },
     function (data) {
         this.setState({stolens: data});
@@ -109,6 +120,19 @@ class MapComponent extends React.Component {
     };
   };
 
+  /*
+  * This method form string to tell server which categories are active
+  * Output example: "[1, 2]"
+  */
+  getActiveCategoriesString(){
+    let activeCategories = [];
+    for(let i = 0; i < this.props.categories.length; i+=1) {
+      if (this.props.categories[i].active)
+        activeCategories.push(this.props.categories[i].id);
+    }
+    return "[" + activeCategories.join() + "]";
+  }
+
   onBoundsChange(e){
     this.abortRequests();
     let Bounds = e.target.getBounds();
@@ -126,7 +150,7 @@ class MapComponent extends React.Component {
     const position = [this.state.lat, this.state.lng];
     return (
       <Map center={position} zoom={this.state.zoom}
-              zoomControl={false} 
+              zoomControl={false}
               ref='map'
               style={{height: '100vh', width:'100vw'}}
               onOverlayadd={this.onOverlayadd}
@@ -159,7 +183,7 @@ class MapComponent extends React.Component {
 
           <LayersControl.Overlay name='Places' checked={show_places} >
             <FeatureGroup color='blue'>
-              {placesMarkers(this.state.places)}
+              {placesMarkers(this.state.places, this.props.categories)}
             </FeatureGroup>
           </LayersControl.Overlay>
 
@@ -169,7 +193,7 @@ class MapComponent extends React.Component {
             </FeatureGroup>
           </LayersControl.Overlay>
         </LayersControl>
-        
+
       </Map>
     );
   }

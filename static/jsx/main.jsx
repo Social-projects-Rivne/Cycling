@@ -34,15 +34,22 @@ class APP extends React.Component{
       this.setState({"showHideSidenav":css});
     }
 
+    setActiveCategories(categories) {
+      // console.log("setActiveCategories() call\nNew categories:", categories);
+      this.setState({categories: categories});
+    }
+
     render(){
+      // console.log("RENDER APP, STATE:");
+      // console.log(this.state);
       //Render main component
       return (
         <div className={this.state.showHideSidenav} id="wrapper">
               <Header onButtonClick={this.handleClick}/>
-              <SideBar/>
+              <SideBar app={this} categories={this.state.categories}/>
 
               <div className="page-content-wrapper">
-                {this.props.children}
+                {React.cloneElement(this.props.children, { categories: this.state.categories })}
               </div>
         </div>
         );
@@ -71,7 +78,7 @@ class SideBar extends React.Component {
         super(props);
 
         this.state = {};
-        // this.handleCategoryClick = this.handleCategoryClick.bind(this);
+        // this.handleCategoryItemClick = this.handleCategoryItemClick.bind(this);
     }
 
     /*
@@ -85,16 +92,15 @@ class SideBar extends React.Component {
               contentType: 'application/json',
               dataType: "json",
               success: function(response) {
-                  console.log("Server responsed with: ");
-                  console.log(response);
                   if ("response" in response) {
-                      context.setState({
-                        categories: response.response
-                      });
+                    for(let i = 0; i < response.response.length; i++){
+                      response.response[i].active = true;
+                    }
+                    context.props.app.setActiveCategories(response.response);
                   }
-
               },
               error: function(response) {
+                console.log("getCategories() response: ");
                 console.log(response);
               }
 
@@ -105,23 +111,33 @@ class SideBar extends React.Component {
       this.getCategories();
     }
 
-    handleCategoryClick(id) {
-      // TODO make ajax places data refresh
-      let stateObj = {};
-      stateObj["active_category_" + id] = !this.state["active_category_" + id];
-      this.setState(stateObj);
+    handleCategoryItemClick(id) {
+      // creating new active categories object
+      let newCategories = [];
+      for (let i = 0; i < this.props.categories.length; i+=1) {
+        newCategories[i] = {};
+        if (this.props.categories[i].id === id)
+          newCategories[i].active = !this.props.categories[i].active;
+        else
+          newCategories[i].active = this.props.categories[i].active;
+        newCategories[i].name = this.props.categories[i].name;
+        newCategories[i].id = this.props.categories[i].id;
+      }
+
+      // send to father new active categories which cause rerender of sidebar and map
+      this.props.app.setActiveCategories(newCategories);
     }
 
     render() {
         let context = this;
         let categories_list;
-        if (this.state.categories) {
+        // console.log("RENDER SideBar, categories:");
+        // console.log(this.props.categories);
+        if (this.props.categories) {
 
-            categories_list = this.state.categories.map(function(category, index){
-              if (context.state["active_category_" + category.id] == null)
-                context.state["active_category_" + category.id] = true;
-              return (<Category categoryName={category.name} isActive={context.state["active_category_" + category.id]}
-                                onClick={context.handleCategoryClick.bind(context, category.id)} key={index}/>);
+            categories_list = this.props.categories.map(function(category, index){
+              return (<CategoryItem categoryName={category.name} isActive={category.active}
+                                onClick={context.handleCategoryItemClick.bind(context, category.id)} key={index}/>);
             });
         }
         return (
@@ -131,7 +147,7 @@ class SideBar extends React.Component {
                 <li><Link onlyActiveOnIndex activeStyle={{color:'#53acff'}} to='/'>Home</Link></li>
                 <li><a href="#">View</a></li>
                 <li><a href="#">Display Objects</a>
-                  <ul className="sidenav-ul">
+                  <ul className="categories-ul">
                     {categories_list}
                   </ul>
                 </li>
@@ -144,20 +160,15 @@ class SideBar extends React.Component {
     }
 };
 
-class Category extends React.Component {
+class CategoryItem extends React.Component {
 
   render() {
+    let liStyleClass = "ctg-li-unactive";
+    if (this.props.isActive)
+      liStyleClass = "ctg-li-active";
 
-    if (this.props.isActive){
-      var styleObj = {
-        backgroundColor: "#ff0000"
-      };
-    }
-    else {
-        backgroundColor: "#000000"
-    }
     return (
-      <li style={styleObj}><a href="#" onClick={this.props.onClick}>{this.props.categoryName}</a></li>
+      <li className={"categories-li " + liStyleClass} onClick={this.props.onClick}>{this.props.categoryName}</li>
     );
   }
 
