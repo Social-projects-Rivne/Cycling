@@ -31,23 +31,24 @@ class BaseNotification extends React.Component{
       left: '0',
       right: '0',
       zIndex: '9999',
-      background: (this.background)? this.background : "#fde073",
+      background: this.background || "#fde073",
       textAlign: "center",
       lineHeight: "4.0",
       overflow: "hidden"
     };
 
     let closeButtonStyle = {
-      lineHeight: "2.0",
+      lineHeight: "2.5",
+      marginRight: "20px"
     };
 
     return (
         <div id="notification" style={notificationStyle}>
             
-             {(this.state.text)? this.state.text : "Success!"}
+             { this.text || "Here should be a notifying text."}
 
             <button type="button" className="close" 
-                onClick={this.onClose} aria-label="Close"
+                onClick={this.closeMe} aria-label="Close"
                 style={closeButtonStyle}>
                 <span aria-hidden="true">&times;</span>
             </button>

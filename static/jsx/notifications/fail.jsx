@@ -5,6 +5,7 @@ class FailNotification extends BaseNotification{
     constructor(props){
     super(props);
     this.background = "#d9534f";
+    this.text = props.text || 'Failed';
   };
 };
 

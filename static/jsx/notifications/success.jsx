@@ -5,6 +5,7 @@ class SuccessNotification extends BaseNotification{
     constructor(props){
     super(props);
     this.background = "#5cb85c";
+    this.text = props.text || 'Success!';
   };
 };
 
