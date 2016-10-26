@@ -20,7 +20,7 @@ class APP extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-          "showHideSidenav":""
+          showHideSidenav: false
         };
         this.handleClick = this.handleClick.bind(this);
     }
@@ -30,8 +30,7 @@ class APP extends React.Component{
        * Change main div class in case of clicking on button,
        * to provide posibility of hidding and opening sidevar
        */
-      var css = (this.state.showHideSidenav === "") ? "toggled" : ""
-      this.setState({"showHideSidenav":css});
+      this.setState({showHideSidenav:!this.state.showHideSidenav ? "toggled" : ""});
     }
 
     render(){
