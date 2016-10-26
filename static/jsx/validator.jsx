@@ -13,6 +13,9 @@ class Validator {
     // requirements to password:
     //  - length more that 8
     validatePassword(password){
+      if(password === undefined){
+        return false
+      }
       return /^[A-z\d\._]{8,}$/.test(password);
     }
 }

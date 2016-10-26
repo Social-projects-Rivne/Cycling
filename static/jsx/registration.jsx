@@ -108,15 +108,14 @@ class RegistrationComponent extends React.Component {
                     </div>
                     <FullNameInput value={this.name} name="name"
                     id="name-input-field" father={this} error={this.state.name_error}/>
-                    <p className="form-tip">Not numbers, only uppercase, lowercase letters,
-                     '-' and apostrophe are allowed</p>
+                    <p className="form-tip">Only letters(first letters - uppercase),
+                     dash and apostrophe are allowed</p>
                     <EmailInput value={this.email} name="email"
                     id="email-input-field" father={this} error={this.state.email_error}/>
                     <p className="form-tip">Standart email style, for example - youremail@gmail.com</p>
                     <PasswordInput value={this.password} name="password"
                     id="password-input-field" father={this} error={this.state.password_error}/>                
-                    <p className="form-tip">Length more that 8, contains uppercase, 
-                    contains lowercase, contains number</p>
+                    <p className="form-tip">Length more that 8, can contain letters, numbers, dot and '_'</p>
                     <PasswordInput value={this.password_confirm} name="password_confirm"
                     id="password-confirm-input-field" father={this} error={this.state.password_confirm_error}/>
                     <p className="form-tip">Re-type password</p>

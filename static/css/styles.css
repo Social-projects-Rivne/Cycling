@@ -47,11 +47,13 @@ label:focus,
 .header-div
 {
     text-align: center;
+    color: #106CC8;
 }
 
-.header-div.registrated
+.header-div.registrated h2
 {
-    color: #7CFC00;
+    padding-top: 90px;
+    font-size: 60px;
 }
 
 .register-button
