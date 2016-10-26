@@ -130,7 +130,8 @@ class MapComponent extends React.Component {
     // this.openPopup(MyPopup.setLatLng(e.latlng));
     // $('#myModal').modal();
     // console.log(localStorage['token']);
-    this.props.father.refs.modal.show();
+    this.props.newPointer(e.latlng);
+    // this.props.father.refs.modal.showMe('e.latlng');
   };
 
   onRightClick(e){
@@ -152,7 +153,8 @@ class MapComponent extends React.Component {
               // onDragend={this.onBoundsChange}
               onZoomend={this.onBoundsChange}
               onClick={this.onMouseClick}
-              onContextmenu={this.onRightClick}>
+              // onContextmenu={this.onRightClick}
+              >
         <ScaleControl position='bottomright'></ScaleControl>
         <ZoomControl position='bottomleft'></ZoomControl>
         <LayersControl position='topleft'>

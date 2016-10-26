@@ -5,19 +5,38 @@ class BaseModal extends React.Component{
   constructor(props){
     super(props);
     this.state = {};
-    this.show = this.show.bind(this);
-  };
-
-  show(){
-    let modal_id = '#' + this.props.id;
-    $(modal_id).modal();
   };
 
   render(){
+      if (!this.props.isOpen)
+        return null
+    
+    let modalStyle = {
+      position: 'fixed',
+      width: this.props.width,
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      zIndex: '9999',
+      borderRadius: '10px',
+      background: '#fff',
+      outline: 'none'
+    }
+
+    let backdropStyle = {
+      position: 'fixed',
+      width: '100%',
+      height: '100%',
+      top: '0px',
+      left: '0px',
+      zIndex: '9998',
+      background: 'rgba(0, 0, 0, 0.35)'
+    }
+
       const okButton = this.props.showOk
             ? (
                 <div className="modal-footer">
-                    <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" className="btn btn-default" onClick={this.props.onClose}>Close</button>
                     <button 
                         type="button" 
                         className="btn btn-primary"
@@ -29,24 +48,34 @@ class BaseModal extends React.Component{
                 </div>
             ) : null;
     return (
-              <div className="modal fade" id={this.props.id} tabIndex="-1" role="dialog" aria-labelledby={this.props.label} aria-hidden="true">
-                <div className="modal-dialog" role="document">
-                    <div className="modal-content">
-                      <div className="modal-header">
-                          <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                          </button>
-                          <h4 className="modal-title" id={this.props.label}>{this.props.title}</h4>
-                      </div>
+        <div>
+            <div style={modalStyle} className="modal-dialog" role="document">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <button type="button" className="close" onClick={this.props.onClose} aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 className="modal-title" id={this.props.label}>{this.props.title}</h4>
+                    </div>
                     <div className="modal-body">
-                      {this.props.children}
+                        {this.props.children}
                     </div>
-                      {okButton}
-                    </div>
+                    {okButton}
                 </div>
-               </div>
+            </div>
+            <div style={backdropStyle} onClick={e => this.close(e)}></div>
+        </div>
     )
-  }
+  };
+
+  close(e) {
+    e.preventDefault()
+
+    if (this.props.onClose) {
+      this.props.onClose()
+    }
+  };
+
 };
 
 BaseModal.propTypes = {
@@ -58,7 +87,6 @@ BaseModal.propTypes = {
   okText: PropTypes.string,
   okDisabled: PropTypes.bool,
   width: PropTypes.number,
-  style: PropTypes.object,
   children: PropTypes.oneOfType([
     PropTypes.array,
     PropTypes.element,

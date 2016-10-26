@@ -1,25 +1,18 @@
 import React from 'react';
 import BaseModal from './base_modal.jsx';
 
-class NewPointerModal extends React.Component{
+class NewPlaceModal extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-        isOpen: false,
-        id: 'newPointerModal',
-        title: 'New Pointer on the Map',
-        label: 'newPointerModalLabel',
-        showOk: false
+        id: 'NewPlaceModal',
+        title: 'New Place on the Map',
+        label: 'NewPlaceModalLabel',
+        showOk: true,
+        okText: 'Create',
     };
     this.showMe = this.showMe.bind(this);
     this.closeMe = this.closeMe.bind(this);
-    this.onPlace = this.onPlace.bind(this);
-  };
-
-  onPlace(){
-      console.log('Place clicked!');
-      this.setState({ isOpen: false });
-      this.props.father.refs.newPlaceModal.showMe(this.state.latlng);
   };
 
   closeMe() {
@@ -27,7 +20,7 @@ class NewPointerModal extends React.Component{
   }
 
   showMe(latlng={}){
-      // console.log(latlng);
+      console.log(latlng);
       this.setState({ isOpen: true, latlng: latlng });
   };
 
@@ -39,9 +32,10 @@ class NewPointerModal extends React.Component{
                     title={this.state.title} 
                     label={this.state.label} 
                     showOk={this.state.showOk}
-                    onClose={this.closeMe}>                      
+                    onClose={this.closeMe}
+                    onOk={this.closeMe}>                      
                     <div className="btn-group-vertical btn-block">
-                        <button type="button" className="btn btn-default" onClick={this.onPlace}>Place</button>
+                        <button type="button" className="btn btn-default" onClick={this.closeMe}>Place</button>
                         <button type="button" className="btn btn-default">Parking</button>
                         <button type="button" className="btn btn-default">A Bicycle Got Stolen</button>
                       </div>
@@ -50,4 +44,4 @@ class NewPointerModal extends React.Component{
   }
 };
 
-export default NewPointerModal;
+export default NewPlaceModal;
