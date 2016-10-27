@@ -240,5 +240,26 @@ label:focus,
     margin-top: 160px;
     font-size: 70px;
     color: #fff;
-    
+}
+
+.inner-marker-div
+{
+    text-align: center;
+}
+
+.inner-marker-div span
+{
+    font-weight: bold;
+    display: block;
+}
+
+.inner-marker-div a:hover
+{
+    cursor: pointer;
+    display: block;
+}
+
+.inner-marker-div p
+{
+    margin: 5px !important;
 }

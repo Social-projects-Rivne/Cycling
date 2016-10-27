@@ -1,5 +1,6 @@
 import React        from 'react';
 import { LayersControl, Marker, Popup } from 'react-leaflet';
+import { Link, browserHistory} from 'react-router';
 
 
 let stolenMarkers = function(bikes){
@@ -11,7 +12,10 @@ let stolenMarkers = function(bikes){
         return(
           <Marker position={position} key={i}>
             <Popup>
-              <span>Stolen bicycle. <br/> Day: {bike.fields.day}.</span>
+              <div className="inner-marker-div"><span>Stolen bicycle</span>
+              <p>Stolen at {bike.fields.day}</p>
+              <div onClick={browserHistory.push('/marker_details')}>Show details...</div>
+              </div>
             </Popup>
           </Marker>
         );

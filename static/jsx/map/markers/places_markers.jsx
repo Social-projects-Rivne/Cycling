@@ -1,6 +1,6 @@
 import React        from 'react';
 import { LayersControl, Marker, Popup } from 'react-leaflet';
-
+import { Link, browserHistory } from 'react-router';
 
 let placesMarkers = function(places){
   console.log('Places: ', places.length);
@@ -11,9 +11,9 @@ let placesMarkers = function(places){
         return(
           <Marker position={position} key={i}>
             <Popup>
-              <span>Place (category: {place.fields.category_id}). <br/>
-                  Name: {place.fields.name}.<br/>
-                  Added: {place.fields.owner}.</span>
+              <div className="inner-marker-div"><span>Place: {place.fields.name}</span>
+              <div onClick={browserHistory.push('/marker_details')}>Show details...</div>
+              </div>
             </Popup>
           </Marker>
         );
