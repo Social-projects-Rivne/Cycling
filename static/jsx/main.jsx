@@ -40,16 +40,54 @@ class APP extends React.Component{
 
 class Header extends React.Component {
 
+
     render() {
-        return(
-            <div className="navbar navbar-fixed-top main-header" role="navigation">
-              <div className="navbar-header">
-                  <a onClick={this.props.onButtonClick} id="menu-toggle" className="logo-a"><span className="icon material-icons">menu</span></a>
-                  <Link className="navbar-brand logo-line" to='/'>Cycling</Link>
-                  <button className="btn btn-info header-button"><Link to='/registration'>Registration</Link></button>
-              </div>
+
+      // we need to check if user is logged in
+      // if yes we should instead of login and registration buttons return
+      // avatar image
+      var headerRightContent;
+
+      if (localStorage['token']) {
+        console.log("token found");
+        // if he is logged in but there is no profile data
+        // we should place loading spinner
+        if (localStorage['full_name']){
+          headerRightContent = (
+            <span>User avatar place</span>
+          );
+        }
+        else{
+          headerRightContent = (
+            <div className="spinner header-button">
+              <div className="bounce1"></div>
+              <div className="bounce2"></div>
+              <div className="bounce3"></div>
             </div>
+          );
+        }
+      }
+      else {
+        console.log("token not found");
+        headerRightContent = (
+          <div className="header-button">
+            <button className="btn btn-info"><Link to='/login'>Login</Link></button>
+            <button className="btn btn-info"><Link to='/registration'>Registration</Link></button>
+          </div>
         );
+      }
+
+      return(
+          <div className="navbar navbar-fixed-top main-header" role="navigation">
+            <div className="navbar-header">
+                <a onClick={this.props.onButtonClick} id="menu-toggle" className="logo-a"><span className="icon material-icons">menu</span></a>
+                <Link className="navbar-brand logo-line" to='/'>Cycling</Link>
+                <div className="header-button">
+                  {headerRightContent}
+                </div>
+            </div>
+          </div>
+      );
     }
 }
 
@@ -58,6 +96,7 @@ class SideBar extends React.Component {
         super(props);
         this.state = {};
     }
+
 
     render() {
         return (

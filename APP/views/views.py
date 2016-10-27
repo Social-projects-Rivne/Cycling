@@ -150,6 +150,7 @@ def get_points(request, model_cls):
         # print data
         return HttpResponse(data, content_type="application/json")
 
+
 def get_places_by_points(request):
     """Returns places with a location within rectangle
     of sw and ne points, where:
