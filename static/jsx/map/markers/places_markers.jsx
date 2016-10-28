@@ -7,12 +7,12 @@ let placesMarkers = function(places){
   if (places){
     let my_array = places.map(function(place, i){
         const position = [parseFloat(place.fields.lat), parseFloat(place.fields.lng)];
-        // console.log(position);
+        let id = place.pk;
         return(
           <Marker position={position} key={i}>
             <Popup>
               <div className="inner-marker-div"><span>Place: {place.fields.name}</span>
-              <div onClick={browserHistory.push('/marker_details')}>Show details...</div>
+              <a href={"/marker_details/" + id + "?type=place"}>Show details...</a>
               </div>
             </Popup>
           </Marker>

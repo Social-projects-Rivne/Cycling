@@ -85,7 +85,10 @@ def registration(request):
 
 
 def marker_details(request):
-    pass
+    if request.method == POST:
+        print response.POST['marker_type']
+        print response.POST['marker_id']
+        return JsonResponse("I am alive!")
 
 def get_points(request, model_cls):
     """Returns entities with location within rectangle

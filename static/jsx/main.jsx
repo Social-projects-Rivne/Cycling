@@ -99,8 +99,10 @@ ReactDOM.render(
          <Route path = "home" component = {Home}/>
          <Route path = "/login" component = {LoginComponent} />
          <Route path = "/registration" component = {RegistrationComponent} />
-         <Route path = "/marker_details" component = {MarkerDetails} />
-         <Route path='*' component={NotFound} />
+         <Route path = "/marker_details/:id" component = {MarkerDetails} />
+         <Route path = "/marker_details/parkings/:id" component = {MarkerDetails} />
+         <Route path = "/marker_details/stolen_bikes/:id" component = {MarkerDetails} />
+         <Route path = '*' component={NotFound} />
       </Route>
   </Router>),
   document.getElementById('app'));

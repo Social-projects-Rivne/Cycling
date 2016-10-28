@@ -8,13 +8,13 @@ let stolenMarkers = function(bikes){
   if (bikes){
     let my_array = bikes.map(function(bike, i){
         const position = [parseFloat(bike.fields.lat), parseFloat(bike.fields.lng)];
-        // console.log(position);
+        let id = bike.pk;
         return(
           <Marker position={position} key={i}>
             <Popup>
               <div className="inner-marker-div"><span>Stolen bicycle</span>
               <p>Stolen at {bike.fields.day}</p>
-              <div onClick={browserHistory.push('/marker_details')}>Show details...</div>
+              <a href={"/marker_details/" + id + "?type=bike"}>Show details...</a>
               </div>
             </Popup>
           </Marker>

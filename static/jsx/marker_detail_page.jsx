@@ -4,18 +4,26 @@ export class MarkerDetails extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
+			marker_type: this.props.location.query.type,
+			marker_id: this.props.params.id
 		};
 	}
 
-	componentWillMount() {
+	componentDidMount() {
+		let data = [this.state.marker_type, this.state.marker_id];
 		$.ajax({
-            type: 'GET',
+            type: 'POST',
             url: 'api/marker_details',
-            success: function(response){}
+            data: data,
+            dataType: "json",
+            success: function(response){
+            	console.log("I where on server!");
+            }
         });
 	}
 
 	render() {
+		console.log(this.props);
 		return (
 			<div className="marker-details-content">
 				<div className="photo-container">

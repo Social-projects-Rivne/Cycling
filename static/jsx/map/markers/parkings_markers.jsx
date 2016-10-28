@@ -8,13 +8,13 @@ let parkingsMarkers = function(parkings){
   if (parkings){
     let my_array = parkings.map(function(parkng, i){
         const position = [parseFloat(parkng.fields.lat), parseFloat(parkng.fields.lng)];
-        // console.log(position);
+        let id = parkng.pk;
         return(
           <Marker position={position} key={i}>
             <Popup>
               <div className="inner-marker-div"><span>Parking: {parkng.fields.name}</span>
               <p>Parking (amount: {parkng.fields.amount})</p>
-              <div onClick={browserHistory.push('/marker_details')}>Show details...</div>
+              <a href={"/marker_details/" + id + "?type=parking"}>Show details...</a>
               </div>
             </Popup>
           </Marker>
