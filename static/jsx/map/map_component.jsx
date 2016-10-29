@@ -1,10 +1,12 @@
 import React                from 'react';
+import L                    from 'leaflet';
 import { Map, TileLayer, Marker, Popup, LayersControl, FeatureGroup, Circle, ScaleControl, ZoomControl } from 'react-leaflet';
 import layers_list          from './layers.jsx';
-import stolenMarkers        from './markers/stolen_bikes_markers.jsx'
-import parkingsMarkers      from './markers/parkings_markers.jsx'
-import placesMarkers        from './markers/places_markers.jsx'
-import createPointerPopup, {MyPopup} from './popups/create_pointer.jsx'
+import stolenMarkers        from './markers/stolen_bikes_markers.jsx';
+import parkingsMarkers      from './markers/parkings_markers.jsx';
+import placesMarkers        from './markers/places_markers.jsx';
+import createPointerPopup, {MyPopup} from './popups/create_pointer.jsx';
+import RedMarker            from './markers/red_marker.jsx';
 
 var pref = 'Satelite';
 var show_parkings = false;
@@ -20,7 +22,8 @@ class MapComponent extends React.Component {
       zoom: 16,
       parkings: [],
       places: [],
-      stolens: []
+      stolens: [],
+      redMarkerLatLng: null
     };
     this.onBoundsChange = this.onBoundsChange.bind(this);
     this.loadPointers = this.loadPointers.bind(this);
@@ -55,7 +58,7 @@ class MapComponent extends React.Component {
       data: {ne:ne, sw:sw}
     },
     function (data) {
-      this.setState({parkings: data});
+      this.setState({parkings: data, redMarkerLatLng: null});
       // console.log(this.state.parkings.length);
     }.bind(this));
       
@@ -65,7 +68,7 @@ class MapComponent extends React.Component {
       data: {ne:ne, sw:sw}
     },
     function (data) {
-      this.setState({places: data});
+      this.setState({places: data, redMarkerLatLng: null});
     }.bind(this));
   
     this.serverRequest3 = $.get(
@@ -74,7 +77,7 @@ class MapComponent extends React.Component {
       data: {ne:ne, sw:sw}
     },
     function (data) {
-        this.setState({stolens: data});
+        this.setState({stolens: data, redMarkerLatLng: null});
     }.bind(this));
   };
 
@@ -125,11 +128,10 @@ class MapComponent extends React.Component {
   // };
 
   onMouseClick(e){
-    // console.log(e.latlng);
     // this.openPopup(createPointerPopup(), e.latlng);
     // this.openPopup(MyPopup.setLatLng(e.latlng));
-    // $('#myModal').modal();
     // console.log(localStorage['token']);
+    this.setState({redMarkerLatLng: e.latlng});
     this.props.newPointer(e.latlng);
     // this.props.father.refs.modal.showMe('e.latlng');
   };
@@ -189,6 +191,8 @@ class MapComponent extends React.Component {
             </FeatureGroup>
           </LayersControl.Overlay>
         </LayersControl>
+
+        {this.state.redMarkerLatLng ? <RedMarker position={this.state.redMarkerLatLng} /> : null}
         
       </Map>
     );

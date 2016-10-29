@@ -4,13 +4,13 @@ import { LayersControl, Marker, Popup } from 'react-leaflet';
 
 const src = require('../../../images/marker-icon-azure.png');
 //Extend the Default marker class
-let RedIcon = L.Icon.Default.extend({
+let AzureIcon = L.Icon.Default.extend({
   options: {
         iconSize: [41, 41],
         iconUrl: src
   }
 });
-let redIcon = new RedIcon();
+let azureIcon = new AzureIcon();
 // console.log(redIcon.iconUrl); 
 /*
 //Other things we could have changed
@@ -30,7 +30,7 @@ let parkingsMarkers = function(parkings){
         const position = [parseFloat(parkng.fields.lat), parseFloat(parkng.fields.lng)];
         // console.log(position);
         return(
-          <Marker position={position} key={i} icon={redIcon}>
+          <Marker position={position} key={i} icon={azureIcon}>
             <Popup>
               <span>Parking (amount: {parkng.fields.amount}). <br/>
                   Name: {parkng.fields.name}.</span>

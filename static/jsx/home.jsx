@@ -3,6 +3,7 @@ import MapComponent from './map/map_component.jsx';
 import NewPointerModal from './modals/new_pointer.jsx';
 import NewPlaceModal from './modals/new_place.jsx';
 import FailNotification from './notifications/fail.jsx';
+import SuccessNotification from './notifications/success.jsx';
 
 class Home extends React.Component{
   constructor(props){
@@ -17,6 +18,8 @@ class Home extends React.Component{
   render(){
     return (
       <div>
+        <SuccessNotification ref="successNotification" father={this} />
+        <FailNotification ref="failNotification" father={this} />
         <NewPlaceModal ref="newPlaceModal" father={this}/>
         <NewPointerModal ref="newPointerModal" father={this}/>
         <MapComponent father={this} newPointer={this.showNewPointerModal}/>

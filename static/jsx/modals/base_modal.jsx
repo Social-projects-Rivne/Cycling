@@ -17,7 +17,7 @@ class BaseModal extends React.Component{
       top: '50%',
       left: '50%',
       transform: 'translate(-50%, -50%)',
-      zIndex: '9999',
+      zIndex: '9990',
       borderRadius: '10px',
       background: '#fff',
       outline: 'none'
@@ -29,7 +29,7 @@ class BaseModal extends React.Component{
       height: '100%',
       top: '0px',
       left: '0px',
-      zIndex: '9998',
+      zIndex: '9989',
       background: 'rgba(0, 0, 0, 0.35)'
     }
 

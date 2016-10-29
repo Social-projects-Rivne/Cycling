@@ -6,7 +6,6 @@ class BaseNotification extends React.Component{
     super(props);
     this.state = {
         isNotification: false,
-        text: 'Somebody forgot to pass text in here'
     };
     this.showMe = this.showMe.bind(this);
     this.closeMe = this.closeMe.bind(this);
@@ -17,7 +16,9 @@ class BaseNotification extends React.Component{
   }
 
   showMe(text){
-      this.setState({ isNotification: true, text: text });
+      console.log(text); 
+      this.text = text;
+      this.setState({ isNotification: true });
       setTimeout(this.closeMe, 5000);
   };
 

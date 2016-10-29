@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 import json
 
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseBadRequest , HttpResponseServerError
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
@@ -152,3 +152,31 @@ def get_stolen_bikes_by_points(request):
     latitude is first, longitude - second
     """
     return get_points(request, StolenBike)
+
+# @need_token
+def create_place(request):
+    """Creates new Place object in DB
+
+    The url is built like this:
+    https://cycling.com/api/place/create
+    it's a POST request
+    """
+    if request.method != 'POST':
+        return HttpResponseBadRequest(content='Expected POST')
+    kwargs = {}
+    kwargs['name'] = request.POST.get('name', None)
+    if kwargs['name'] is None:
+        return HttpResponseBadRequest(content='There should be "name" field')
+    kwargs['lat'] = request.POST.get('lat', None)
+    kwargs['lng'] = request.POST.get('lng', None)
+    kwargs['description'] = request.POST.get('description', None)
+    kwargs['from_hour'] = request.POST.get('from_hour', None)
+    kwargs['to_hour'] = request.POST.get('to_hour', None)
+    kwargs['category_id'] = request.POST.get('category_id', 2)
+    kwargs['owner'] = User.objects.get(token=request.POST['token'])
+    try:
+        place = Place.objects.create(**kwargs)
+        data = serializers.serialize("json", [place,])
+        return HttpResponse(data, content_type="application/json")
+    except Exception as e:
+        return HttpResponseServerError(content=str(e))

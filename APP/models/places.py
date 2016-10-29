@@ -20,7 +20,7 @@ class Place(models.Model):
     # location = models.CharField(max_length=255)
     lat = models.DecimalField(max_digits=8, decimal_places=6, null=True, db_index=True)
     lng = models.DecimalField(max_digits=9, decimal_places=6, null=True, db_index=True)
-    description = models.TextField(blank=True)
+    description = models.TextField(null=True, blank=True)
     from_hour = models.IntegerField(choices=HOURS, null=True, blank=True)
     to_hour = models.IntegerField(choices=HOURS, null=True, blank=True)
     category_id = models.CharField(max_length=1, choices=CATEGORY, default='2')

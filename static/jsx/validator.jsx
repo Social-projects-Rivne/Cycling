@@ -1,10 +1,10 @@
 class Validator {
 
-    constructor(){}
+    constructor(){};
 
     validateEmail(email){
       return /[A-Za-z0-9\.\+_-]+\@[A-Za-z0-9\._-]+\.[a-zA-Z]*$/.test(email);
-    }
+    };
 
     // requirements to password:
     //  - length more that 8
@@ -27,7 +27,11 @@ class Validator {
       return uppercase_regex.test(password) &&
         lowercase_regex.test(password) &&
         number_regex.test(password);
-    }
+    };
+
+    decimal(number){
+      return /^\d+\.?\d+$/.test(number);
+    };
 }
 
 export { Validator };
