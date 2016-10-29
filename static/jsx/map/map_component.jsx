@@ -8,18 +8,18 @@ import placesMarkers        from './markers/places_markers.jsx';
 import createPointerPopup, {MyPopup} from './popups/create_pointer.jsx';
 import RedMarker            from './markers/red_marker.jsx';
 
-var pref = 'MapBox';
-var show_parkings = false;
-var show_places = true;
-var show_stolens = true;
+let stored_layer = () => (localStorage['map_layer'] || 'MapBox');
+let show_parkings = () => (localStorage['show_parkings'] === 'true');
+let show_places = () => (localStorage['show_places'] === 'true');
+let show_stolens = () => (localStorage['show_stolens'] === 'true');
+let center_lat = () => (localStorage['center_lat'] ? parseFloat(localStorage['center_lat']) : 50.619776);
+let center_lng = () => (localStorage['center_lng'] ? parseFloat(localStorage['center_lng']) : 26.251265);
+let zoom = () => (localStorage['zoom'] ? parseInt(localStorage['zoom']) : 16);
 
 class MapComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      lat: 50.619776, //51.505,
-      lng: 26.251265, //-0.09,
-      zoom: 16,
       parkings: [],
       places: [],
       stolens: [],
@@ -87,32 +87,32 @@ class MapComponent extends React.Component {
   onOverlayadd(e){
      switch (e.name) {
       case 'Parkings':
-        show_parkings = true;
+        localStorage['show_parkings'] = true;
         break;
       case 'Places':
-        show_places = true;
+        localStorage['show_places'] = true;
         break;
       case 'Stolen bicycles':
-        show_stolens = true;
+        localStorage['show_stolens'] = true;
         break;
     };
   };
 
   onBaselayerchange(e){
-    console.log(e.name);
-    pref = e.name;
+    // console.log(e.name);
+    localStorage['map_layer'] = e.name;
   };
 
   onOverlayremove(e){
     switch (e.name) {
       case 'Parkings':
-        show_parkings = false;
+        localStorage['show_parkings'] = false;
         break;
       case 'Places':
-        show_places = false;
+        localStorage['show_places'] = false;
         break;
       case 'Stolen bicycles':
-        show_stolens = false;
+        localStorage['show_stolens'] = false;
         break;
     };
   };
@@ -123,6 +123,9 @@ class MapComponent extends React.Component {
     this.loadPointers(Bounds);
     // console.log(this.getCenter());
     // console.log(this.getZoom());
+    localStorage['zoom'] = e.target.getZoom();
+    localStorage['center_lat'] = e.target.getCenter().lat;
+    localStorage['center_lng'] = e.target.getCenter().lng;
   };
 
   // onMoveend(e){
@@ -208,9 +211,9 @@ class MapComponent extends React.Component {
   };
 
   render() {
-    const position = [this.state.lat, this.state.lng];
+    const position = [center_lat(), center_lng()];
     return (
-      <Map center={position} zoom={this.state.zoom}
+      <Map center={position} zoom={zoom()}
               zoomControl={false} 
               ref='map'
               style={{height: '100vh', width:'100vw'}}
@@ -230,7 +233,7 @@ class MapComponent extends React.Component {
             layers_list.map((layer)=>(
               <LayersControl.BaseLayer key={layer.name}
                                        name={layer.name}
-                                       checked={layer.name === pref}>
+                                       checked={layer.name === stored_layer()}>
                 <TileLayer
                   attribution={layer.attribution}
                   url={layer.url}
@@ -239,19 +242,19 @@ class MapComponent extends React.Component {
             ))
           }
 
-          <LayersControl.Overlay name='Parkings' checked={show_parkings} >
+          <LayersControl.Overlay name='Parkings' checked={show_parkings()} >
             <FeatureGroup color='green'>
               {parkingsMarkers(this.state.parkings)}
             </FeatureGroup>
           </LayersControl.Overlay>
 
-          <LayersControl.Overlay name='Places' checked={show_places} >
+          <LayersControl.Overlay name='Places' checked={show_places()} >
             <FeatureGroup color='blue'>
               {placesMarkers(this.state.places)}
             </FeatureGroup>
           </LayersControl.Overlay>
 
-          <LayersControl.Overlay name='Stolen bicycles' checked={show_stolens} >
+          <LayersControl.Overlay name='Stolen bicycles' checked={show_stolens()} >
             <FeatureGroup color='purple'>
               {stolenMarkers(this.state.stolens)}
             </FeatureGroup>
