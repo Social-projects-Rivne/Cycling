@@ -7,11 +7,12 @@ const src = require('../../../images/marker-icon-azure.png');
 let AzureIcon = L.Icon.Default.extend({
   options: {
         iconSize: [41, 41],
+        iconAnchor: [20, 41],
         iconUrl: src
   }
 });
 let azureIcon = new AzureIcon();
-// console.log(redIcon.iconUrl); 
+// console.log(redIcon.iconUrl);
 /*
 //Other things we could have changed
   iconSize:     [25, 41], // size of the icon
