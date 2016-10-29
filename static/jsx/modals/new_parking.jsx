@@ -36,8 +36,9 @@ class NewParkingModal extends React.Component{
       lngValue: '',
       amountValue: 3,
       securityValue: '0',
-      isFreeValue: 1 })
-  }
+      isFreeValue: 1 });
+      this.father.refs.map.setState({redMarkerLatLng: null});
+  };
 
   showMe(latlng={}){
       console.log(latlng);
@@ -56,7 +57,7 @@ class NewParkingModal extends React.Component{
     if (err) {
       styleObj.color = '#E04B39';
       styleObj.borderColor = '#E04B39';
-    }
+    };
     return styleObj;
   };
 
@@ -79,7 +80,7 @@ class NewParkingModal extends React.Component{
     };
     this.serverRequest = $.post(
       {
-        url: '/parking/create',
+        url: '/parkings/create',
         data: {name: this.state.nameValue,
               lat: this.state.latValue,
               lng: this.state.lngValue,

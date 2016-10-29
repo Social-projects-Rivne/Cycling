@@ -35,8 +35,9 @@ class NewPlaceModal extends React.Component{
       descriptionValue: '',
       fromHourValue: '',
       toHourValue: '',
-      categoryValue: 2 })
-  }
+      categoryValue: 2 });
+    this.father.refs.map.setState({redMarkerLatLng: null});
+  };
 
   showMe(latlng={}){
       console.log(latlng);

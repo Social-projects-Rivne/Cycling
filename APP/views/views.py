@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
 import json
+from datetime import datetime
 
 from django.http import JsonResponse, HttpResponseBadRequest , HttpResponseServerError
 from django.shortcuts import render
@@ -16,6 +17,7 @@ from APP.models.places import Place
 from APP.models.stolen_bikes import StolenBike
 from APP.utils.validator import Validator
 from APP.utils.need_token import need_token
+from APP.models.bicycles import Bicycle
 
 _valid_inputs = Validator()
 _password_master = PasswordMaster()
@@ -192,6 +194,88 @@ def create_place(request):
     try:
         place = Place.objects.create(**kwargs)
         data = serializers.serialize("json", [place,])
+        return HttpResponse(data, content_type="application/json")
+    except Exception as e:
+        return HttpResponseServerError(content=str(e))
+
+# @need_token
+def create_parking(request):
+    """Creates new Parking object in DB
+
+    The url is built like this:
+    https://cycling.com/api/parking/create
+    it's a POST request
+    """
+    if request.method != 'POST':
+        return HttpResponseBadRequest(content='Expected POST')
+    kwargs = {}
+    kwargs['name'] = request.POST.get('name', None)
+    if kwargs['name'] is None:
+        return HttpResponseBadRequest(content='There should be "name" field')
+    try:
+        kwargs['lat'] = float(request.POST.get('lat', None))
+    except (TypeError, ValueError):
+        return HttpResponseBadRequest(content='Lattitude value is invalid')
+    try:
+        kwargs['lng'] = float(request.POST.get('lng', None))
+    except (TypeError, ValueError):
+        return HttpResponseBadRequest(content='Longitude value is invalid')
+    try:
+        kwargs['security'] = int(request.POST.get('security', None))
+    except (TypeError, ValueError):
+        kwargs['security'] = None
+    try:
+        kwargs['amount'] = int(request.POST.get('amount', None))
+    except (TypeError, ValueError):
+        kwargs['amount'] = None
+    try:
+        kwargs['is_free'] = int(request.POST.get('is_free', None))
+    except (TypeError, ValueError):
+        kwargs['is_free'] = None
+    kwargs['owner'] = User.objects.get(token=request.POST['token'])
+    try:
+        parking = Parking.objects.create(**kwargs)
+        data = serializers.serialize("json", [parking,])
+        return HttpResponse(data, content_type="application/json")
+    except Exception as e:
+        return HttpResponseServerError(content=str(e))
+
+# @need_token
+def create_stolen(request):
+    """Creates new StolenBike object in DB
+
+    The url is built like this:
+    https://cycling.com/api/stolen/create
+    it's a POST request
+    """
+    if request.method != 'POST':
+        return HttpResponseBadRequest(content='Expected POST')
+    kwargs = {}
+    try:
+        kwargs['lat'] = float(request.POST.get('lat', None))
+    except (TypeError, ValueError):
+        return HttpResponseBadRequest(content='Lattitude value is invalid')
+    try:
+        kwargs['lng'] = float(request.POST.get('lng', None))
+    except (TypeError, ValueError):
+        return HttpResponseBadRequest(content='Longitude value is invalid')
+    kwargs['description'] = request.POST.get('description', None)
+    try:
+        kwargs['day'] = datetime.strptime(request.POST.get('day', None), "").date()
+    except (TypeError, ValueError):
+        return HttpResponseBadRequest(content='The date of the event is invalid')
+    try:
+        kwargs['is_found'] = bool(request.POST.get('is_found', None))
+    except (TypeError, ValueError):
+        kwargs['is_found'] = None
+    try:
+        kwargs['bike'] = int(request.POST.get('bike', None))
+    except (TypeError, ValueError):
+        return HttpResponseBadRequest(content='The bicycle ID is invalid')
+    kwargs['bike'] = Bicycle.objects.get(pk=kwargs['bike'])
+    try:
+        stolen = StolenBike.objects.create(**kwargs)
+        data = serializers.serialize("json", [stolen,])
         return HttpResponse(data, content_type="application/json")
     except Exception as e:
         return HttpResponseServerError(content=str(e))
