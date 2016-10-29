@@ -14,12 +14,18 @@ class NewPointerModal extends React.Component{
     this.showMe = this.showMe.bind(this);
     this.closeMe = this.closeMe.bind(this);
     this.onPlace = this.onPlace.bind(this);
+    this.onParking = this.onParking.bind(this);
   };
 
   onPlace(){
-      console.log('Place clicked!');
+      // console.log('Place clicked!');
       this.setState({ isOpen: false });
       this.props.father.refs.newPlaceModal.showMe(this.state.latlng);
+  };
+
+  onParking(){
+      this.setState({ isOpen: false });
+      this.props.father.refs.newParkingModal.showMe(this.state.latlng);
   };
 
   closeMe() {
@@ -42,7 +48,7 @@ class NewPointerModal extends React.Component{
                     onClose={this.closeMe}>                      
                     <div className="btn-group-vertical btn-block">
                         <button type="button" className="btn btn-default" onClick={this.onPlace}>Place</button>
-                        <button type="button" className="btn btn-default">Parking</button>
+                        <button type="button" className="btn btn-default" onClick={this.onParking}>Parking</button>
                         <button type="button" className="btn btn-default">A Bicycle Got Stolen</button>
                       </div>
                 </BaseModal>

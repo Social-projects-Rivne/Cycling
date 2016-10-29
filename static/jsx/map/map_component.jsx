@@ -29,6 +29,9 @@ class MapComponent extends React.Component {
     this.loadPointers = this.loadPointers.bind(this);
     this.abortRequests = this.abortRequests.bind(this);
     this.onMouseClick = this.onMouseClick.bind(this);
+    this.convertRedMarkerToParking = this.convertRedMarkerToParking.bind(this);
+    this.convertRedMarkerToPlace = this.convertRedMarkerToPlace.bind(this);
+    this.convertRedMarkerToStolen = this.convertRedMarkerToStolen.bind(this);
   }
 
   componentDidMount(){

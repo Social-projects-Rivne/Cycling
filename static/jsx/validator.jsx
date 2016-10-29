@@ -32,6 +32,10 @@ class Validator {
     decimal(number){
       return /^\d+\.?\d+$/.test(number);
     };
+
+    integer(number){
+      return /^\d+$/.test(number);
+    };
 }
 
 export { Validator };
