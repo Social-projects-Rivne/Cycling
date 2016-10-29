@@ -36,7 +36,7 @@ class NewPlaceModal extends React.Component{
       fromHourValue: '',
       toHourValue: '',
       categoryValue: 2 });
-    this.father.refs.map.setState({redMarkerLatLng: null});
+    this.props.father.refs.map.setState({redMarkerLatLng: null});
   };
 
   showMe(latlng={}){
@@ -75,7 +75,7 @@ class NewPlaceModal extends React.Component{
     };
     this.serverRequest = $.post(
       {
-        url: '/places/create',
+        url: '/api/places/create',
         data: {name: this.state.nameValue,
               lat: this.state.latValue,
               lng: this.state.lngValue,
@@ -88,9 +88,9 @@ class NewPlaceModal extends React.Component{
                           let message = "The place " + data[0].fields.name + " is successfully created";
                           // console.log(message);
                           this.props.father.refs.successNotification.showMe(message);
-                          this.closeMe();
                           // console.log(this.state.parkings.length);
                           this.props.father.refs.map.convertRedMarkerToPlace();
+                          this.closeMe();
                         }.bind(this)
                       }
     ).fail(function(data) {

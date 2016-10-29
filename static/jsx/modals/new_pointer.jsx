@@ -29,7 +29,8 @@ class NewPointerModal extends React.Component{
   };
 
   closeMe() {
-    this.setState({ isOpen: false })
+    this.setState({ isOpen: false });
+    this.props.father.refs.map.setState({redMarkerLatLng: null});
   }
 
   showMe(latlng={}){
