@@ -167,12 +167,27 @@ def create_place(request):
     kwargs['name'] = request.POST.get('name', None)
     if kwargs['name'] is None:
         return HttpResponseBadRequest(content='There should be "name" field')
-    kwargs['lat'] = request.POST.get('lat', None)
-    kwargs['lng'] = request.POST.get('lng', None)
+    try:
+        kwargs['lat'] = float(request.POST.get('lat', None))
+    except (TypeError, ValueError):
+        return HttpResponseBadRequest(content='Lattitude value is invalid')
+    try:
+        kwargs['lng'] = float(request.POST.get('lng', None))
+    except (TypeError, ValueError):
+        return HttpResponseBadRequest(content='Longitude value is invalid')
     kwargs['description'] = request.POST.get('description', None)
-    kwargs['from_hour'] = request.POST.get('from_hour', None)
-    kwargs['to_hour'] = request.POST.get('to_hour', None)
-    kwargs['category_id'] = request.POST.get('category_id', 2)
+    try:
+        kwargs['from_hour'] = int(request.POST.get('from_hour', None))
+    except (TypeError, ValueError):
+        kwargs['from_hour'] = None
+    try:
+        kwargs['to_hour'] = int(request.POST.get('to_hour', None))
+    except (TypeError, ValueError):
+        kwargs['to_hour'] = None
+    try:
+        kwargs['category_id'] = int(request.POST.get('category_id', 2))
+    except (TypeError, ValueError):
+        kwargs['category_id'] = 2
     kwargs['owner'] = User.objects.get(token=request.POST['token'])
     try:
         place = Place.objects.create(**kwargs)

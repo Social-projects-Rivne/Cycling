@@ -22,7 +22,7 @@ class Home extends React.Component{
         <FailNotification ref="failNotification" father={this} />
         <NewPlaceModal ref="newPlaceModal" father={this}/>
         <NewPointerModal ref="newPointerModal" father={this}/>
-        <MapComponent father={this} newPointer={this.showNewPointerModal}/>
+        <MapComponent ref="map" father={this} newPointer={this.showNewPointerModal}/>
       </div>
     )
   }

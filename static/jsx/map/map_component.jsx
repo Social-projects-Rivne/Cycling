@@ -137,8 +137,71 @@ class MapComponent extends React.Component {
   };
 
   onRightClick(e){
-    console.log(e.latlng);
-    this.openPopup("Right click", e.latlng, {minWidth:300, className:"test"});
+    // console.log(e.latlng);
+    // this.openPopup("Right click", e.latlng, {minWidth:300, className:"test"});
+  };
+
+  convertRedMarkerToPlace(){
+    let places =  this.state.places;
+    places.push({
+        fields: {
+          lat: this.state.redMarkerLatLng.lat,
+          lng: this.state.redMarkerLatLng.lng,
+          name: "",
+          category_id: "",
+          owner: "",
+          from_hour: "",
+          to_hour: "",
+          description: ""
+        },
+        pk: "",
+        model: "APP.place"
+      });
+    this.setState({
+      places: places,
+      redMarkerLatLng: null
+    });
+  };
+
+  convertRedMarkerToParking(){
+    let parkings =  this.state.parkings;
+    parkings.push({
+        fields: {
+          lat: this.state.redMarkerLatLng.lat,
+          lng: this.state.redMarkerLatLng.lng,
+          name: "",
+          security: "",
+          owner: "",
+          amount: "",
+          is_free: ""
+        },
+        pk: "",
+        model: "APP.parking"
+      });
+    this.setState({
+      parkings: parkings,
+      redMarkerLatLng: null
+    });
+  };
+
+  convertRedMarkerToStolen(){
+    let stolens =  this.state.stolens;
+    stolens.push({
+        fields: {
+          lat: this.state.redMarkerLatLng.lat,
+          lng: this.state.redMarkerLatLng.lng,
+          bike: "",
+          day: "",
+          is_found: "",
+          description: ""
+        },
+        pk: "",
+        model: "APP.stolenbike"
+      });
+    this.setState({
+      stolens: stolens,
+      redMarkerLatLng: null
+    });
   };
 
   render() {
