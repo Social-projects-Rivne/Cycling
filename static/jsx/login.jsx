@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Link } from 'react-router';
 
 import { EmailInput } from './input/email_input.jsx';
@@ -39,6 +40,7 @@ export class LoginComponent extends React.Component {
           email: this.email,
           password: this.password
         };
+
         let context = this;
         $.ajax({
                 type: 'POST',
@@ -53,7 +55,6 @@ export class LoginComponent extends React.Component {
                       console.log(response.error);
                     }
                     else {
-
                       localStorage['token'] = response.token;
                       localStorage['id'] = response.id;
                       window.location.href= "/";

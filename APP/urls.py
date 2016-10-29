@@ -6,6 +6,7 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^login$', views.login, name='login'),
     url(r'^registration$', views.registration),
+    url(r'^marker_details$', views.marker_details),
     url(r'^places/search$', views.get_places_by_points, name='get_places_by_points'),
     url(r'^places/create$', views.create_place, name='create_place'),
     url(r'^parkings/search$', views.get_parkings_by_points, name='get_parkings_by_points'),

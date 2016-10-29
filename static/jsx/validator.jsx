@@ -1,32 +1,22 @@
 class Validator {
 
-    constructor(){};
+    constructor(){}
+    
+    validateName(full_name) {    
+      return /^[A-Z][A-z-']+[A-z]\s[A-Z][A-z-']+[a-z]$/.test(full_name);
+    }
 
     validateEmail(email){
-      return /[A-Za-z0-9\.\+_-]+\@[A-Za-z0-9\._-]+\.[a-zA-Z]*$/.test(email);
-    };
+      return /^[A-z\d_-]+@[A-z\d_-]+\.[a-z]+[\.a-z]*[a-z]$/.test(email);
+    }
 
     // requirements to password:
     //  - length more that 8
-    //  - contains uppercase
-    //  - contains lowercase
-    //  - contains number
     validatePassword(password){
-      if (password === undefined)
-        return false;
-      // 1
-      if (password.length < 8)
-        return false;
-      // regexp for 2
-      let uppercase_regex = /.*[A-Z].*/;
-      // regexp for 3
-      let lowercase_regex = /.*[a-z].*/;
-      // regexp for 4
-      let number_regex = /.*[0-9].*/;
-
-      return uppercase_regex.test(password) &&
-        lowercase_regex.test(password) &&
-        number_regex.test(password);
+      if(password === undefined){
+        return false
+      }
+      return /^[A-z\d\._]{8,}$/.test(password);
     };
 
     decimal(number){

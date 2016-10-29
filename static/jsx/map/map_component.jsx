@@ -8,7 +8,7 @@ import placesMarkers        from './markers/places_markers.jsx';
 import createPointerPopup, {MyPopup} from './popups/create_pointer.jsx';
 import RedMarker            from './markers/red_marker.jsx';
 
-var pref = 'Satelite';
+var pref = 'MapBox';
 var show_parkings = false;
 var show_places = true;
 var show_stolens = true;
@@ -57,7 +57,7 @@ class MapComponent extends React.Component {
     
     this.serverRequest1 = $.get(
     {
-      url: '/parkings/search',
+      url: '/api/parkings/search',
       data: {ne:ne, sw:sw}
     },
     function (data) {
@@ -67,7 +67,7 @@ class MapComponent extends React.Component {
       
     this.serverRequest2 = $.get(
     {
-      url: '/places/search',
+      url: '/api/places/search',
       data: {ne:ne, sw:sw}
     },
     function (data) {
@@ -76,7 +76,7 @@ class MapComponent extends React.Component {
   
     this.serverRequest3 = $.get(
     {
-      url: '/stolen/search',
+      url: '/api/stolen/search',
       data: {ne:ne, sw:sw}
     },
     function (data) {
