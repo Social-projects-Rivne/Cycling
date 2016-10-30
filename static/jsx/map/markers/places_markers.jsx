@@ -12,7 +12,7 @@ let placesMarkers = function(places){
           <Marker position={position} key={i}>
             <Popup>
               <div className="inner-marker-div"><span>Place: {place.fields.name}</span>
-              <a href={"/marker_details/" + id + "?type=place"}>Show details...</a>
+              <a href={"marker_details/" + id + "?type=Place"}>Show details...</a>
               </div>
             </Popup>
           </Marker>

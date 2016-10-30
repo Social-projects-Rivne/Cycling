@@ -69,7 +69,8 @@ def registration(request):
     if request.method == "POST":
         result_dict = dict()
         if _valid_inputs.full_name_validation(request.POST['full_name']) and \
-           _valid_inputs.email_validation(request.POST['email']):
+           _valid_inputs.email_validation(request.POST['email']) and \
+           _valid_inputs.password_validation(request.POST['password']):
             if User.objects.filter(email=request.POST["email"]).exists():
                 result_dict['EmailError'] = 1
             if not result_dict:
@@ -85,10 +86,12 @@ def registration(request):
 
 
 def marker_details(request):
-    if request.method == POST:
-        print response.POST['marker_type']
-        print response.POST['marker_id']
-        return JsonResponse("I am alive!")
+    if request.method == "GET":
+        print "It's me."
+        table = request['type']
+        ID = request['id']
+        marker_details = table.objects.filter(pk=ID)
+        return JsonResponse(marker_details)
 
 def get_points(request, model_cls):
     """Returns entities with location within rectangle

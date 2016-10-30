@@ -14,7 +14,7 @@ let parkingsMarkers = function(parkings){
             <Popup>
               <div className="inner-marker-div"><span>Parking: {parkng.fields.name}</span>
               <p>Parking (amount: {parkng.fields.amount})</p>
-              <a href={"/marker_details/" + id + "?type=parking"}>Show details...</a>
+              <a href={"marker_details/" + id + "?type=Parking"}>Show details...</a>
               </div>
             </Popup>
           </Marker>

@@ -3,27 +3,25 @@ import React from 'react';
 export class MarkerDetails extends React.Component {
 	constructor(props){
 		super(props);
-		this.state = {
-			marker_type: this.props.location.query.type,
-			marker_id: this.props.params.id
-		};
+		this.state = {};
 	}
 
 	componentDidMount() {
-		let data = [this.state.marker_type, this.state.marker_id];
-		$.ajax({
-            type: 'POST',
-            url: 'api/marker_details',
-            data: data,
-            dataType: "json",
-            success: function(response){
-            	console.log("I where on server!");
-            }
-        });
+		this.setState({
+				marker_type: this.props.location.query.type,
+				marker_id: this.props.params.id
+		});
+		$.get(
+    	{
+      		url: 'api/marker_details',
+      		data: {type: this.state.marker_type, id: this.state.marker_id}
+    	},
+    	function (response) {
+      		alert(response);
+    	}.bind(this));
 	}
 
 	render() {
-		console.log(this.props);
 		return (
 			<div className="marker-details-content">
 				<div className="photo-container">

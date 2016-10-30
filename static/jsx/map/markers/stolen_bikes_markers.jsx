@@ -14,7 +14,7 @@ let stolenMarkers = function(bikes){
             <Popup>
               <div className="inner-marker-div"><span>Stolen bicycle</span>
               <p>Stolen at {bike.fields.day}</p>
-              <a href={"/marker_details/" + id + "?type=bike"}>Show details...</a>
+              <a href={"marker_details/" + id + "?type=StolenBike"}>Show details...</a>
               </div>
             </Popup>
           </Marker>

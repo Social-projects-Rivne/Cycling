@@ -90,7 +90,7 @@ class RegistrationComponent extends React.Component {
         //In case of success validation, send data to server
         $.ajax({
             type: 'POST',
-            url: 'api/registration',
+            url: '/api/registration',
             dataType: "json",
             data: data,
             success: ajaxSuccess
