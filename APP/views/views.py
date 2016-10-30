@@ -1,7 +1,8 @@
 # -*- encoding: utf-8 -*-
 import json
+from datetime import datetime
 
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseBadRequest , HttpResponseServerError
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
@@ -16,9 +17,10 @@ from APP.models.places import Place
 from APP.models.stolen_bikes import StolenBike
 from APP.utils.validator import Validator
 from APP.utils.need_token import need_token
+from APP.models.bicycles import Bicycle
 
 _valid_inputs = Validator()
-
+_password_master = PasswordMaster()
 
 def index(request):
     context = {
@@ -72,9 +74,8 @@ def login(request):
             "code": 103
             })
 
-    password_master = PasswordMaster()
-    if password_master.check_password(data['password'], user.password):
-        user.token = password_master.generate_token()
+    if _password_master.check_password(data['password'], user.password):
+        user.token = _password_master.generate_token()
     else:
         return JsonResponse({
             "error": "Invalid password!",
@@ -91,36 +92,33 @@ def login(request):
 
 @csrf_exempt
 def registration(request):
+    """Receive json with user credentials,
+    validate and in case of success add user
+    with that credentials to database
+    and return json with success
+    or error in case of error
+    """
+
     if request.method == "POST":
-        print "Our post", request.POST["full_name"]
         result_dict = dict()
-        obj_filter = User.objects.filter
         if _valid_inputs.full_name_validation(request.POST['full_name']) and \
            _valid_inputs.email_validation(request.POST['email']):
-            if obj_filter(email=request.POST["email"]).exists():
-                result_dict['EmailError'] = "Such email already exists!"
-            else:
-                try:
-                    # handle token generation and password hashing
-                    password_master = PasswordMaster()
-                    token = password_master.generate_token()
-                    raw_password = request.POST['password']
-                    password = password_master.hash_password(raw_password)
-                    user = User.objects.create(
-                        full_name=request.POST['full_name'],
-                        email=request.POST['email'],
-                        password=password,
-                        role_id='0',
-                        token=token)
-                    result_dict['Success'] = "true"
-                    result_dict['token'] = token
-                    result_dict['id'] = user.id
-                except Exception, error:
-                    print error
+            if User.objects.filter(email=request.POST["email"]).exists():
+                result_dict['EmailError'] = 1
+            if not result_dict:
+                User.objects.create(
+                    full_name=request.POST['full_name'],
+                    email=request.POST['email'],
+                    password=request.POST['password'],
+                    role_id='0', token=_password_master.generate_token())
+                result_dict['Success'] = 1
         else:
-            result_dict['RulesError'] = "Error rules of input"
+            result_dict['RulesError'] = 1
         return JsonResponse(result_dict)
 
+
+def marker_details(request):
+    pass
 
 def get_points(request, model_cls):
     """Returns entities with location within rectangle
@@ -185,3 +183,128 @@ def get_stolen_bikes_by_points(request):
     latitude is first, longitude - second
     """
     return get_points(request, StolenBike)
+
+# @need_token
+def create_place(request):
+    """Creates new Place object in DB
+
+    The url is built like this:
+    https://cycling.com/api/place/create
+    it's a POST request
+    """
+    if request.method != 'POST':
+        return HttpResponseBadRequest(content='Expected POST')
+    kwargs = {}
+    kwargs['name'] = request.POST.get('name', None)
+    if kwargs['name'] is None:
+        return HttpResponseBadRequest(content='There should be "name" field')
+    try:
+        kwargs['lat'] = float(request.POST.get('lat', None))
+    except (TypeError, ValueError):
+        return HttpResponseBadRequest(content='Lattitude value is invalid')
+    try:
+        kwargs['lng'] = float(request.POST.get('lng', None))
+    except (TypeError, ValueError):
+        return HttpResponseBadRequest(content='Longitude value is invalid')
+    kwargs['description'] = request.POST.get('description', None)
+    try:
+        kwargs['from_hour'] = int(request.POST.get('from_hour', None))
+    except (TypeError, ValueError):
+        kwargs['from_hour'] = None
+    try:
+        kwargs['to_hour'] = int(request.POST.get('to_hour', None))
+    except (TypeError, ValueError):
+        kwargs['to_hour'] = None
+    try:
+        kwargs['category_id'] = int(request.POST.get('category_id', 2))
+    except (TypeError, ValueError):
+        kwargs['category_id'] = 2
+    kwargs['owner'] = User.objects.get(token=request.POST['token'])
+    try:
+        place = Place.objects.create(**kwargs)
+        data = serializers.serialize("json", [place,])
+        return HttpResponse(data, content_type="application/json")
+    except Exception as e:
+        return HttpResponseServerError(content=str(e))
+
+# @need_token
+def create_parking(request):
+    """Creates new Parking object in DB
+
+    The url is built like this:
+    https://cycling.com/api/parking/create
+    it's a POST request
+    """
+    if request.method != 'POST':
+        return HttpResponseBadRequest(content='Expected POST')
+    kwargs = {}
+    kwargs['name'] = request.POST.get('name', None)
+    if kwargs['name'] is None:
+        return HttpResponseBadRequest(content='There should be "name" field')
+    try:
+        kwargs['lat'] = float(request.POST.get('lat', None))
+    except (TypeError, ValueError):
+        return HttpResponseBadRequest(content='Lattitude value is invalid')
+    try:
+        kwargs['lng'] = float(request.POST.get('lng', None))
+    except (TypeError, ValueError):
+        return HttpResponseBadRequest(content='Longitude value is invalid')
+    try:
+        kwargs['security'] = int(request.POST.get('security', None))
+    except (TypeError, ValueError):
+        kwargs['security'] = None
+    try:
+        kwargs['amount'] = int(request.POST.get('amount', None))
+    except (TypeError, ValueError):
+        kwargs['amount'] = None
+    try:
+        kwargs['is_free'] = int(request.POST.get('is_free', None))
+    except (TypeError, ValueError):
+        kwargs['is_free'] = None
+    kwargs['owner'] = User.objects.get(token=request.POST['token'])
+    try:
+        parking = Parking.objects.create(**kwargs)
+        data = serializers.serialize("json", [parking,])
+        return HttpResponse(data, content_type="application/json")
+    except Exception as e:
+        return HttpResponseServerError(content=str(e))
+
+# @need_token
+def create_stolen(request):
+    """Creates new StolenBike object in DB
+
+    The url is built like this:
+    https://cycling.com/api/stolen/create
+    it's a POST request
+    """
+    if request.method != 'POST':
+        return HttpResponseBadRequest(content='Expected POST')
+    kwargs = {}
+    try:
+        kwargs['lat'] = float(request.POST.get('lat', None))
+    except (TypeError, ValueError):
+        return HttpResponseBadRequest(content='Lattitude value is invalid')
+    try:
+        kwargs['lng'] = float(request.POST.get('lng', None))
+    except (TypeError, ValueError):
+        return HttpResponseBadRequest(content='Longitude value is invalid')
+    kwargs['description'] = request.POST.get('description', None)
+    try:
+        kwargs['day'] = datetime.strptime(request.POST.get('day', None), "").date()
+    except (TypeError, ValueError):
+        return HttpResponseBadRequest(content='The date of the event is invalid')
+    try:
+        kwargs['is_found'] = bool(request.POST.get('is_found', None))
+    except (TypeError, ValueError):
+        kwargs['is_found'] = None
+    try:
+        kwargs['bike'] = int(request.POST.get('bike', None))
+    except (TypeError, ValueError):
+        return HttpResponseBadRequest(content='The bicycle ID is invalid')
+    kwargs['bike'] = Bicycle.objects.get(pk=kwargs['bike'])
+    try:
+        stolen = StolenBike.objects.create(**kwargs)
+        data = serializers.serialize("json", [stolen,])
+        return HttpResponse(data, content_type="application/json")
+    except Exception as e:
+        return HttpResponseServerError(content=str(e))
