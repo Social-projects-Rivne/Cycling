@@ -93,7 +93,7 @@ class RegistrationComponent extends React.Component {
             url: '/api/registration',
             dataType: "json",
             data: data,
-            success: ajaxSuccess
+            success: this.ajaxSuccess
         });
     }
 

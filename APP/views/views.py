@@ -13,6 +13,7 @@ from APP.utils.json_parser import json_parse_error, json_agr_missing
 from APP.models import User
 from APP.models.parkings import Parking
 from APP.models.places import Place
+from APP.models.bicycles import Bicycle
 from APP.models.stolen_bikes import StolenBike
 from APP.utils.validator import Validator
 from APP.utils.need_token import need_token
@@ -87,11 +88,20 @@ def registration(request):
 
 def marker_details(request):
     if request.method == "GET":
-        print "It's me."
-        table = request['type']
-        ID = request['id']
-        marker_details = table.objects.filter(pk=ID)
-        return JsonResponse(marker_details)
+        print "It's me"
+        table = str(request.GET.get("type"))
+        ID = int(request.GET.get("id"))
+        targer_class = None
+
+        if table == "StolenBike":
+            target_class = StolenBike
+        elif table == "Place":
+            target_class = Place
+        elif table == "Parking":
+            target_class = Parking
+        data = target_class.objects.filter(pk=ID).first()
+        return JsonResponse({"marker_details":serializers.serialize \
+                ("json", [data])})
 
 def get_points(request, model_cls):
     """Returns entities with location within rectangle

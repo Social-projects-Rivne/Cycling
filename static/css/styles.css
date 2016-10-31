@@ -188,7 +188,7 @@ label:focus,
   background: #fff;
   border-radius: 2px;
   display: inline-block;
-  height: 300px;
+  height: 225px;
   margin: 1rem;
   position: relative;
   width: 300px;
@@ -200,21 +200,38 @@ label:focus,
     width: 500px;
 }
 
+.card.details p
+{
+    position: relative;
+    right: 180px;
+    top: 45px;
+    font-size: 17px;
+}
+
 .card.location
 {
     width: 400px;
-    height: 100px;
-    bottom: 200px;
+    height: 85px;
+    bottom: -20px;
     position: relative;
+}
+
+.card.location span
+{
+    position: relative;
+    right: 225px;
+    top: 40px;
+    font-size: 35px;
+    color: #106CC8;
 }
 
 .card.info
 {
     width: 400px;
-    height: 180px;
+    height: 125px;
     position: relative;
     left: 260px;
-    bottom: 205px;
+    bottom: 145px;
 }
 
 .detail-cards-header

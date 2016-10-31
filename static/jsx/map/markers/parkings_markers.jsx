@@ -3,6 +3,10 @@ import { LayersControl, Marker, Popup } from 'react-leaflet';
 import { Link, browserHistory } from 'react-router'
 
 
+function handleClick(link){
+  browserHistory.push(link);
+}
+
 let parkingsMarkers = function(parkings){
   console.log('Parkings: ', parkings.length);
   if (parkings){
@@ -14,7 +18,7 @@ let parkingsMarkers = function(parkings){
             <Popup>
               <div className="inner-marker-div"><span>Parking: {parkng.fields.name}</span>
               <p>Parking (amount: {parkng.fields.amount})</p>
-              <a href={"marker_details/" + id + "?type=Parking"}>Show details...</a>
+              <div onClick={handleClick.bind(this, "marker_details/" + id + "?type=Parking")}>Show details...</div>
               </div>
             </Popup>
           </Marker>
