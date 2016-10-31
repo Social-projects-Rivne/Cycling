@@ -194,32 +194,33 @@ def create_place(request):
     """
     if request.method != 'POST':
         return HttpResponseBadRequest(content='Expected POST')
+    params = json.loads(request.body)
     kwargs = {}
-    kwargs['name'] = request.POST.get('name', None)
+    kwargs['name'] = params.get('name', None)
     if kwargs['name'] is None:
         return HttpResponseBadRequest(content='There should be "name" field')
     try:
-        kwargs['lat'] = float(request.POST.get('lat', None))
+        kwargs['lat'] = float(params.get('lat', None))
     except (TypeError, ValueError):
         return HttpResponseBadRequest(content='Lattitude value is invalid')
     try:
-        kwargs['lng'] = float(request.POST.get('lng', None))
+        kwargs['lng'] = float(params.get('lng', None))
     except (TypeError, ValueError):
         return HttpResponseBadRequest(content='Longitude value is invalid')
-    kwargs['description'] = request.POST.get('description', None)
+    kwargs['description'] = params.get('description', None)
     try:
-        kwargs['from_hour'] = int(request.POST.get('from_hour', None))
+        kwargs['from_hour'] = int(params.get('from_hour', None))
     except (TypeError, ValueError):
         kwargs['from_hour'] = None
     try:
-        kwargs['to_hour'] = int(request.POST.get('to_hour', None))
+        kwargs['to_hour'] = int(params.get('to_hour', None))
     except (TypeError, ValueError):
         kwargs['to_hour'] = None
     try:
-        kwargs['category_id'] = int(request.POST.get('category_id', 2))
+        kwargs['category_id'] = int(params.get('category_id', 2))
     except (TypeError, ValueError):
         kwargs['category_id'] = 2
-    kwargs['owner'] = User.objects.get(token=request.POST['token'])
+    kwargs['owner'] = User.objects.get(token=params['token'])
     try:
         place = Place.objects.create(**kwargs)
         data = serializers.serialize("json", [place,])
@@ -237,31 +238,32 @@ def create_parking(request):
     """
     if request.method != 'POST':
         return HttpResponseBadRequest(content='Expected POST')
+    params = json.loads(request.body)
     kwargs = {}
-    kwargs['name'] = request.POST.get('name', None)
+    kwargs['name'] = params.get('name', None)
     if kwargs['name'] is None:
         return HttpResponseBadRequest(content='There should be "name" field')
     try:
-        kwargs['lat'] = float(request.POST.get('lat', None))
+        kwargs['lat'] = float(params.get('lat', None))
     except (TypeError, ValueError):
         return HttpResponseBadRequest(content='Lattitude value is invalid')
     try:
-        kwargs['lng'] = float(request.POST.get('lng', None))
+        kwargs['lng'] = float(params.get('lng', None))
     except (TypeError, ValueError):
         return HttpResponseBadRequest(content='Longitude value is invalid')
     try:
-        kwargs['security'] = int(request.POST.get('security', None))
+        kwargs['security'] = int(params.get('security', None))
     except (TypeError, ValueError):
         kwargs['security'] = None
     try:
-        kwargs['amount'] = int(request.POST.get('amount', None))
+        kwargs['amount'] = int(params.get('amount', None))
     except (TypeError, ValueError):
         kwargs['amount'] = None
     try:
-        kwargs['is_free'] = int(request.POST.get('is_free', None))
+        kwargs['is_free'] = int(params.get('is_free', None))
     except (TypeError, ValueError):
         kwargs['is_free'] = None
-    kwargs['owner'] = User.objects.get(token=request.POST['token'])
+    kwargs['owner'] = User.objects.get(token=params['token'])
     try:
         parking = Parking.objects.create(**kwargs)
         data = serializers.serialize("json", [parking,])
@@ -279,26 +281,27 @@ def create_stolen(request):
     """
     if request.method != 'POST':
         return HttpResponseBadRequest(content='Expected POST')
+    params = json.loads(request.body)
     kwargs = {}
     try:
-        kwargs['lat'] = float(request.POST.get('lat', None))
+        kwargs['lat'] = float(params.get('lat', None))
     except (TypeError, ValueError):
         return HttpResponseBadRequest(content='Lattitude value is invalid')
     try:
-        kwargs['lng'] = float(request.POST.get('lng', None))
+        kwargs['lng'] = float(params.get('lng', None))
     except (TypeError, ValueError):
         return HttpResponseBadRequest(content='Longitude value is invalid')
-    kwargs['description'] = request.POST.get('description', None)
+    kwargs['description'] = params.get('description', None)
     try:
-        kwargs['day'] = datetime.strptime(request.POST.get('day', None), "").date()
+        kwargs['day'] = datetime.strptime(params.get('day', None), "").date()
     except (TypeError, ValueError):
         return HttpResponseBadRequest(content='The date of the event is invalid')
     try:
-        kwargs['is_found'] = bool(request.POST.get('is_found', None))
+        kwargs['is_found'] = bool(params.get('is_found', None))
     except (TypeError, ValueError):
         kwargs['is_found'] = None
     try:
-        kwargs['bike'] = int(request.POST.get('bike', None))
+        kwargs['bike'] = int(params.get('bike', None))
     except (TypeError, ValueError):
         return HttpResponseBadRequest(content='The bicycle ID is invalid')
     kwargs['bike'] = Bicycle.objects.get(pk=kwargs['bike'])

@@ -3,6 +3,9 @@
 """
 This module provides token require decorator
 """
+
+import json
+
 from django.http import JsonResponse
 
 from APP.models import User
