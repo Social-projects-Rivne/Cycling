@@ -187,7 +187,7 @@ def get_stolen_bikes_by_points(request):
     """
     return get_points(request, StolenBike)
 
-# @need_token
+@need_token
 def create_place(request):
     """Creates new Place object in DB
 
@@ -231,7 +231,7 @@ def create_place(request):
     except Exception as e:
         return HttpResponseServerError(content=str(e))
 
-# @need_token
+@need_token
 def create_parking(request):
     """Creates new Parking object in DB
 
@@ -274,7 +274,7 @@ def create_parking(request):
     except Exception as e:
         return HttpResponseServerError(content=str(e))
 
-# @need_token
+@need_token
 def create_stolen(request):
     """Creates new StolenBike object in DB
 

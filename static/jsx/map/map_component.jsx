@@ -137,6 +137,7 @@ class MapComponent extends React.Component {
     // this.openPopup(createPointerPopup(), e.latlng);
     // this.openPopup(MyPopup.setLatLng(e.latlng));
     // console.log(localStorage['token']);
+    if(!localStorage['token']){return};
     this.setState({redMarkerLatLng: e.latlng});
     this.props.newPointer(e.latlng);
     // this.props.father.refs.modal.showMe('e.latlng');
