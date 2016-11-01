@@ -3,6 +3,8 @@
 """
 This module provides token require decorator
 """
+import json
+
 from django.http import JsonResponse
 
 from APP.models import User
@@ -17,34 +19,32 @@ def need_token(decorated_func):
         """
         Wrapper to function
         """
-        print args
-        print kwargs
-        # looking for request param in kwargs
-        if 'request' in kwargs:
-            request_raw = kwargs.get('request').body
-            print 'kwargs: ', request_raw
-        else:
-            # if in kwargs no request, then look in args
-            if len(args) != 0:
-                request_raw = args[0]
-                print request_raw.body
 
-        # if there is request param somewhere
-        if request_raw:
+        request = args[0]
+
+        # if it`s post method then we should parse body
+        # else
+        # params
+        if request.method == "POST":
             try:
-                request_json = json.loads(request_raw)
-                if 'token' in request_json:
-                    user = User.models.filter(
-                        token=request_json.get('token')).first()
+                json_body = json.loads(request.body)
 
-                    if user:
-                        return decorated_func(*args, **kwargs)
-                    else:
-                        return JsonResponse({'error': 'No token found'})
+                token = json_body.get('token')
 
-                else:
-                    return json_agr_missing('token')
             except ValueError:
                 return json_parse_error()
+        else:
+            token = request.GET.get("token")
+
+        if token:
+            user = User.objects.filter(
+                token=token).first()
+
+            if user:
+                return decorated_func(*args, **kwargs)
+            else:
+                return JsonResponse({'error': 'Invalid token.'})
+        else:
+            return json_agr_missing('token')
 
     return wrapper

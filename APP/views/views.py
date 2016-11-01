@@ -147,8 +147,10 @@ def get_points(request, model_cls):
             entities = entities.filter(lat__lte=ne_point[0]).filter(lat__gte=sw_point[0])
 
         data = serializers.serialize("json", entities)
-        # print data
+        print "DATA, DATA: ", data
         return HttpResponse(data, content_type="application/json")
+    else:
+        return HttpResponse(status=405)
 
 
 def get_places_by_points(request):
@@ -160,7 +162,7 @@ def get_places_by_points(request):
     https://cycling.com/v1/places/search?sw=44.3,37.2&ne=44.1,37.4
     latitude is first, longitude - second
     """
-    print ''
+    print 'place call'
     return get_points(request, Place)
 
 
