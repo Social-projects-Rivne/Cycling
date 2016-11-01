@@ -6,25 +6,35 @@ import { Router,
   browserHistory,
   IndexRoute }            from 'react-router';
 import ReactDOM           from 'react-dom';
-import { FormComponent }  from './registration.jsx';
+import { RegistrationComponent }  from './registration.jsx';
 import { LoginComponent } from './login.jsx';
-import Parent             from './parent.jsx';
+import Home               from './home.jsx';
+import { MarkerDetails } from './marker_detail_page.jsx';
+
 
 class APP extends React.Component{
+    /*
+     * Main component that include header,
+     *  sidebar and provive rouning on page
+     */
     constructor(props) {
         super(props);
         this.state = {
-          "showHideSidenav":""
+          showHideSidenav: false
         };
         this.handleClick = this.handleClick.bind(this);
     }
 
     handleClick() {
-      var css = (this.state.showHideSidenav === "") ? "toggled" : ""
-      this.setState({"showHideSidenav":css});
+      /*
+       * Change main div class in case of clicking on button,
+       * to provide posibility of hidding and opening sidevar
+       */
+      this.setState({showHideSidenav:!this.state.showHideSidenav ? "toggled" : ""});
     }
 
     render(){
+      //Render main component
       return (
         <div className={this.state.showHideSidenav} id="wrapper">
               <Header onButtonClick={this.handleClick}/>
@@ -39,7 +49,6 @@ class APP extends React.Component{
 
 
 class Header extends React.Component {
-
 
     render() {
 
@@ -99,7 +108,8 @@ class SideBar extends React.Component {
 
 
     render() {
-        return (
+      //Side bar component
+      return (
         <div id="sidebar-wrapper" role="navigation">
             <ul className="sidebar-nav">
                 <li className="sidebar-brand"><a to='/'>Welcome</a></li>
@@ -111,7 +121,7 @@ class SideBar extends React.Component {
                 <li><a href="#">Profile</a></li>
             </ul>
         </div>
-        );
+      );
     }
 };
 
@@ -119,12 +129,14 @@ const NotFound = () => (
   <h1>404.. This page is not found!</h1>)
 
 ReactDOM.render(
+  //React routing
   (<Router history = {browserHistory}>
       <Route path = "/" component = {APP}>
-         <IndexRoute component = {Parent} />
-         <Route path = "home" component = {Parent}/>
+         <IndexRoute component = {Home} />
+         <Route path = "home" component = {Home}/>
          <Route path = "/login" component = {LoginComponent} />
-         <Route path = "/registration" component = {FormComponent} />
+         <Route path = "/registration" component = {RegistrationComponent} />
+         <Route path = "/marker_details" component = {MarkerDetails} />
          <Route path='*' component={NotFound} />
       </Route>
   </Router>),

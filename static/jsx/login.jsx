@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Link } from 'react-router';
 
 import { EmailInput } from './input/email_input.jsx';
@@ -40,6 +41,7 @@ export class LoginComponent extends React.Component {
           email: this.email,
           password: this.password
         };
+
         let context = this;
         $.ajax({
                 type: 'POST',
