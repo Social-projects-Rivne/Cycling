@@ -50,7 +50,6 @@ class NewPointerModal extends React.Component{
                     <div className="btn-group-vertical btn-block">
                         <button type="button" className="btn btn-default" onClick={this.onPlace}>Place</button>
                         <button type="button" className="btn btn-default" onClick={this.onParking}>Parking</button>
-                        <button type="button" className="btn btn-default">A Bicycle Got Stolen</button>
                       </div>
                 </BaseModal>
     )
