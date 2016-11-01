@@ -37,7 +37,7 @@ class NewParkingModal extends React.Component{
       amountValue: 3,
       securityValue: '0',
       isFreeValue: 1 });
-      this.props.father.refs.map.setState({redMarkerLatLng: null});
+      this.props.father.refs.map.setState({silverMarkerLatLng: null});
   };
 
   showMe(latlng={}){
@@ -96,7 +96,7 @@ class NewParkingModal extends React.Component{
                     // console.log(message);
                     this.props.father.refs.successNotification.showMe(message);
                     // console.log(this.state.parkings.length);
-                    this.props.father.refs.map.convertRedMarkerToParking();
+                    this.props.father.refs.map.convertSilverMarkerToParking();
                     this.closeMe();
                   }.bind(this)
                 }

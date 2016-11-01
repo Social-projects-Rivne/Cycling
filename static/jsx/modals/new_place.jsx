@@ -12,6 +12,8 @@ class NewPlaceModal extends React.Component{
         label: 'NewPlaceModalLabel',
         showOk: true,
         okText: 'Create',
+        nameValue: '',
+        descriptionValue: '',
         categoryValue:'2'
     };
     this.validator = new Validator();
@@ -36,7 +38,7 @@ class NewPlaceModal extends React.Component{
       fromHourValue: '',
       toHourValue: '',
       categoryValue: 2 });
-    this.props.father.refs.map.setState({redMarkerLatLng: null});
+    this.props.father.refs.map.setState({silverMarkerLatLng: null});
   };
 
   showMe(latlng={}){
@@ -92,7 +94,7 @@ class NewPlaceModal extends React.Component{
                       // console.log(message);
                       this.props.father.refs.successNotification.showMe(message);
                       // console.log(this.state.parkings.length);
-                      this.props.father.refs.map.convertRedMarkerToPlace();
+                      this.props.father.refs.map.convertSilverMarkerToPlace();
                       this.closeMe();
                     }.bind(this)
                       }
