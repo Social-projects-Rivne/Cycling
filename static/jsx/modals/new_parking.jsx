@@ -42,15 +42,16 @@ class NewParkingModal extends React.Component{
 
   showMe(latlng={}){
       console.log(latlng);
-      this.setState({ 
+      this.setState({
         isOpen: true,
         latValue: latlng.lat.toPrecision(9),
-        lngValue: latlng.lng.toPrecision(9) 
+        lngValue: latlng.lng.toPrecision(9)
       });
   };
 
   componentWillUnmount() {
-    this.serverRequest.abort();
+    if (this.serverRequest)
+      this.serverRequest.abort();
   };
 
   getStyle(err, styleObj={}) {
@@ -103,7 +104,7 @@ class NewParkingModal extends React.Component{
         this.props.father.refs.failNotification.showMe(message);
       }.bind(this)
     );
-    
+
   };
 
   nameChange(e){
@@ -136,11 +137,11 @@ class NewParkingModal extends React.Component{
 
   render(){
     return (
-                <BaseModal 
-                    isOpen={this.state.isOpen} 
-                    id={this.state.id} 
-                    title={this.state.title} 
-                    label={this.state.label} 
+                <BaseModal
+                    isOpen={this.state.isOpen}
+                    id={this.state.id}
+                    title={this.state.title}
+                    label={this.state.label}
                     showOk={this.state.showOk}
                     okText={this.state.okText}
                     onClose={this.closeMe}
@@ -148,7 +149,7 @@ class NewParkingModal extends React.Component{
 
                     <div className = "form-group">
                       <input type = "text" className = "form-control" placeholder = "Name"
-                          value={this.state.nameValue} 
+                          value={this.state.nameValue}
                           onChange={this.nameChange}
                           style={this.getStyle(this.state.nameError)}
                       />
@@ -156,28 +157,28 @@ class NewParkingModal extends React.Component{
 
                     <div className="form-group" >
                         <div className="form-inline">
-                            <label htmlFor="amount" className="control-label" 
+                            <label htmlFor="amount" className="control-label"
                               style={{marginRight: "5px"}}
                               >places:</label>
-                                <input type="text" className="form-control " id="amount" 
-                                  value={this.state.amountValue} 
+                                <input type="text" className="form-control " id="amount"
+                                  value={this.state.amountValue}
                                   onChange={this.amountChange}
                                   style={this.getStyle(this.state.amountError, {width: "45px", marginRight: "10px"})}
                                 />
-                                  
-                              <select className="form-control" id="sel1" 
-                                value={this.state.isFreeValue} 
+
+                              <select className="form-control" id="sel1"
+                                value={this.state.isFreeValue}
                                 onChange={this.isFreeChange}
                                 style={{marginRight: "10px"}}>
                               <option value="0">not free</option>
                               <option value="1">free</option>
                             </select>
 
-                             <label htmlFor="sel2" className="control-label" 
+                             <label htmlFor="sel2" className="control-label"
                                     style={{marginRight: "5px"}}
                                     >security:</label>
-                            <select className="form-control" id="sel2" 
-                                value={this.state.securityValue} 
+                            <select className="form-control" id="sel2"
+                                value={this.state.securityValue}
                                 onChange={this.securityChange}
                                 style={{float: "right"}}>
                               <option value="0">no</option>
@@ -188,14 +189,14 @@ class NewParkingModal extends React.Component{
                     </div>
 
                     <div className="form-group" >
-                        <label className="control-label" 
+                        <label className="control-label"
                               >Coordinates</label>
                         <div className="form-inline">
-                            <label htmlFor="lat" className="control-label" 
+                            <label htmlFor="lat" className="control-label"
                               style={{width: "30px"}}
                               >lat:</label>
                                 <input type="text" className="form-control " id="lat" placeholder = "lattitude"
-                                  value={this.state.latValue} 
+                                  value={this.state.latValue}
                                   onChange={this.latChange}
                                   style={this.getStyle(this.state.latError, {width: "145px", marginRight: "17px"})}
                                 />
@@ -203,7 +204,7 @@ class NewParkingModal extends React.Component{
                               style={{width: "30px"}}
                               >lng:</label>
                               <input type="text" className="form-control" id="lng" placeholder = "longitude"
-                                  value={this.state.lngValue} 
+                                  value={this.state.lngValue}
                                   onChange={this.lngChange}
                                   style={this.getStyle(this.state.lngError, {width: "145px"})}
                               />

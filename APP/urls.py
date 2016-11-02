@@ -13,5 +13,7 @@ urlpatterns = [
     url(r'^parkings/create$', views.create_parking, name='create_parking'),
     url(r'^stolen/search$', views.get_stolen_bikes_by_points, name='get_stolen_bikes_by_points'),
     url(r'^stolen/create$', views.create_stolen, name='create_stolen'),
+    url(r'^tokenvalid$', views.check_token, name='check_token'),
+    url(r'^avatar$', views.get_avatar, name='get_avatar'),
     url(r'^', views.index, name='index'),
 ]

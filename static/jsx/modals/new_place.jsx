@@ -41,15 +41,16 @@ class NewPlaceModal extends React.Component{
 
   showMe(latlng={}){
       console.log(latlng);
-      this.setState({ 
+      this.setState({
         isOpen: true,
         latValue: latlng.lat.toPrecision(9),
-        lngValue: latlng.lng.toPrecision(9) 
+        lngValue: latlng.lng.toPrecision(9)
       });
   };
 
   componentWillUnmount() {
-    this.serverRequest.abort();
+    if (this.serverRequest)
+      this.serverRequest.abort();
   };
 
   getStyle(err, styleObj={}) {
@@ -99,7 +100,7 @@ class NewPlaceModal extends React.Component{
         this.props.father.refs.failNotification.showMe(message);
       }.bind(this)
     );
-    
+
   };
 
   nameChange(e){
@@ -135,11 +136,11 @@ class NewPlaceModal extends React.Component{
 
   render(){
     return (
-                <BaseModal 
-                    isOpen={this.state.isOpen} 
-                    id={this.state.id} 
-                    title={this.state.title} 
-                    label={this.state.label} 
+                <BaseModal
+                    isOpen={this.state.isOpen}
+                    id={this.state.id}
+                    title={this.state.title}
+                    label={this.state.label}
                     showOk={this.state.showOk}
                     okText={this.state.okText}
                     onClose={this.closeMe}
@@ -147,7 +148,7 @@ class NewPlaceModal extends React.Component{
 
                     <div className = "form-group">
                       <input type = "text" className = "form-control" placeholder = "Name"
-                          value={this.state.nameValue} 
+                          value={this.state.nameValue}
                           onChange={this.nameChange}
                           style={this.getStyle(this.state.nameError)}
                       />
@@ -156,15 +157,15 @@ class NewPlaceModal extends React.Component{
 
                       <div className="form-group">
                           <textarea className="form-control" rows="2" id="description" placeholder="Description"
-                              value={this.state.descriptionValue} 
+                              value={this.state.descriptionValue}
                               onChange={this.descriptionChange}>
                           </textarea>
                       </div>
 
                         <div className="form-group">
                         <div className="form-inline" >
-                          <select className="form-control" id="sel2" 
-                              value={this.state.categoryValue} 
+                          <select className="form-control" id="sel2"
+                              value={this.state.categoryValue}
                               onChange={this.categoryChange}
                               style={{width: "150px"}}>
                             <option value="0">Store</option>
@@ -175,7 +176,7 @@ class NewPlaceModal extends React.Component{
                               <div style={{float: "right"}}>
                                 <label htmlFor="sel11" style={{marginRight: "4px"}}>from:</label>
                                 <select className="form-control" id="sel11"
-                                    value={this.state.fromHourValue} 
+                                    value={this.state.fromHourValue}
                                     onChange={this.fromHourChange}
                                     style={{marginRight: "10px"}}
                                     >
@@ -187,7 +188,7 @@ class NewPlaceModal extends React.Component{
 
                                 <label htmlFor="sel12" style={{marginRight: "4px"}}>to:</label>
                                 <select className="form-control" id="sel12"
-                                    value={this.state.toHourValue} 
+                                    value={this.state.toHourValue}
                                     onChange={this.toHourChange}>
                                   <option value="">--</option>
                                   {this.state.hoursList.map((hour)=>(
@@ -199,14 +200,14 @@ class NewPlaceModal extends React.Component{
                       </div>
 
                     <div className="form-group" >
-                        <label className="control-label" 
+                        <label className="control-label"
                               >Coordinates</label>
                         <div className="form-inline">
-                            <label htmlFor="lat" className="control-label" 
+                            <label htmlFor="lat" className="control-label"
                               style={{width: "30px"}}
                               >lat:</label>
                                 <input type="text" className="form-control " id="lat" placeholder = "lattitude"
-                                  value={this.state.latValue} 
+                                  value={this.state.latValue}
                                   onChange={this.latChange}
                                   style={this.getStyle(this.state.latError, {width: "145px", marginRight: "17px"})}
                                 />
@@ -214,7 +215,7 @@ class NewPlaceModal extends React.Component{
                               style={{width: "30px"}}
                               >lng:</label>
                               <input type="text" className="form-control" id="lng" placeholder = "longitude"
-                                  value={this.state.lngValue} 
+                                  value={this.state.lngValue}
                                   onChange={this.lngChange}
                                   style={this.getStyle(this.state.lngError, {width: "145px"})}
                               />

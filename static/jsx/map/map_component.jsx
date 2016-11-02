@@ -39,22 +39,25 @@ class MapComponent extends React.Component {
     let Bounds = this.refs.map.leafletElement.getBounds();
     this.loadPointers(Bounds);
   };
-
-  componentWillUnmount() {
-    this.abortRequests();
-  };
+ 
+  // componentWillUnmount() {
+  //   this.abortRequests();
+  // };
 
   abortRequests(){
-    this.serverRequest1.abort();
-    this.serverRequest2.abort();
-    this.serverRequest3.abort();
+    if (this.serverRequest1)
+      this.serverRequest1.abort();
+    if (this.serverRequest2)
+      this.serverRequest2.abort();
+    if (this.serverRequest3)
+      this.serverRequest3.abort();
   }
 
   loadPointers(bounds_obj){
     let ne = bounds_obj._northEast.lat.toPrecision(9) + ',' + bounds_obj._northEast.lng.toPrecision(9);
     let sw = bounds_obj._southWest.lat.toPrecision(9) + ',' + bounds_obj._southWest.lng.toPrecision(9);
     let params = {ne:ne, sw:sw};
-    
+
     this.serverRequest1 = $.get(
     {
       url: '/api/parkings/search',
@@ -64,7 +67,7 @@ class MapComponent extends React.Component {
       this.setState({parkings: data, redMarkerLatLng: null});
       // console.log(this.state.parkings.length);
     }.bind(this));
-      
+
     this.serverRequest2 = $.get(
     {
       url: '/api/places/search',
@@ -73,7 +76,7 @@ class MapComponent extends React.Component {
     function (data) {
       this.setState({places: data, redMarkerLatLng: null});
     }.bind(this));
-  
+
     this.serverRequest3 = $.get(
     {
       url: '/api/stolen/search',
@@ -214,7 +217,7 @@ class MapComponent extends React.Component {
     const position = [center_lat(), center_lng()];
     return (
       <Map center={position} zoom={zoom()}
-              zoomControl={false} 
+              zoomControl={false}
               ref='map'
               style={{height: '100vh', width:'100vw'}}
               onOverlayadd={this.onOverlayadd}
@@ -262,7 +265,7 @@ class MapComponent extends React.Component {
         </LayersControl>
 
         {this.state.redMarkerLatLng ? <RedMarker position={this.state.redMarkerLatLng} /> : null}
-        
+
       </Map>
     );
   }

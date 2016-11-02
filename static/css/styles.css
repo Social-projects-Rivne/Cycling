@@ -73,12 +73,7 @@ label:focus,
 .register-button:hover
 {
     background-color: #106CC8 !important;
-<<<<<<< HEAD
-
-=======
     opacity: .9;
-
->>>>>>> fffb08eacd3d5a3b77d316558dc22d065bd7f0ff
 }
 
 .register-button:active
@@ -125,6 +120,16 @@ label:focus,
     text-align: center;
 }
 
+.header-right {
+    float: right;
+    margin-right: 10px;
+    opacity: .9;
+    border: none;
+    font-size: 16px;
+    height: 35px;
+    text-align: center;
+}
+
 .header-button
 {
     float: right;
@@ -151,7 +156,7 @@ label:focus,
     text-decoration: none !important;
     color: #fff;
     display: block;
-    margin-top: 6px;
+    margin-top: 3px;
 }
 
 .header-button a:hover

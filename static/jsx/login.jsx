@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 
 import { EmailInput } from './input/email_input.jsx';
 import { PasswordInput } from './input/password_input.jsx';
@@ -17,6 +17,23 @@ export class LoginComponent extends React.Component {
         };
         this.validator = new Validator();
         this.login = this.login.bind(this);
+    }
+
+    // this part check if user is already logged in...
+    // and if it is redirect on home page
+    componentWillMount() {
+        if (localStorage['token']) {
+          $.get(
+          {
+            url: '/api/tokenvalid',
+            data: {token: localStorage['token']}
+          },
+          function (data) {
+
+            if (data["result"] === "ok")
+              browserHistory.push("/");
+          }.bind(this));
+        }
     }
 
     login(event){
@@ -45,7 +62,7 @@ export class LoginComponent extends React.Component {
         let context = this;
         $.ajax({
                 type: 'POST',
-                url: 'api/v1/login',
+                url: 'api/login',
                 contentType: 'application/json',
                 dataType: "json",
                 data: JSON.stringify(data),
@@ -60,7 +77,7 @@ export class LoginComponent extends React.Component {
                     else {
                       localStorage['token'] = response.token;
                       localStorage['id'] = response.id;
-                      window.location.href= "/";
+                      browserHistory.push("/");
                     }
                 },
                 error: function(response) {

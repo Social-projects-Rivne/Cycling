@@ -187,6 +187,30 @@ def get_stolen_bikes_by_points(request):
     """
     return get_points(request, StolenBike)
 
+
+@need_token
+def get_avatar(request):
+    """
+    This function accept token as parameter and return avatar
+    or default picture if there is no avatar
+    """
+    if request.user.avatar:
+        result = request.user.avatar
+    else:
+        result = "".join(["https://cdn1.iconfinder.com/",
+                          "data/icons/logotypes/32/twitter-128.png"])
+
+    return JsonResponse({"result": {"avatar": result}})
+
+
+@need_token
+def check_token(request):
+    """
+    This function just return OK if token is valid
+    """
+    return JsonResponse({"result": "ok"})
+
+
 # @need_token
 def create_place(request):
     """Creates new Place object in DB

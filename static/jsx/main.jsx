@@ -50,6 +50,12 @@ class APP extends React.Component{
 
 class Header extends React.Component {
 
+    constructor(props){
+      super(props);
+
+      this.state = {};
+    }
+
     render() {
 
       // we need to check if user is logged in
@@ -61,27 +67,47 @@ class Header extends React.Component {
         console.log("token found");
         // if he is logged in but there is no profile data
         // we should place loading spinner
-        if (localStorage['full_name']){
+        if (this.state.avatar){
+          let styleObj = {
+            height: "40px",
+            width: "40px",
+            border: "2px solid white",
+            borderRadius: "20px",
+            marginTop: "4px"
+          };
           headerRightContent = (
-            <span>User avatar place</span>
+            <img src={this.state.avatar} className="header-right" style={styleObj}/>
           );
         }
         else{
           headerRightContent = (
-            <div className="spinner header-button">
+            <div className="spinner header-right">
               <div className="bounce1"></div>
               <div className="bounce2"></div>
               <div className="bounce3"></div>
             </div>
           );
+
+          $.get(
+          {
+            url: '/api/avatar',
+            data: {token: localStorage['token']}
+          },
+          function (data) {
+            console.log(data);
+            if ("error" in data)
+              browserHistory.push("/login");
+            else
+              this.setState({avatar: data.result.avatar});
+          }.bind(this));
         }
       }
       else {
         console.log("token not found");
         headerRightContent = (
-          <div className="header-button">
-            <button className="btn btn-info"><Link to='/login'>Login</Link></button>
-            <button className="btn btn-info"><Link to='/registration'>Registration</Link></button>
+          <div className="header-right">
+            <button className="header-button"><Link to='/login'>Login</Link></button>
+            <button className="header-button"><Link to='/registration'>Registration</Link></button>
           </div>
         );
       }
@@ -91,9 +117,7 @@ class Header extends React.Component {
             <div className="navbar-header">
                 <a onClick={this.props.onButtonClick} id="menu-toggle" className="logo-a"><span className="icon material-icons">menu</span></a>
                 <Link className="navbar-brand logo-line" to='/'>Cycling</Link>
-                <div className="header-button">
-                  {headerRightContent}
-                </div>
+                {headerRightContent}
             </div>
           </div>
       );

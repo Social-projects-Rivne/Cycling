@@ -14,6 +14,7 @@ from APP.utils.json_parser import json_parse_error, json_agr_missing
 def need_token(decorated_func):
     """
     This is decorator which check if parameters contain valid token
+    and if it valid add user to request param
     """
     def wrapper(*args, **kwargs):
         """
@@ -41,6 +42,7 @@ def need_token(decorated_func):
                 token=token).first()
 
             if user:
+                request.user = user
                 return decorated_func(*args, **kwargs)
             else:
                 return JsonResponse({'error': 'Invalid token.'})
