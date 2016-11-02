@@ -31,20 +31,31 @@ export class MarkerDetails extends React.Component {
 	render() {
 		console.log(this.state.marker_value);
 		return (
-			<div className="marker-details-content">
-				<div className="photo-container">
-					<h1 className="photo-header">{this.state.marker_value.name}</h1>
+			<div className="container-fluid marker-details-content">
+				<div className="row">
+					<div className="col-xs-12 photo-container">
+						<h1 className="photo-header">{this.state.marker_value.name}</h1>
+					</div>
 				</div>
-				<div className="card details">
-					<h3 className="detail-cards-header">Description</h3>
-					<p>{this.state.marker_value.description}</p>
-				</div>
-				<div className="card location">
-					<h3 className="detail-cards-header">Location<br/></h3>
-					<span className="material-icons">place</span>
-				</div>
-				<div className="card info">
-					<h3 className="detail-cards-header">Info</h3>
+				<div className="row">
+					<div className="col-xs-12 col-md-6 col-lg-6">
+						<div className="card details">
+							<h3 className="detail-cards-header">Description</h3>
+							<p>{this.state.marker_value.description}</p>
+						</div>
+					</div>
+					<div className="col-xs-12 col-md-6 col-lg-6">
+						<div className="card location">
+							<h3 className="detail-cards-header">Location</h3>
+							<span className="material-icons">place</span>
+							<span>location...</span>
+						</div>
+					</div>
+					<div className="col-xs-12 col-md-6 col-lg-6">
+						<div className="card info">
+							<h3 className="detail-cards-header">Info</h3>
+						</div>
+					</div>
 				</div>
 			</div>
 		);

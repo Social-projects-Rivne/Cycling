@@ -17,7 +17,7 @@ let stolenMarkers = function(bikes){
             <Popup>
               <div className="inner-marker-div"><span>Stolen bicycle</span>
               <p>Stolen at {bike.fields.day}</p>
-              <div onClick={handleClick.bind(this, "marker_details/" + id + "?type=StolenBike")}>Show details...</div>
+              <div className="marker-link" onClick={handleClick.bind(this, "marker_details/" + id + "?type=StolenBike")}>Show details...</div>
               </div>
             </Popup>
           </Marker>

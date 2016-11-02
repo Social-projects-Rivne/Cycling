@@ -18,7 +18,7 @@ let parkingsMarkers = function(parkings){
             <Popup>
               <div className="inner-marker-div"><span>Parking: {parkng.fields.name}</span>
               <p>Parking (amount: {parkng.fields.amount})</p>
-              <div onClick={handleClick.bind(this, "marker_details/" + id + "?type=Parking")}>Show details...</div>
+              <div className="marker-link" onClick={handleClick.bind(this, "marker_details/" + id + "?type=Parking")}>Show details...</div>
               </div>
             </Popup>
           </Marker>

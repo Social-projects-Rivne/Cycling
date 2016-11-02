@@ -180,63 +180,56 @@ label:focus,
 
 .marker-details-content
 {
-    width: 940px;
     margin: 0 auto;
 }
 
 .card {
+  /*text-align: left;
   background: #fff;
   border-radius: 2px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.19), 0 3px 4px rgba(0,0,0,0.23);
   display: inline-block;
   height: 225px;
   margin: 1rem;
-  position: relative;
-  width: 300px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.19), 0 3px 4px rgba(0,0,0,0.23);
+  */
+    border-radius: 2px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.19), 0 3px 4px rgba(0,0,0,0.23);
+    margin: 15px 0;
+    padding: 5px;
+    min-width: 220px;
 }
 
-.card.details
+.card.location,
+.card.info
 {
-    width: 500px;
+    min-height: 43px;
 }
-
+/*
 .card.details p
 {
-    position: relative;
-    right: 180px;
-    top: 45px;
     font-size: 17px;
+    margin: 20px 0px 0px 10px;
 }
 
 .card.location
 {
-    width: 400px;
     height: 85px;
-    bottom: -20px;
-    position: relative;
 }
 
 .card.location span
 {
-    position: relative;
-    right: 225px;
-    top: 40px;
     font-size: 35px;
     color: #106CC8;
 }
 
 .card.info
 {
-    width: 400px;
-    height: 125px;
-    position: relative;
-    left: 260px;
-    bottom: 145px;
-}
+    height: 120px;
+}*/
 
 .detail-cards-header
 {
-    float: left;
+    text-align: left;
     color: #999999;
     margin: 10px 0px 0px 10px;
 }
@@ -279,4 +272,15 @@ label:focus,
 .inner-marker-div p
 {
     margin: 5px !important;
+}
+
+.marker-link
+{
+    color: #1B8CFA;
+}
+
+.marker-link:hover
+{
+    cursor: pointer;
+    color: #106CC8;
 }

@@ -16,7 +16,7 @@ let placesMarkers = function(places){
           <Marker position={position} key={i}>
             <Popup>
               <div className="inner-marker-div"><span>Place: {place.fields.name}</span>
-              <div onClick={handleClick.bind(this, "marker_details/" + id + "?type=Place")}>Show details...</div>
+              <div className="marker-link" onClick={handleClick.bind(this, "marker_details/" + id + "?type=Place")}>Show details...</div>
               </div>
             </Popup>
           </Marker>
