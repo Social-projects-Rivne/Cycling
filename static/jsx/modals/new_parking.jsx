@@ -82,22 +82,25 @@ class NewParkingModal extends React.Component{
     this.serverRequest = $.post(
       {
         url: '/api/parkings/create',
-        data: {name: this.state.nameValue,
+        data: JSON.stringify(
+             {name: this.state.nameValue,
               lat: this.state.latValue,
               lng: this.state.lngValue,
               amount: this.state.amountValue,
               is_free: this.state.isFreeValue,
               security: this.state.securityValue,
-              token: localStorage['token']},
-              success: function (data) {
-                          let message = "The parking " + data[0].fields.name + " is successfully created";
-                          // console.log(message);
-                          this.props.father.refs.successNotification.showMe(message);
-                          // console.log(this.state.parkings.length);
-                          this.props.father.refs.map.convertRedMarkerToParking();
-                          this.closeMe();
-                        }.bind(this)
-                      }
+              token: localStorage['token']}
+              ),
+        dataType: "json",
+        success: function (data) {
+                    let message = "The parking " + data[0].fields.name + " is successfully created";
+                    // console.log(message);
+                    this.props.father.refs.successNotification.showMe(message);
+                    // console.log(this.state.parkings.length);
+                    this.props.father.refs.map.convertRedMarkerToParking();
+                    this.closeMe();
+                  }.bind(this)
+                }
     ).fail(function(data) {
         // console.log(data);
         let message = "Sorry. Something is wrong: " + data.responseText;

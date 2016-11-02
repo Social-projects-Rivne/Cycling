@@ -24,7 +24,7 @@ class Validator {
     };
 
     integer(number){
-      return /^\d+$/.test(number);
+      return /^\d{1,2}$/.test(number);
     };
 }
 

@@ -77,22 +77,25 @@ class NewPlaceModal extends React.Component{
     this.serverRequest = $.post(
       {
         url: '/api/places/create',
-        data: {name: this.state.nameValue,
+        data: JSON.stringify(
+             {name: this.state.nameValue,
               lat: this.state.latValue,
               lng: this.state.lngValue,
               description: this.state.descriptionValue,
               from_hour: this.state.fromHourValue,
               to_hour: this.state.toHourValue,
               category_id: this.state.categoryValue,
-              token: localStorage['token']},
-              success: function (data) {
-                          let message = "The place " + data[0].fields.name + " is successfully created";
-                          // console.log(message);
-                          this.props.father.refs.successNotification.showMe(message);
-                          // console.log(this.state.parkings.length);
-                          this.props.father.refs.map.convertRedMarkerToPlace();
-                          this.closeMe();
-                        }.bind(this)
+              token: localStorage['token']}
+        ),
+          dataType: "json",
+          success: function (data) {
+                      let message = "The place " + data[0].fields.name + " is successfully created";
+                      // console.log(message);
+                      this.props.father.refs.successNotification.showMe(message);
+                      // console.log(this.state.parkings.length);
+                      this.props.father.refs.map.convertRedMarkerToPlace();
+                      this.closeMe();
+                    }.bind(this)
                       }
     ).fail(function(data) {
         // console.log(data);
