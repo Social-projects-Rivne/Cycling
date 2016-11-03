@@ -136,7 +136,6 @@ class SideBar extends React.Component {
       return (
         <div id="sidebar-wrapper" role="navigation">
             <ul className="sidebar-nav">
-                <li className="sidebar-brand"><a to='/'>Welcome</a></li>
                 <li><Link onlyActiveOnIndex activeStyle={{color:'#53acff'}} to='/'>Home</Link></li>
                 <li><a href="#">View</a></li>
                 <li><a href="#">Display Objects</a></li>
