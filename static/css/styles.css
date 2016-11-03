@@ -198,6 +198,17 @@ label:focus,
     min-height: 90px;
 }
 
+.address
+{
+    position: relative;
+    bottom: 7px;
+}
+
+.card.info span:nth-child(2)
+{
+    display: block;
+}
+
 .detail-cards-header
 {
     text-align: left;
@@ -216,7 +227,6 @@ label:focus,
 
 .photo-header
 {
-    position: relative;
     float: left;
     margin-left: 50px;
     margin-top: 160px;
@@ -226,14 +236,15 @@ label:focus,
 
 .card span, p
 {
-    margin: 20px 10px !important;
+    margin: 10px 0px 10px 10px !important;
     font-size: 20px;
+    color: #106CC8;
 }
 
-.card.location.location-icon span
+#location-icon
 {
     font-size: 30px;
-    margin: 5px;
+    margin-right: 0px;
 }
 
 .inner-marker-div

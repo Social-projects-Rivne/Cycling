@@ -90,8 +90,8 @@ export class MarkerDetails extends React.Component {
 					<div className="col-xs-12 col-md-6 col-lg-6">
 						<div className="card location">
 							<h3 className="detail-cards-header">Location</h3>
-							<span className="location-icon material-icons">place</span>
-							<span>Coordinates lan: {this.state.marker_value.lng} lat: {this.state.marker_value.lat}</span>
+							<span id="location-icon" className="material-icons">place</span>
+							<span className="address">Coordinates lan: {this.state.marker_value.lng} lat: {this.state.marker_value.lat}</span>
 						</div>
 					</div>
 					<div className="col-xs-12 col-md-6 col-lg-6">
