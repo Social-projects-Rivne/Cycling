@@ -184,54 +184,26 @@ label:focus,
 }
 
 .card {
-  /*text-align: left;
-  background: #fff;
-  border-radius: 2px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.19), 0 3px 4px rgba(0,0,0,0.23);
-  display: inline-block;
-  height: 225px;
-  margin: 1rem;
-  */
     border-radius: 2px;
     box-shadow: 0 5px 20px rgba(0,0,0,0.19), 0 3px 4px rgba(0,0,0,0.23);
     margin: 15px 0;
     padding: 5px;
     min-width: 220px;
+    text-align: left;
 }
 
 .card.location,
 .card.info
 {
-    min-height: 43px;
+    min-height: 90px;
 }
-/*
-.card.details p
-{
-    font-size: 17px;
-    margin: 20px 0px 0px 10px;
-}
-
-.card.location
-{
-    height: 85px;
-}
-
-.card.location span
-{
-    font-size: 35px;
-    color: #106CC8;
-}
-
-.card.info
-{
-    height: 120px;
-}*/
 
 .detail-cards-header
 {
     text-align: left;
     color: #999999;
     margin: 10px 0px 0px 10px;
+    font-size: 30px;
 }
 
 .photo-container
@@ -249,7 +221,19 @@ label:focus,
     margin-left: 50px;
     margin-top: 160px;
     font-size: 70px;
-    color: #fff;
+    color: #106CC8;
+}
+
+.card span, p
+{
+    margin: 20px 10px !important;
+    font-size: 20px;
+}
+
+.card.location.location-icon span
+{
+    font-size: 30px;
+    margin: 5px;
 }
 
 .inner-marker-div
