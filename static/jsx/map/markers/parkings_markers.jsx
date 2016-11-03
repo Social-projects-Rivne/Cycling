@@ -6,8 +6,7 @@ const src = require('../../../images/marker-icon-azure.png');
 //Extend the Default marker class
 let AzureIcon = L.Icon.Default.extend({
   options: {
-        iconSize: [41, 41],
-        iconAnchor: [20, 41],
+        iconSize: [25, 41],
         iconUrl: src
   }
 });
