@@ -118,7 +118,6 @@ label:focus,
 .page-content-wrapper
 {
     margin-top: 51px;
-    text-align: center;
 }
 
 .header-button
@@ -232,6 +231,16 @@ label:focus,
     margin-top: 160px;
     font-size: 70px;
     color: #106CC8;
+}
+
+@media screen and (max-width: 480px) {
+    .photo-header {
+        text-align: center;
+        float: none;
+        margin-left: 0px;
+        margin-top: 170px;
+        font-size: 30px;        
+    }
 }
 
 .card span, p
