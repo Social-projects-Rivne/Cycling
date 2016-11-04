@@ -220,7 +220,8 @@ label:focus,
 {
     width: 920px;
     height: 250px;
-    background-image: url(../card.jpg);
+    background-image: url(../bicycle.jpg);
+    background-position: 30% 60%;
     margin: 0 auto;
 }
 
@@ -233,6 +234,12 @@ label:focus,
     color: #106CC8;
 }
 
+@media screen and (max-width: 800px) {
+    .photo-container{
+        background-position: 50% 60%;
+    }
+}
+
 @media screen and (max-width: 480px) {
     .photo-header {
         text-align: center;
@@ -243,7 +250,7 @@ label:focus,
     }
 }
 
-.card span, p
+.card p
 {
     margin: 10px 0px 10px 10px !important;
     font-size: 20px;

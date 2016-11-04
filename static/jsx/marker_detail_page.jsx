@@ -6,15 +6,28 @@ export class MarkerDetails extends React.Component {
 		this.state = {
 			marker_type: this.props.location.query.type,
 			marker_id: this.props.params.id,
-			marker_value: {name: "Name", description: "..."}
+			marker_value: "",
+			street: ""
 		};
 		this.ajaxSuccess = this.ajaxSuccess.bind(this);
+		this.streetAjaxSuccess = this.streetAjaxSuccess.bind(this);
+	}
+
+	streetAjaxSuccess(response){
+		this.setState({
+			street: response.display_name
+		});
 	}
 
 	ajaxSuccess(response) {
 		let parsedData = JSON.parse(response.marker_details);
 		this.setState({
 			marker_value: parsedData[0].fields
+		});
+		$.ajax({
+				type: 'GET',
+    			url: 'http://nominatim.openstreetmap.org/reverse?format=json&lat=' + this.state.marker_value.lat + '&lon=' + this.state.marker_value.lng + '&addressdetails=1',
+    			success: this.streetAjaxSuccess
 		});
 	}
 
@@ -33,7 +46,7 @@ export class MarkerDetails extends React.Component {
 			return(
 				<div className="card info">
 					<h3 className="detail-cards-header">Info</h3>
-					<span>Works from {this.state.marker_value.from_hour} to {this.state.marker_value.to_hour}</span>
+					<p>Works from {this.state.marker_value.from_hour} to {this.state.marker_value.to_hour}</p>
 				</div>
 			)
 		}
@@ -44,8 +57,8 @@ export class MarkerDetails extends React.Component {
 			return(
 				<div className="card info">
 					<h3 className="detail-cards-header">Info</h3>
-					<span>This bike was stolen at {this.state.marker_value.day}</span>
-					<span>{this.state.marker_value.is_found ? "This bike was already found" : "This bike still lost"}</span>
+					<p>This bike was stolen at {this.state.marker_value.day}</p>
+					<p>{this.state.marker_value.is_found ? "This bike was already found" : "This bike still lost"}</p>
 				</div>
 			)
 		}
@@ -56,8 +69,8 @@ export class MarkerDetails extends React.Component {
 			return(
 				<div className="card info">
 					<h3 className="detail-cards-header">Info</h3>
-					<span>Amount of this parking is {this.state.marker_value.amount}</span>
-					<span>{parseInt(this.state.marker_value.security) ? "This parking is secure" : "This parking isn't secure"}</span>
+					<p>Amount of this parking is {this.state.marker_value.amount}</p>
+					<p>{parseInt(this.state.marker_value.security) ? "This parking is secure" : "This parking isn't secure"}</p>
 				</div>
 			)
 		}
@@ -90,8 +103,7 @@ export class MarkerDetails extends React.Component {
 					<div className="col-xs-12 col-md-6 col-lg-6">
 						<div className="card location">
 							<h3 className="detail-cards-header">Location</h3>
-							<span id="location-icon" className="material-icons">place</span>
-							<span className="address">Coordinates lan: {this.state.marker_value.lng} lat: {this.state.marker_value.lat}</span>
+							<p className="address"><span id="location-icon" className="material-icons">place</span>{this.state.street}</p>
 						</div>
 					</div>
 					<div className="col-xs-12 col-md-6 col-lg-6">
