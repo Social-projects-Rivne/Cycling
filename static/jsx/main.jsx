@@ -160,8 +160,6 @@ ReactDOM.render(
          <Route path = "/login" component = {LoginComponent} />
          <Route path = "/registration" component = {RegistrationComponent} />
          <Route path = "/marker_details/:id" component = {MarkerDetails} />
-         <Route path = "/marker_details/:id" component = {MarkerDetails} />
-         <Route path = "/marker_details/:id" component = {MarkerDetails} />
          <Route path = '*' component={NotFound} />
       </Route>
   </Router>),
