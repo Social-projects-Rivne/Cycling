@@ -1,7 +1,11 @@
 import React        from 'react';
 import L            from 'leaflet';
 import { LayersControl, Marker, Popup } from 'react-leaflet';
+import { Link, browserHistory} from 'react-router';
 
+function handleClick(link){
+  browserHistory.push(link);
+}
 
 const src = require('../../../images/marker-icon-red.png');
 //Extend the Default marker class
@@ -18,11 +22,14 @@ let stolenMarkers = function(bikes){
   if (bikes){
     let my_array = bikes.map(function(bike, i){
         const position = [parseFloat(bike.fields.lat), parseFloat(bike.fields.lng)];
-        // console.log(position);
+        let id = bike.pk;
         return(
           <Marker position={position} key={i} icon={redIcon}>
             <Popup>
-              <span>Stolen bicycle. <br/> Day: {bike.fields.day}.</span>
+              <div className="inner-marker-div"><span>Stolen bicycle</span>
+              <p>Stolen at {bike.fields.day}</p>
+              <div className="marker-link" onClick={handleClick.bind(this, "marker_details/" + id + "?type=StolenBike")}>Show details...</div>
+              </div>
             </Popup>
           </Marker>
         );

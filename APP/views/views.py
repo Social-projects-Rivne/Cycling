@@ -14,6 +14,7 @@ from APP.utils.json_parser import json_parse_error, json_agr_missing
 from APP.models import User
 from APP.models.parkings import Parking
 from APP.models.places import Place
+from APP.models.bicycles import Bicycle
 from APP.models.stolen_bikes import StolenBike
 from APP.utils.validator import Validator
 from APP.utils.need_token import need_token
@@ -102,7 +103,8 @@ def registration(request):
     if request.method == "POST":
         result_dict = dict()
         if _valid_inputs.full_name_validation(request.POST['full_name']) and \
-           _valid_inputs.email_validation(request.POST['email']):
+           _valid_inputs.email_validation(request.POST['email']) and \
+           _valid_inputs.password_validation(request.POST['password']):
             if User.objects.filter(email=request.POST["email"]).exists():
                 result_dict['EmailError'] = 1
             if not result_dict:
@@ -118,7 +120,21 @@ def registration(request):
 
 
 def marker_details(request):
-    pass
+    if request.method == "GET":
+        print "It's me"
+        table = str(request.GET.get("type"))
+        ID = int(request.GET.get("id"))
+        targer_class = None
+
+        if table == "StolenBike":
+            target_class = StolenBike
+        elif table == "Place":
+            target_class = Place
+        elif table == "Parking":
+            target_class = Parking
+        data = target_class.objects.filter(pk=ID).first()
+        return JsonResponse({"marker_details":serializers.serialize \
+                ("json", [data])})
 
 def get_points(request, model_cls):
     """Returns entities with location within rectangle

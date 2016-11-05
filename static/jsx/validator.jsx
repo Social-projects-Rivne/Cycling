@@ -7,7 +7,7 @@ class Validator {
     }
 
     validateEmail(email){
-      return /^[A-z\d_-]+@[A-z\d_-]+\.[a-z]+[\.a-z]*[a-z]$/.test(email);
+      return /^[A-z\d\._-]+@[A-z\d_-]+\.[a-z]+[\.a-z]*[a-z]$/.test(email);
     }
 
     // requirements to password:
