@@ -208,6 +208,11 @@ label:focus,
     display: block;
 }
 
+.card.details
+{
+    min-height: 138px;
+}
+
 .detail-cards-header
 {
     text-align: left;
@@ -252,7 +257,7 @@ label:focus,
 
 .card p
 {
-    margin: 10px 0px 10px 10px !important;
+    margin: 10px 0px 10px 10px;
     font-size: 20px;
     color: #106CC8;
 }
