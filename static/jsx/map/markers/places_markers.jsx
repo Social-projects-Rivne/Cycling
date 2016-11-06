@@ -12,26 +12,28 @@ let placesMarkers = function(places, categories){
       if (categories[i].active)
         activeCategories.push(categories[i].id);
     }
+    console.log("active categories: ", activeCategories);
   }
 
   if (places){
     let my_array = places.map(function(place, i){
         // if categories not empty, then we should filter markers
-        if (categories)
-          if (activeCategories.indexOf(place.fields.category_id) == -1)
-            return null;
-          const position = [parseFloat(place.fields.lat), parseFloat(place.fields.lng)];
-          // console.log(position);
-          return(
-            <Marker position={position} key={i}>
-              <Popup>
-                <span>Place (category: {place.fields.category_id}). <br/>
-                    Name: {place.fields.name}.<br/>
-                    Added: {place.fields.owner}.</span>
-              </Popup>
-            </Marker>
-          );
+      if (categories){
 
+        if (activeCategories.indexOf(place.fields.category_id) == -1)
+          return null;
+      }
+      const position = [parseFloat(place.fields.lat), parseFloat(place.fields.lng)];
+      
+      return(
+        <Marker position={position} key={i}>
+          <Popup>
+            <span>Place (category: {place.fields.category_id}). <br/>
+                Name: {place.fields.name}.<br/>
+                Added: {place.fields.owner}.</span>
+          </Popup>
+        </Marker>
+      );
     });
 
     return my_array;

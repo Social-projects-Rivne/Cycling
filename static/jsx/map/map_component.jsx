@@ -78,14 +78,13 @@ class MapComponent extends React.Component {
     this.serverRequest2 = $.get(
     {
       url: '/api/places/search',
-      data: placeParamsObject
-    },
-    function (data) {
-      this.setState({places: data, redMarkerLatLng: null});
-    }.bind(this),
-    error: function(response) {
-      console.log("get places error:\n", response);
-    }
+      data: placeParamsObject,
+      success: function (data) {
+        this.setState({places: data, redMarkerLatLng: null});
+      }.bind(this),
+      error: function(response) {
+        console.log("get places error:\n", response);
+      }
     });
 
     this.serverRequest3 = $.get(
@@ -240,7 +239,6 @@ class MapComponent extends React.Component {
   render() {
     const position = [center_lat(), center_lng()];
     return (
-<<<<<<< HEAD
       <Map center={position} zoom={zoom()}
               zoomControl={false}
               ref='map'
