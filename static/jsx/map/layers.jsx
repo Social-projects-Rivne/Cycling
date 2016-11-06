@@ -1,4 +1,4 @@
-var layer_list = [
+var layers_list = [
   {
     name: 'MapBox',
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -56,4 +56,4 @@ var layer_list = [
   }
 ]
 
-export default layer_list;
+export default layers_list;

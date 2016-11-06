@@ -6,7 +6,7 @@ import stolenMarkers        from './markers/stolen_bikes_markers.jsx';
 import parkingsMarkers      from './markers/parkings_markers.jsx';
 import placesMarkers        from './markers/places_markers.jsx';
 import createPointerPopup, {MyPopup} from './popups/create_pointer.jsx';
-import RedMarker            from './markers/red_marker.jsx';
+import SilverMarker            from './markers/silver_marker.jsx';
 
 let stored_layer = () => (localStorage['map_layer'] || 'MapBox');
 let show_parkings = () => (localStorage['show_parkings'] === 'true');
@@ -23,15 +23,15 @@ class MapComponent extends React.Component {
       parkings: [],
       places: [],
       stolens: [],
-      redMarkerLatLng: null
+      silverMarkerLatLng: null
     };
     this.onBoundsChange = this.onBoundsChange.bind(this);
     this.loadPointers = this.loadPointers.bind(this);
     this.abortRequests = this.abortRequests.bind(this);
     this.onMouseClick = this.onMouseClick.bind(this);
-    this.convertRedMarkerToParking = this.convertRedMarkerToParking.bind(this);
-    this.convertRedMarkerToPlace = this.convertRedMarkerToPlace.bind(this);
-    this.convertRedMarkerToStolen = this.convertRedMarkerToStolen.bind(this);
+    this.convertSilverMarkerToParking = this.convertSilverMarkerToParking.bind(this);
+    this.convertSilverMarkerToPlace = this.convertSilverMarkerToPlace.bind(this);
+    this.convertSilverMarkerToStolen = this.convertSilverMarkerToStolen.bind(this);
   }
 
   componentDidMount(){
@@ -64,7 +64,7 @@ class MapComponent extends React.Component {
       data: {ne:ne, sw:sw}
     },
     function (data) {
-      this.setState({parkings: data, redMarkerLatLng: null});
+      this.setState({parkings: data, silverMarkerLatLng: null});
       // console.log(this.state.parkings.length);
     }.bind(this));
 
@@ -80,7 +80,7 @@ class MapComponent extends React.Component {
       url: '/api/places/search',
       data: placeParamsObject,
       success: function (data) {
-        this.setState({places: data, redMarkerLatLng: null});
+        this.setState({places: data, silverMarkerLatLng: null});
       }.bind(this),
       error: function(response) {
         console.log("get places error:\n", response);
@@ -93,7 +93,7 @@ class MapComponent extends React.Component {
       data: {ne:ne, sw:sw}
     },
     function (data) {
-        this.setState({stolens: data, redMarkerLatLng: null});
+        this.setState({stolens: data, silverMarkerLatLng: null});
     }.bind(this));
   };
 
@@ -163,7 +163,8 @@ class MapComponent extends React.Component {
     // this.openPopup(createPointerPopup(), e.latlng);
     // this.openPopup(MyPopup.setLatLng(e.latlng));
     // console.log(localStorage['token']);
-    this.setState({redMarkerLatLng: e.latlng});
+    if(!localStorage['token']){return};
+    this.setState({silverMarkerLatLng: e.latlng});
     this.props.newPointer(e.latlng);
     // this.props.father.refs.modal.showMe('e.latlng');
   };
@@ -173,12 +174,12 @@ class MapComponent extends React.Component {
     // this.openPopup("Right click", e.latlng, {minWidth:300, className:"test"});
   };
 
-  convertRedMarkerToPlace(){
+  convertSilverMarkerToPlace(){
     let places =  this.state.places;
     places.push({
         fields: {
-          lat: this.state.redMarkerLatLng.lat,
-          lng: this.state.redMarkerLatLng.lng,
+          lat: this.state.silverMarkerLatLng.lat,
+          lng: this.state.silverMarkerLatLng.lng,
           name: "",
           category_id: "",
           owner: "",
@@ -191,16 +192,16 @@ class MapComponent extends React.Component {
       });
     this.setState({
       places: places,
-      redMarkerLatLng: null
+      silverMarkerLatLng: null
     });
   };
 
-  convertRedMarkerToParking(){
+  convertSilverMarkerToParking(){
     let parkings =  this.state.parkings;
     parkings.push({
         fields: {
-          lat: this.state.redMarkerLatLng.lat,
-          lng: this.state.redMarkerLatLng.lng,
+          lat: this.state.silverMarkerLatLng.lat,
+          lng: this.state.silverMarkerLatLng.lng,
           name: "",
           security: "",
           owner: "",
@@ -212,16 +213,16 @@ class MapComponent extends React.Component {
       });
     this.setState({
       parkings: parkings,
-      redMarkerLatLng: null
+      silverMarkerLatLng: null
     });
   };
 
-  convertRedMarkerToStolen(){
+  convertSilverMarkerToStolen(){
     let stolens =  this.state.stolens;
     stolens.push({
         fields: {
-          lat: this.state.redMarkerLatLng.lat,
-          lng: this.state.redMarkerLatLng.lng,
+          lat: this.state.silverMarkerLatLng.lat,
+          lng: this.state.silverMarkerLatLng.lng,
           bike: "",
           day: "",
           is_found: "",
@@ -232,7 +233,7 @@ class MapComponent extends React.Component {
       });
     this.setState({
       stolens: stolens,
-      redMarkerLatLng: null
+      silverMarkerLatLng: null
     });
   };
 
@@ -286,7 +287,7 @@ class MapComponent extends React.Component {
             </FeatureGroup>
           </LayersControl.Overlay>
         </LayersControl>
-        {this.state.redMarkerLatLng ? <RedMarker position={this.state.redMarkerLatLng} /> : null}
+        {this.state.silverMarkerLatLng ? <SilverMarker position={this.state.silverMarkerLatLng} /> : null}
       </Map>
     );
   }
