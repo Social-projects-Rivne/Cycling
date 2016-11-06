@@ -76,6 +76,7 @@ label:focus,
     opacity: .9;
 }
 
+
 .register-button:active
 {
     background-color: #106CC8 !important;
@@ -296,5 +297,38 @@ label:focus,
     margin-top: 160px;
     font-size: 70px;
     color: #fff;
+}
 
+/*
+**********************************
+** ACTIVE CATEGORIES LIST STYLE **
+**********************************
+*/
+.categories-ul {
+  list-style: none;
+  text-decoration: none;
+  text-transform: capitalize;
+  padding-left: 5px;
+  background-color: #d3d3d3;
+}
+
+.categories-li {
+  cursor: pointer;
+}
+
+.ctg-li-active {
+  background-color: #106CC8;
+  color: #ffffff;
+}
+
+.ctg-li-active:hover {
+  background-color: #1E90FF;
+}
+
+.ctg-li-unactive {
+  color: #106CC8;
+}
+
+.ctg-li-unactive:hover {
+  background-color: #999999;
 }

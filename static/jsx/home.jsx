@@ -7,8 +7,10 @@ import FailNotification from './notifications/fail.jsx';
 import SuccessNotification from './notifications/success.jsx';
 
 class Home extends React.Component{
+
   constructor(props){
     super(props);
+    this.state = {};
     this.showNewPointerModal = this.showNewPointerModal.bind(this);
   };
 
@@ -17,6 +19,7 @@ class Home extends React.Component{
   };
 
   render(){
+    // console.log("RENDER Home, categories: ", this.props.categories);
     return (
       <div>
         <SuccessNotification ref="successNotification" father={this} />
@@ -24,7 +27,7 @@ class Home extends React.Component{
         <NewPlaceModal ref="newPlaceModal" father={this}/>
         <NewParkingModal ref="newParkingModal" father={this}/>
         <NewPointerModal ref="newPointerModal" father={this}/>
-        <MapComponent ref="map" father={this} newPointer={this.showNewPointerModal}/>
+        <MapComponent ref="map" father={this} newPointer={this.showNewPointerModal} categories = {this.props.categories}/>
       </div>
     )
   }

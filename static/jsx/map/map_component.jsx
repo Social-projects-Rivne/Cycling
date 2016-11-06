@@ -39,7 +39,7 @@ class MapComponent extends React.Component {
     let Bounds = this.refs.map.leafletElement.getBounds();
     this.loadPointers(Bounds);
   };
- 
+
   // componentWillUnmount() {
   //   this.abortRequests();
   // };
@@ -68,14 +68,25 @@ class MapComponent extends React.Component {
       // console.log(this.state.parkings.length);
     }.bind(this));
 
+
+    // forming data object for places
+    let placeParamsObject = {ne:ne, sw:sw};
+    if (this.props.categories) {
+      placeParamsObject.categories =  this.getActiveCategoriesString();
+    }
+
     this.serverRequest2 = $.get(
     {
       url: '/api/places/search',
-      data: {ne:ne, sw:sw}
+      data: placeParamsObject
     },
     function (data) {
       this.setState({places: data, redMarkerLatLng: null});
-    }.bind(this));
+    }.bind(this),
+    error: function(response) {
+      console.log("get places error:\n", response);
+    }
+    });
 
     this.serverRequest3 = $.get(
     {
@@ -119,6 +130,19 @@ class MapComponent extends React.Component {
         break;
     };
   };
+
+  /*
+  * This method form string to tell server which categories are active
+  * Output example: "[1, 2]"
+  */
+  getActiveCategoriesString(){
+    let activeCategories = [];
+    for(let i = 0; i < this.props.categories.length; i+=1) {
+      if (this.props.categories[i].active)
+        activeCategories.push(this.props.categories[i].id);
+    }
+    return "[" + activeCategories.join() + "]";
+  }
 
   onBoundsChange(e){
     this.abortRequests();
@@ -216,6 +240,7 @@ class MapComponent extends React.Component {
   render() {
     const position = [center_lat(), center_lng()];
     return (
+<<<<<<< HEAD
       <Map center={position} zoom={zoom()}
               zoomControl={false}
               ref='map'
@@ -253,7 +278,7 @@ class MapComponent extends React.Component {
 
           <LayersControl.Overlay name='Places' checked={show_places()} >
             <FeatureGroup color='blue'>
-              {placesMarkers(this.state.places)}
+              {placesMarkers(this.state.places, this.props.categories)}
             </FeatureGroup>
           </LayersControl.Overlay>
 
@@ -263,9 +288,7 @@ class MapComponent extends React.Component {
             </FeatureGroup>
           </LayersControl.Overlay>
         </LayersControl>
-
         {this.state.redMarkerLatLng ? <RedMarker position={this.state.redMarkerLatLng} /> : null}
-
       </Map>
     );
   }
