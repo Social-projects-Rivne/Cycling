@@ -30,8 +30,7 @@ module.exports = {
       {
         test: /\.(jpg|png)$/,
         loader: 'url-loader?limit=25000',
-      },
-      { test: /\.less$/, loader: "style!css!less" }
+      }
     ]
   },
 };
