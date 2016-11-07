@@ -38,8 +38,8 @@ let parkingsMarkers = function(parkings){
         return(
           <Marker position={position} key={i} icon={azureIcon}>
             <Popup>
-              <div className="inner-marker-div"><span>Parking: {parkng.fields.name}</span>
-              <p>Parking (amount: {parkng.fields.amount})</p>
+              <div id="inner-marker-div"><span>Parking: {parkng.fields.name}</span>
+                <p>Parking (amount: {parkng.fields.amount})</p>
               <div className="marker-link" onClick={handleClick.bind(this, "marker_details/" + id + "?type=Parking")}>Show details...</div>
               </div>
             </Popup>

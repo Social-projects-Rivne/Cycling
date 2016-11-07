@@ -124,9 +124,9 @@ class RegistrationComponent extends React.Component {
                     id="password-confirm-input-field" father={this} error={this.state.password_confirm_error}/>
                     <p className="form-tip">Re-type password</p>
                     
-                    <div className="control-group">
+                    <div className="control-group reg-log">
                         <div className="controls">
-                            <button type="submit" className="btn btn-success register-button" onClick={this.submitAll}>Register</button>
+                            <button type="submit" className="btn" id="register-button" onClick={this.submitAll}>Register</button>
                         </div>
                     </div>
                 </fieldset>

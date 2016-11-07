@@ -110,9 +110,9 @@ export class LoginComponent extends React.Component {
                   {this.getErrorLabel()}
                   <EmailInput value={this.email} name="email" id="email-input-field" father={this} error={this.state.email_error}/>
                   <PasswordInput value={this.password} name="password" id="password-input-field" father={this} error={this.state.password_error}/>
-                  <div className="control-group">
+                  <div className="control-group reg-log">
                       <div className="controls">
-                          <button type="submit" className="btn btn-success register-button" onClick={this.login}>Login</button>
+                          <button type="submit" className="btn" id="register-button" onClick={this.login}>Login</button>
                       </div>
                   </div>
               </fieldset>

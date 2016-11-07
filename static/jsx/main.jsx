@@ -40,8 +40,6 @@ class APP extends React.Component{
     }
 
     render(){
-      // console.log("RENDER APP, STATE:");
-      // console.log(this.state);
       //Render main component
       return (
         <div className={this.state.showHideSidenav} id="wrapper">
@@ -115,8 +113,8 @@ class Header extends React.Component {
         console.log("token not found");
         headerRightContent = (
           <div className="header-right">
-            <button className="header-button"><Link to='/login'>Login</Link></button>
-            <button className="header-button"><Link to='/registration'>Registration</Link></button>
+            <div className="header-button"><Link id="header-button-a" to='/login'>Login</Link></div>
+            <div className="header-button"><Link id="header-button-a" to='/registration'>Registration</Link></div>
           </div>
         );
       }

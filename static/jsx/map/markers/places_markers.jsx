@@ -43,7 +43,7 @@ let placesMarkers = function(places, categories){
       return(
         <Marker position={position} key={i} icon={greenIcon}>
           <Popup>
-            <div className="inner-marker-div"><span>Place: {place.fields.name}</span>
+            <div id="inner-marker-div"><span>Place: {place.fields.name}</span>
             <div className="marker-link" onClick={handleClick.bind(this, "marker_details/" + id + "?type=Place")}>Show details...</div>
             </div>
           </Popup>

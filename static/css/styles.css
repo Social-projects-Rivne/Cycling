@@ -1,3 +1,10 @@
+/*Reset rules*/
+* 
+{
+    margin: 0px;
+    padding: 0px;
+}
+
 textarea:hover,
 input:hover,
 textarea:active,
@@ -15,7 +22,149 @@ label:focus,
     -webkit-appearance:none;
 }
 
-.control-group
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+    text-decoration: none;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+/*End reset rules*/
+
+/*Main template*/
+.main-header
+{
+    background-color: #106CC8;
+}
+
+.sidebar-nav
+{
+    float: left;
+    margin-top: 70px;
+    position: fixed;
+}
+
+.icon
+{
+    color: #fff;
+    float: left;
+    cursor: pointer;
+    margin-top: 13px;
+    margin-left: 8px;
+}
+
+.navbar-brand.logo-line
+{
+    color: #fff;
+}
+
+.navbar-brand.logo-line:hover
+{
+    color: #fff;
+    cursor: pointer;
+}
+
+.page-content-wrapper
+{
+    margin-top: 51px;
+}
+
+.header-right {
+    float: right;
+    margin-right: 10px;
+    opacity: .9;
+    font-size: 16px;
+    text-align: center;
+}
+
+.header-button
+{
+    float: right;
+    margin-top: 8px;
+    margin-right: 10px;
+    background-color: #1E90FF;
+    color: #fff;
+    opacity: .9;
+    width: 120px;
+    font-size: 16px;
+    height: 35px;
+}
+
+.header-button:active
+{
+    opacity: 1;
+}
+
+#header-button-a
+{
+    text-decoration: none;
+    color: #fff;
+    display: block;
+    margin-top: 6px;
+}
+
+#header-button-a:hover
+{
+    text-decoration: none;
+    color: #fff;
+}
+
+#header-button-a:focus
+{
+    color: #fff;
+    cursor: pointer;
+}
+
+#header-button-a:active
+{
+    color: #fff;
+}
+
+.navbar-header
+{
+    width: 100%;
+}
+/*End of base template*/
+
+/*registration & inpunts*/
+.control-group.reg-log
 {
     text-align: center;
 }
@@ -56,128 +205,39 @@ label:focus,
     font-size: 60px;
 }
 
-.register-button
+#register-button
 {
-    background-color: #106CC8 !important;
-    color: #fff !important;
-    background-image: none !important;
+    background-color: #106CC8;
+    color: #fff;
+    background-image: none;
     opacity: .8;
     width: 150px;
-    border-radius: 0px !important;
-    border: none !important;
+    border-radius: 0px;
+    border: none;
     margin-top: 35px;
-    font-size: 16px !important;
+    font-size: 16px;
     height: 40px;
 }
 
-.register-button:hover
-{
-    background-color: #106CC8 !important;
-    opacity: .9;
-}
-
-.register-button:active
-{
-    background-color: #106CC8 !important;
-    opacity: 1;
-}
-
-.main-header
+#register-button:hover
 {
     background-color: #106CC8;
-}
-
-.sidebar-nav
-{
-    float: left;
-    margin-top: 70px;
-    position: fixed;
-}
-
-.icon
-{
-    color: #fff;
-    float: left;
-    cursor: pointer;
-    margin-top: 13px;
-    margin-left: 8px;
-}
-
-.logo-line
-{
-    color: #fff !important;
-}
-
-.logo-line:hover
-{
-    color: #fff !important;
-    cursor: pointer;
-}
-
-.page-content-wrapper
-{
-    margin-top: 51px;
-}
-
-.header-right {
-    float: right;
-    margin-right: 10px;
     opacity: .9;
-    border: none;
-    font-size: 16px;
-    height: 35px;
-    text-align: center;
 }
 
-.header-button
+#register-button:active
 {
-    float: right;
-    margin-top: 8px;
-    margin-right: 10px;
-    background-color: #1E90FF;
-    color: #fff;
-    opacity: .9;
-    width: 120px;
-    border: none;
-    font-size: 16px;
-    height: 35px;
-    text-align: center;
-}
-
-.header-button:active
-{
+    background-color: #106CC8;
     opacity: 1;
 }
 
-
-.header-button a
+.form-tip
 {
-    text-decoration: none !important;
-    color: #fff;
-    display: block;
+    text-align: center;
+    color: #999999;
+    font-size: 10px;
 }
-
-.header-button a:hover
-{
-    text-decoration: none !important;
-    color: #fff;
-}
-
-.header-button a:focus
-{
-    color: #fff;
-    cursor: pointer;
-}
-
-.header-button a:active
-{
-    color: #fff;
-}
-
-.navbar-header
-{
-    width: 100%;
-}
+/*End of registration & inputs*/
 
 /*
  ***********************
@@ -224,56 +284,12 @@ label:focus,
     transform: scale(1.0);
   }
 }
+/*End of spinner*/
 
-.form-tip
-{
-    text-align: center;
-    color: #999999;
-    font-size: 10px;
-}
-
+/*Marker details page*/
 .marker-details-content
 {
     margin: 0 auto;
-}
-
-.card {
-    border-radius: 2px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.19), 0 3px 4px rgba(0,0,0,0.23);
-    margin: 15px 0;
-    padding: 5px;
-    min-width: 220px;
-    text-align: left;
-}
-
-.card.location,
-.card.info
-{
-    min-height: 90px;
-}
-
-.address
-{
-    position: relative;
-    bottom: 7px;
-}
-
-.card.info span:nth-child(2)
-{
-    display: block;
-}
-
-.card.details
-{
-    min-height: 138px;
-}
-
-.detail-cards-header
-{
-    text-align: left;
-    color: #999999;
-    margin: 10px 0px 0px 10px;
-    font-size: 30px;
 }
 
 .photo-container
@@ -291,14 +307,112 @@ label:focus,
     margin-left: 50px;
     margin-top: 160px;
     font-size: 70px;
+    color: #000;
+}
+
+@media screen and (max-width: 800px) {
+    .photo-container{
+        background-position: 50% 60%;
+    }
+}
+
+@media screen and (max-width: 1100px) {
+    .photo-header {
+        text-align: center;
+        float: none;
+        margin-left: 0px;
+        margin-top: 170px;
+        font-size: 30px;
+    }
+}
+
+.card {
+    border-radius: 2px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.19), 0 3px 4px rgba(0,0,0,0.23);
+    margin: 15px 0;
+    padding: 5px;
+    min-width: 220px;
+    text-align: left;
+}
+
+.card.location,
+.card.info
+{
+    min-height: 90px;
+}
+
+.card.info span:nth-child(2)
+{
+    display: block;
+}
+
+.card.details
+{
+    min-height: 138px;
+}
+
+.address
+{
+    position: relative;
+    bottom: 7px;
+}
+
+.card p
+{
+    margin: 10px 0px 10px 10px;
+    font-size: 20px;
     color: #106CC8;
 }
 
-/*
-**********************************
-** ACTIVE CATEGORIES LIST STYLE **
-**********************************
-*/
+.detail-cards-header
+{
+    text-align: left;
+    color: #999999;
+    margin: 10px 0px 0px 10px;
+    font-size: 30px;
+}
+
+#location-icon
+{
+    font-size: 30px;
+    margin-right: 0px;
+}
+
+#inner-marker-div
+{
+    text-align: center;
+}
+
+#inner-marker-div span
+{
+    font-weight: bold;
+    display: block;
+}
+
+#inner-marker-div a:hover
+{
+    cursor: pointer;
+    display: block;
+}
+
+#inner-marker-div p
+{
+    margin: 5px;
+}
+
+.marker-link
+{
+    color: #1B8CFA;
+}
+
+.marker-link:hover
+{
+    cursor: pointer;
+    color: #106CC8;
+}
+/*End of marker details page*/
+
+/*ACTIVE CATEGORIES LIST STYLE*/
 .categories-ul {
   list-style: none;
   text-decoration: none;
@@ -328,65 +442,4 @@ label:focus,
   background-color: #999999;
 
 }
-
-@media screen and (max-width: 800px) {
-    .photo-container{
-        background-position: 50% 60%;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .photo-header {
-        text-align: center;
-        float: none;
-        margin-left: 0px;
-        margin-top: 170px;
-        font-size: 30px;
-    }
-}
-
-.card p
-{
-    margin: 10px 0px 10px 10px;
-    font-size: 20px;
-    color: #106CC8;
-}
-
-#location-icon
-{
-    font-size: 30px;
-    margin-right: 0px;
-}
-
-.inner-marker-div
-{
-    text-align: center;
-}
-
-.inner-marker-div span
-{
-    font-weight: bold;
-    display: block;
-}
-
-.inner-marker-div a:hover
-{
-    cursor: pointer;
-    display: block;
-}
-
-.inner-marker-div p
-{
-    margin: 5px !important;
-}
-
-.marker-link
-{
-    color: #1B8CFA;
-}
-
-.marker-link:hover
-{
-    cursor: pointer;
-    color: #106CC8;
-}
+/*End of category list*/

@@ -61,7 +61,7 @@ class BaseInput extends React.Component {
 
   render() {
     return (
-      <div className="control-group">
+      <div className="control-group reg-log">
           <div className="controls">
               <span style={this.getStyle()} className="material-icons input-icons">{this.props.icon}</span>
               <input placeholder={this.state.placeholder} type={this.state.type} id={this.props.id} name={this.props.name}
