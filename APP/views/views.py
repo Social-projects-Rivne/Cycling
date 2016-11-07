@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 from django.http import HttpResponse
 
-from APP.utils.login_util import PasswordMaster
+from APP.utils.password_master import PasswordMaster
 from APP.utils.json_parser import json_parse_error, json_agr_missing
 from APP.models import User
 from APP.models.parkings import Parking
@@ -109,11 +109,15 @@ def registration(request):
             if User.objects.filter(email=request.POST["email"]).exists():
                 result_dict['EmailError'] = 1
             if not result_dict:
+
+                hashed_password = _password_master.hash_password(
+                    request.POST['password'])
+                token = _password_master.generate_token()
                 User.objects.create(
                     full_name=request.POST['full_name'],
                     email=request.POST['email'],
-                    password=request.POST['password'],
-                    role_id='0', token=_password_master.generate_token())
+                    password=hashed_password,
+                    role_id='0', token=token)
                 result_dict['Success'] = 1
         else:
             result_dict['RulesError'] = 1
