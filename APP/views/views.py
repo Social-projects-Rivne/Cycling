@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 from django.http import HttpResponse
 
-from APP.utils.login_util import PasswordMaster
+from APP.utils.password_master import PasswordMaster
 from APP.utils.json_parser import json_parse_error, json_agr_missing
 from APP.models import User
 from APP.models.parkings import Parking
@@ -22,6 +22,7 @@ from APP.models.bicycles import Bicycle
 
 _valid_inputs = Validator()
 _password_master = PasswordMaster()
+
 
 def index(request):
     context = {
@@ -108,11 +109,15 @@ def registration(request):
             if User.objects.filter(email=request.POST["email"]).exists():
                 result_dict['EmailError'] = 1
             if not result_dict:
+
+                hashed_password = _password_master.hash_password(
+                    request.POST['password'])
+                token = _password_master.generate_token()
                 User.objects.create(
                     full_name=request.POST['full_name'],
                     email=request.POST['email'],
-                    password=request.POST['password'],
-                    role_id='0', token=_password_master.generate_token())
+                    password=hashed_password,
+                    role_id='0', token=token)
                 result_dict['Success'] = 1
         else:
             result_dict['RulesError'] = 1
@@ -133,14 +138,22 @@ def marker_details(request):
         elif table == "Parking":
             target_class = Parking
         data = target_class.objects.filter(pk=ID).first()
-        return JsonResponse({"marker_details":serializers.serialize \
-                ("json", [data])})
+        return JsonResponse({
+            "marker_details": serializers.serialize("json", [data])})
+
 
 def get_points(request, model_cls):
     """Returns entities with location within rectangle
     of sw and ne points. For more info on points look
     into similar methods of particular models
     mdl_cls - model class e.g. Place or SolenBike
+
+    If we looking for Place we can filter points by category...
+    If there is no categories JSON parameter it returns all categories.
+    Params:
+    sw - (optional)
+    ne - (optional)
+    categories - (optional) default all, format [1, 3, 4] where 1, 3, 4 - ids.
     """
 
     def str_to_point(txt_point):
@@ -149,16 +162,30 @@ def get_points(request, model_cls):
     if request.method == 'GET':
         sw_point = str_to_point(request.GET.get('sw', '44.3, 37.2'))
         ne_point = str_to_point(request.GET.get('ne', '44.1, 37.4'))
+
         entities = model_cls.objects
+
+        # if we taking places
+        if model_cls == Place:
+            # if user specified categories to filter
+            categories = request.GET.get('categories', None)
+            print categories
+            if categories:
+                entities = entities.filter(category_id__in=categories)
+
         if sw_point[1] > ne_point[1]:
-            entities = entities.filter(lng__lte=sw_point[1]).filter(lng__gte=ne_point[1])
+            entities = entities.filter(
+                lng__lte=sw_point[1]).filter(lng__gte=ne_point[1])
         else:
-            entities = entities.filter(lng__lte=ne_point[1]).filter(lng__gte=sw_point[1])
-        # print entities
+            entities = entities.filter(
+                lng__lte=ne_point[1]).filter(lng__gte=sw_point[1])
+
         if sw_point[0] > ne_point[0]:
-            entities = entities.filter(lat__lte=sw_point[0]).filter(lat__gte=ne_point[0])
+            entities = entities.filter(
+                lat__lte=sw_point[0]).filter(lat__gte=ne_point[0])
         else:
-            entities = entities.filter(lat__lte=ne_point[0]).filter(lat__gte=sw_point[0])
+            entities = entities.filter(
+                lat__lte=ne_point[0]).filter(lat__gte=sw_point[0])
 
         data = serializers.serialize("json", entities)
         print "DATA, DATA: ", data
@@ -271,6 +298,7 @@ def create_place(request):
     except Exception as e:
         return HttpResponseServerError(content=str(e))
 
+
 @need_token
 def create_parking(request):
     """Creates new Parking object in DB
@@ -314,6 +342,7 @@ def create_parking(request):
     except Exception as e:
         return HttpResponseServerError(content=str(e))
 
+
 @need_token
 def create_stolen(request):
     """Creates new StolenBike object in DB
@@ -354,3 +383,36 @@ def create_stolen(request):
         return HttpResponse(data, content_type="application/json")
     except Exception as e:
         return HttpResponseServerError(content=str(e))
+
+
+@csrf_exempt
+def get_categories(request):
+    """
+    This method returns all posible categories.
+    Response example:
+    {
+    "response": [
+        {
+            "id": "0",
+            "name": "store"
+        },
+        {
+            "id": "1",
+            "name": "service"
+        },
+        {
+            "id": "2",
+            "name": "cafe"
+        }
+    ]
+    }
+    Error code:
+      105 - unsupported method type
+    """
+    if request.method != "GET":
+        return JsonResponse({"error": "Unsupported method", "code": 105})
+
+    result = []
+    for category_id, category_name in Place.CATEGORY:
+        result.append({"id": category_id, "name": category_name})
+    return JsonResponse({"response": result})

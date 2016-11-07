@@ -74,7 +74,6 @@ label:focus,
 {
     background-color: #106CC8 !important;
     opacity: .9;
-
 }
 
 .register-button:active
@@ -295,6 +294,41 @@ label:focus,
     color: #106CC8;
 }
 
+/*
+**********************************
+** ACTIVE CATEGORIES LIST STYLE **
+**********************************
+*/
+.categories-ul {
+  list-style: none;
+  text-decoration: none;
+  text-transform: capitalize;
+  padding-left: 5px;
+  background-color: #d3d3d3;
+}
+
+.categories-li {
+  cursor: pointer;
+}
+
+.ctg-li-active {
+  background-color: #106CC8;
+  color: #ffffff;
+}
+
+.ctg-li-active:hover {
+  background-color: #1E90FF;
+}
+
+.ctg-li-unactive {
+  color: #106CC8;
+}
+
+.ctg-li-unactive:hover {
+  background-color: #999999;
+
+}
+
 @media screen and (max-width: 800px) {
     .photo-container{
         background-position: 50% 60%;
@@ -307,7 +341,7 @@ label:focus,
         float: none;
         margin-left: 0px;
         margin-top: 170px;
-        font-size: 30px;        
+        font-size: 30px;
     }
 }
 

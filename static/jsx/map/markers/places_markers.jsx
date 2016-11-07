@@ -17,23 +17,39 @@ let GreenIcon = L.Icon.Default.extend({
 });
 let greenIcon = new GreenIcon();
 
-let placesMarkers = function(places){
+let placesMarkers = function(places, categories){
   console.log('Places: ', places.length);
+
+  // making list of categories id for faster check
+  if (categories){
+    var activeCategories = [];
+    for(let i = 0; i < categories.length; i+=1) {
+      if (categories[i].active)
+        activeCategories.push(categories[i].id);
+    }
+    console.log("active categories: ", activeCategories);
+  }
+
   if (places){
     let my_array = places.map(function(place, i){
-        const position = [parseFloat(place.fields.lat), parseFloat(place.fields.lng)];
-        let id = place.pk;
-        return(
-          <Marker position={position} key={i} icon={greenIcon}>
-            <Popup>
-              <div className="inner-marker-div"><span>Place: {place.fields.name}</span>
-              <div className="marker-link" onClick={handleClick.bind(this, "marker_details/" + id + "?type=Place")}>Show details...</div>
-              </div>
-            </Popup>
-          </Marker>
-        );
-        }
+      // if categories not empty, then we should filter markers
+      if (categories){
+
+        if (activeCategories.indexOf(place.fields.category_id) == -1)
+          return null;
+      }
+      const position = [parseFloat(place.fields.lat), parseFloat(place.fields.lng)];
+      let id = place.pk;
+      return(
+        <Marker position={position} key={i} icon={greenIcon}>
+          <Popup>
+            <div className="inner-marker-div"><span>Place: {place.fields.name}</span>
+            <div className="marker-link" onClick={handleClick.bind(this, "marker_details/" + id + "?type=Place")}>Show details...</div>
+            </div>
+          </Popup>
+        </Marker>
       );
+    });
 
     return my_array;
   }else{
