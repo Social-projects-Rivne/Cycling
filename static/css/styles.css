@@ -101,6 +101,11 @@ table {
     cursor: pointer;
 }
 
+#avatar
+{
+    padding-top: 0px;
+}
+
 .page-content-wrapper
 {
     margin-top: 51px;

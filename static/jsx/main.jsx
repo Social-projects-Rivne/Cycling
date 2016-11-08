@@ -83,7 +83,7 @@ class Header extends React.Component {
             marginTop: "4px"
           };
           headerRightContent = (
-            <img src={this.state.avatar} className="header-right" style={styleObj}/>
+            <img src={this.state.avatar} id="avatar" className="header-right" style={styleObj}/>
           );
         }
         else{
