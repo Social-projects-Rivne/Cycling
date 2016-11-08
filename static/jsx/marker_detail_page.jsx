@@ -91,6 +91,7 @@ export class MarkerDetails extends React.Component {
 
 	render() {
 		console.log(this.state.marker_value);
+		console.log(this.state.street.split(','));
 		return (
 			<div className="container-fluid marker-details-content">
 				<div className="row">
@@ -103,7 +104,7 @@ export class MarkerDetails extends React.Component {
 					<div className="col-xs-12 col-md-6 col-lg-6">
 						<div className="card location">
 							<h3 className="detail-cards-header">Location</h3>
-							<p className="address"><span id="location-icon" className="material-icons">place</span>{this.state.street}</p>
+							<p className="address"><span id="location-icon" className="material-icons">place</span>{this.state.street.split(',', 4).join(',')}</p>
 						</div>
 					</div>
 					<div className="col-xs-12 col-md-6 col-lg-6">

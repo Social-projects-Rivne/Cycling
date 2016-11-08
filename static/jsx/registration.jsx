@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Link, browserHistory } from 'react-router';
 import {EmailInput} from './input/email_input.jsx';
 import {PasswordInput} from './input/password_input.jsx';
 import {FullNameInput} from './input/full_name_input.jsx';
@@ -7,14 +8,14 @@ import {Validator} from './validator.jsx';
 
 
 class RegistrationComponent extends React.Component {
-    /*
-     * React component of registration form
-     * that use our reusable inputs. When submit
-     * button is pressed, it validate credentials
-     * and in case of error make icons red or in case of success
-     * send requst to server by ajax and registrate user,
-     * or make red icon, if something is wrong on server
-     */
+/*
+ * React component of registration form
+ * that use our reusable inputs. When submit
+ * button is pressed, it validate credentials
+ * and in case of error make icons red or in case of success
+ * send requst to server by ajax and registrate user,
+ * or make red icon, if something is wrong on server
+ */
     constructor(props) {
         super(props);
         this.state = {
@@ -55,11 +56,11 @@ class RegistrationComponent extends React.Component {
     }
 
     submitAll(event) {
-        /* 
-         * When submit button is ckliked it validate
-         * input values and send to server in case of success.
-         * If something is wrong, it show it to user
-         */
+    /* 
+     * When submit button is ckliked it validate
+     * input values and send to server in case of success.
+     * If something is wrong, it show it to user
+     */
         event.preventDefault();
         let ajaxSuccess=this.ajaxSuccess;        
         let self;
@@ -134,11 +135,7 @@ class RegistrationComponent extends React.Component {
             );
         }
         else{
-            return (
-                <div className="header-div registrated">
-                    <h2>You have been successfully registrated!</h2>
-                </div>
-            );
+            browserHistory.push('/login');
         }
     }
 }

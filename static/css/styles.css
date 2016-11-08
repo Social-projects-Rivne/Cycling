@@ -112,12 +112,12 @@ table {
     opacity: .9;
     font-size: 16px;
     text-align: center;
+    padding-top: 8px;
 }
 
 .header-button
 {
     float: right;
-    margin-top: 8px;
     margin-right: 10px;
     background-color: #1E90FF;
     color: #fff;
@@ -125,6 +125,7 @@ table {
     width: 120px;
     font-size: 16px;
     height: 35px;
+    line-height: 2.2;
 }
 
 .header-button:active
@@ -136,8 +137,6 @@ table {
 {
     text-decoration: none;
     color: #fff;
-    display: block;
-    margin-top: 6px;
 }
 
 #header-button-a:hover
@@ -155,6 +154,30 @@ table {
 #header-button-a:active
 {
     color: #fff;
+}
+
+@media screen and (max-width: 400px) {
+    .header-button
+    {
+        width: 80px;
+        font-size: 13px;
+    }
+    #header-button-a
+    {
+        line-height: 2.5;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .header-button
+    {
+        width: 65px;
+        font-size: 12px;
+    }
+    #header-button-a
+    {
+        line-height: 2.8;
+    }
 }
 
 .navbar-header
@@ -311,13 +334,15 @@ table {
 }
 
 @media screen and (max-width: 800px) {
-    .photo-container{
+    .photo-container
+    {
         background-position: 50% 60%;
     }
 }
 
 @media screen and (max-width: 1100px) {
-    .photo-header {
+    .photo-header 
+    {
         text-align: center;
         float: none;
         margin-left: 0px;
