@@ -8,19 +8,20 @@ import {Validator} from './validator.jsx';
 
 
 class RegistrationComponent extends React.Component {
-/*
- * React component of registration form
- * that use our reusable inputs. When submit
- * button is pressed, it validate credentials
- * and in case of error make icons red or in case of success
- * send requst to server by ajax and registrate user,
- * or make red icon, if something is wrong on server
- */
+    /*
+     * React component of registration form
+     * that use our reusable inputs. When submit
+     * button is pressed, it validate credentials
+     * and in case of error make icons red or in case of success
+     * send requst to server by ajax and registrate user,
+     * or make red icon, if something is wrong on server
+     */
     constructor(props) {
         super(props);
         this.state = {
             registration_process: "Registration",
-            isRegistrated: false
+            isRegistrated: false,
+            madal_text: ""
         };
         this.ajaxSuccess = this.ajaxSuccess.bind(this);
         this.submitAll = this.submitAll.bind(this);
@@ -48,19 +49,25 @@ class RegistrationComponent extends React.Component {
             });
         }
         else if(response['RulesError'] === 1){
+            this.setState({
+                madal_text: "Validation error occured"
+            })
             console.log("Validation is not right");
         }
         else{
+            this.setState({
+                madal_text: "Unknown error occured"
+            })
             console.log("Some other error");
         }
     }
 
     submitAll(event) {
-    /* 
-     * When submit button is ckliked it validate
-     * input values and send to server in case of success.
-     * If something is wrong, it show it to user
-     */
+        /* 
+         * When submit button is ckliked it validate
+         * input values and send to server in case of success.
+         * If something is wrong, it show it to user
+         */
         event.preventDefault();
         let ajaxSuccess=this.ajaxSuccess;        
         let self;
@@ -99,7 +106,7 @@ class RegistrationComponent extends React.Component {
     }
 
     render() {
-        //Render form component
+        //Render form component, in case of successful registration route to login page
         if(this.state.isRegistrated === false) {
         return (
             <form className="form-horizontal registration-form">
@@ -134,8 +141,17 @@ class RegistrationComponent extends React.Component {
             </form>
             );
         }
-        else{
+        else if(this.state.isRegistrated === true)
+        {
             browserHistory.push('/login');
+        }
+        else if(this.state.modal_text)
+        {
+            return (
+                <div class="header-div">
+                    <h2>{this.state.modal_text}</h2>
+                </div>
+                );
         }
     }
 }

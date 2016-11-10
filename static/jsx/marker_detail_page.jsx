@@ -1,6 +1,12 @@
 import React from 'react';
 
+
 export class MarkerDetails extends React.Component {
+	/*
+ 	 * Component of marker detail page, that shows
+ 	 * default photo, location, description and special 
+ 	 * info, that depends on marker type
+ 	 */
 	constructor(props){
 		super(props);
 		this.state = {
@@ -14,12 +20,24 @@ export class MarkerDetails extends React.Component {
 	}
 
 	streetAjaxSuccess(response){
+		/*
+	 	 * Method, that is used in case of openstreetmap
+	 	 * ajax success. Set state value of 'street' as
+	 	 * address of marker
+	 	 */
 		this.setState({
 			street: response.display_name
 		});
 	}
 
 	ajaxSuccess(response) {
+		/*
+	     * Method, that is used in case of marker details
+	     * ajax success. 'Set state of marker_value' as
+	     * marker details info from database.
+	     * Also make ajax response for openstreetmap
+	     * api and get address by lat lan
+	     */
 		let parsedData = JSON.parse(response.marker_details);
 		this.setState({
 			marker_value: parsedData[0].fields
@@ -32,6 +50,11 @@ export class MarkerDetails extends React.Component {
 	}
 
 	componentDidMount() {
+		/*
+		 * When component is mounted, make ajax response
+		 * to server and get marker details that depends
+		 * on marker type and id
+		 */
 		$.ajax({
 			type: 'GET',
       		url: '/api/marker_details',
@@ -42,6 +65,7 @@ export class MarkerDetails extends React.Component {
 	}
 
 	renderPlaceCondition(){
+		//Checks marker type and return jsx of info card in case of 'Place' type
 		if(this.state.marker_type === "Place"){
 			return(
 				<div className="card info">
@@ -53,6 +77,7 @@ export class MarkerDetails extends React.Component {
 	}
 
 	renderBikeCondition(){
+		//Checks marker type and return jsx of info card in case of 'StolenBike' type
 		if(this.state.marker_type === "StolenBike"){
 			return(
 				<div className="card info">
@@ -65,6 +90,7 @@ export class MarkerDetails extends React.Component {
 	}
 
 	renderParkingCondition(){
+		//Checks marker type and return jsx of info card in case of 'Parking' type
 		if(this.state.marker_type === "Parking"){
 			return(
 				<div className="card info">
@@ -77,6 +103,7 @@ export class MarkerDetails extends React.Component {
 	}
 
 	renderDetails(){
+		//Checks marker type and return jsx of details type is not 'Parking'
 		if(this.state.marker_type !== "Parking"){
 			return (
 				<div className="col-xs-12 col-md-6 col-lg-6">
@@ -90,7 +117,7 @@ export class MarkerDetails extends React.Component {
 	}
 
 	render() {
-		console.log(this.state.marker_value);
+		//Render method of component
 		console.log(this.state.street.split(','));
 		return (
 			<div className="container-fluid marker-details-content">
