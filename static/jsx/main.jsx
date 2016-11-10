@@ -186,19 +186,20 @@ class SideBar extends React.Component {
       this.props.app.setActiveCategories(newCategories);
     }
 
+    getCategoriesView() {
+      let context = this;
+      let categories_list;
+      if (this.props.categories) {
+
+          categories_list = this.props.categories.map(function(category, index){
+            return (<CategoryItem categoryName={category.name} isActive={category.active}
+                              onClick={context.handleCategoryItemClick.bind(context, category.id)} key={index}/>);
+          });
+      }
+      return categories_list;
+    }
 
     render() {
-        let context = this;
-        let categories_list;
-        // console.log("RENDER SideBar, categories:");
-        // console.log(this.props.categories);
-        if (this.props.categories) {
-
-            categories_list = this.props.categories.map(function(category, index){
-              return (<CategoryItem categoryName={category.name} isActive={category.active}
-                                onClick={context.handleCategoryItemClick.bind(context, category.id)} key={index}/>);
-            });
-        }
         return (
         <div id="sidebar-wrapper" role="navigation">
             <ul className="sidebar-nav">
@@ -206,7 +207,7 @@ class SideBar extends React.Component {
                 <li><a href="#">View</a></li>
                 <li><a href="#">Display Objects</a>
                   <ul className="categories-ul">
-                    {categories_list}
+                    {getCategoriesView()}
                   </ul>
                 </li>
                 <li><a href="#">Stolen Bycicles</a></li>
