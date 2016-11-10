@@ -21,7 +21,7 @@ class RegistrationComponent extends React.Component {
         this.state = {
             registration_process: "Registration",
             isRegistrated: false,
-            madal_text: ""
+            modal_text: ""
         };
         this.ajaxSuccess = this.ajaxSuccess.bind(this);
         this.submitAll = this.submitAll.bind(this);
@@ -50,15 +50,13 @@ class RegistrationComponent extends React.Component {
         }
         else if(response['RulesError'] === 1){
             this.setState({
-                madal_text: "Validation error occured"
+                modal_text: "Validation error occured on server..."
             })
-            console.log("Validation is not right");
         }
         else{
             this.setState({
-                madal_text: "Unknown error occured"
+                modal_text: "Unknown error occured...reload"
             })
-            console.log("Some other error");
         }
     }
 
@@ -105,9 +103,30 @@ class RegistrationComponent extends React.Component {
         });
     }
 
+    routeToLogin(){
+        if(this.state.isRegistrated)
+        {
+            browserHistory.push('/login');
+            return null;
+        }
+    }
+
+    showServerError(){
+        console.log("i am alive!");
+        if(this.state.modal_text)
+        {
+            console.log("and also here");
+            return (
+                <div className="header-div registrated">
+                    <h2>{this.state.modal_text}</h2>
+                </div>
+            );
+        }
+    }
+
     render() {
         //Render form component, in case of successful registration route to login page
-        if(this.state.isRegistrated === false) {
+        if(!this.state.isRegistrated && !this.state.modal_text) {
         return (
             <form className="form-horizontal registration-form">
                 <fieldset>
@@ -141,17 +160,9 @@ class RegistrationComponent extends React.Component {
             </form>
             );
         }
-        else if(this.state.isRegistrated === true)
-        {
-            browserHistory.push('/login');
-        }
-        else if(this.state.modal_text)
-        {
-            return (
-                <div class="header-div">
-                    <h2>{this.state.modal_text}</h2>
-                </div>
-                );
+        else{
+            { this.routeToLogin() };
+            { this.showServerError() };
         }
     }
 }

@@ -1,8 +1,13 @@
-class Validator {
 
-    constructor(){}
-    
-    validateName(full_name) {    
+
+class Validator {
+    /*
+     * Class for validation of inputs.
+     * Use regexp, validate full name, email, password
+     */    
+
+
+    validateName(full_name){
       return /^[A-Z][A-z-']+[A-z]\s[A-Z][A-z-']+[a-z]$/.test(full_name);
     }
 
@@ -10,9 +15,13 @@ class Validator {
       return /^[A-z\d\._-]+@[A-z\d_-]+\.[a-z]+[\.a-z]*[a-z]$/.test(email);
     }
 
-    // requirements to password:
-    //  - length more that 8
     validatePassword(password){
+      /* 
+       * requirements to password:
+       * - length more that 8
+       * - can contain numbers, characters and . _
+       */
+
       if(password === undefined){
         return false
       }
