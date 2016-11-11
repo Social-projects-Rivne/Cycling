@@ -207,7 +207,7 @@ class SideBar extends React.Component {
                 <li><a href="#">View</a></li>
                 <li><a href="#">Display Objects</a>
                   <ul className="categories-ul">
-                    {getCategoriesView()}
+                    {this.getCategoriesView()}
                   </ul>
                 </li>
                 <li><a href="#">Stolen Bycicles</a></li>

@@ -1,10 +1,11 @@
 import React from 'react';
 
 import { Link, browserHistory } from 'react-router';
-import {EmailInput} from './input/email_input.jsx';
-import {PasswordInput} from './input/password_input.jsx';
-import {FullNameInput} from './input/full_name_input.jsx';
-import {Validator} from './validator.jsx';
+import { BaseInput } from './input/base_input.jsx'
+import { EmailInput } from './input/email_input.jsx';
+import { PasswordInput } from './input/password_input.jsx';
+import { FullNameInput } from './input/full_name_input.jsx';
+import { Validator } from './validator.jsx';
 
 
 class RegistrationComponent extends React.Component {
@@ -112,13 +113,11 @@ class RegistrationComponent extends React.Component {
     }
 
     showServerError(){
-        console.log("i am alive!");
         if(this.state.modal_text)
         {
-            console.log("and also here");
             return (
                 <div className="header-div registrated">
-                    <h2>{this.state.modal_text}</h2>
+                    <h2>I have returned {this.state.modal_text}</h2>
                 </div>
             );
         }
@@ -134,8 +133,8 @@ class RegistrationComponent extends React.Component {
                         <h2>Registration</h2>
                     </div>
 
-                    <FullNameInput value={this.name} name="name"
-                    id="name-input-field" father={this} error={this.state.name_error}/>
+                    <BaseInput value={this.name} name="name" placeholder="full name" type="text"
+                    id="name-input-field" father={this} error={this.state.name_error} icon="person_outline"/>
                     <p className="form-tip">Only letters(first letters - uppercase),
                      dash and apostrophe are allowed</p>
 
@@ -160,9 +159,13 @@ class RegistrationComponent extends React.Component {
             </form>
             );
         }
-        else{
-            { this.routeToLogin() };
-            { this.showServerError() };
+        else {
+            return(
+                <div>
+                    { this.routeToLogin() }
+                    { this.showServerError() }
+                </div>
+            );
         }
     }
 }
