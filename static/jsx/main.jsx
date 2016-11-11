@@ -63,8 +63,8 @@ class Header extends React.Component {
       this.state = {};
     }
 
-    render() {
 
+    headerRightContent() {
       // we need to check if user is logged in
       // if yes we should instead of login and registration buttons return
       // avatar image
@@ -82,18 +82,11 @@ class Header extends React.Component {
             borderRadius: "20px",
             marginTop: "4px"
           };
-          headerRightContent = (
+          return (
             <img src={this.state.avatar} id="avatar" className="header-right" style={styleObj}/>
           );
         }
         else{
-          headerRightContent = (
-            <div className="spinner header-right">
-              <div className="bounce1"></div>
-              <div className="bounce2"></div>
-              <div className="bounce3"></div>
-            </div>
-          );
 
           $.get(
           {
@@ -107,24 +100,37 @@ class Header extends React.Component {
             else
               this.setState({avatar: data.result.avatar});
           }.bind(this));
+
+          return (
+            <div className="spinner header-right">
+              <div className="bounce1"></div>
+              <div className="bounce2"></div>
+              <div className="bounce3"></div>
+            </div>
+          );
+
         }
       }
       else {
         console.log("token not found");
-        headerRightContent = (
+        return (
           <div className="header-right">
             <div className="header-button"><Link id="header-button-a" to='/login'>Login</Link></div>
             <div className="header-button"><Link id="header-button-a" to='/registration'>Registration</Link></div>
           </div>
         );
       }
+    }
+    render() {
+
+
 
       return(
           <div className="navbar navbar-fixed-top main-header" role="navigation">
             <div className="navbar-header">
                 <a onClick={this.props.onButtonClick} id="menu-toggle" className="logo-a"><span className="icon material-icons">menu</span></a>
                 <Link className="navbar-brand logo-line" to='/'>Cycling</Link>
-                {headerRightContent}
+                {this.headerRightContent()}
             </div>
           </div>
       );
