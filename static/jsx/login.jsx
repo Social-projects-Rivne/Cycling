@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 
 import { EmailInput } from './input/email_input.jsx';
 import { PasswordInput } from './input/password_input.jsx';
@@ -19,14 +19,32 @@ export class LoginComponent extends React.Component {
         this.login = this.login.bind(this);
     }
 
+    // this part check if user is already logged in...
+    // and if it is redirect on home page
+    componentWillMount() {
+        if (localStorage['token']) {
+          $.get(
+          {
+            url: '/api/tokenvalid',
+            data: {token: localStorage['token']}
+          },
+          function (data) {
+
+            if (data["result"] === "ok")
+              browserHistory.push("/");
+          }.bind(this));
+        }
+    }
+
     login(event){
         event.preventDefault();
+        console.log("CLICK");
         let valid_pass = this.validator.validatePassword(this.password);
         let valid_email = this.validator.validateEmail(this.email);
+        console.log(valid_pass + " " + valid_email);
 
         // if one of params is false, than we can`t accept input...
         // prepare new state
-
         if (!valid_pass || !valid_email){
           console.log(valid_email + " " + valid_pass);
           this.setState({
@@ -44,7 +62,7 @@ export class LoginComponent extends React.Component {
         let context = this;
         $.ajax({
                 type: 'POST',
-                url: 'api/v1/login',
+                url: 'api/login',
                 contentType: 'application/json',
                 dataType: "json",
                 data: JSON.stringify(data),
@@ -52,35 +70,56 @@ export class LoginComponent extends React.Component {
                     console.log("Server responsed with: ");
                     console.log(response);
                     if ("error" in response) {
-                      console.log(response.error);
+                      if (response.code === 103 || response.code === 104){
+                        context.setState({error_message: response.error});
+                      }
                     }
                     else {
                       localStorage['token'] = response.token;
                       localStorage['id'] = response.id;
-                      window.location.href= "/";
+                      browserHistory.push("/");
                     }
+                },
+                error: function(response) {
+                  console.log(response);
                 }
+
             });
     }
 
-    render() {
+    getErrorLabel() {
+      if (this.state.error_message){
         return (
+          <center>
+            <div className="label label-danger">{this.state.error_message}</div>
+          </center>
+        );
+      }
+      else {
+        return null;
+      }
+    }
+    render() {
+      return (
+        <div>
           <form onSubmit={this.submit} className="form-horizontal registration-form">
               <fieldset>
                   <div className="header-div">
                       <h2 className="register-header">Login</h2>
                   </div>
+                  {this.getErrorLabel()}
                   <EmailInput value={this.email} name="email" id="email-input-field" father={this} error={this.state.email_error}/>
                   <PasswordInput value={this.password} name="password" id="password-input-field" father={this} error={this.state.password_error}/>
-                  <div className="control-group">
+                  <div className="control-group reg-log">
                       <div className="controls">
-                          <button type="submit" className="btn btn-success register-button" onClick={this.login}>Login</button>
+                          <button type="submit" className="btn" id="register-button" onClick={this.login}>Login</button>
                       </div>
                   </div>
-
               </fieldset>
           </form>
-        );
+
+        </div>
+      );
 
     }
 }

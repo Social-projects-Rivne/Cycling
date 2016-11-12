@@ -1,9 +1,11 @@
 import React from 'react';
 
-import {EmailInput} from './input/email_input.jsx';
-import {PasswordInput} from './input/password_input.jsx';
-import {FullNameInput} from './input/full_name_input.jsx';
-import {Validator} from './validator.jsx';
+import { Link, browserHistory } from 'react-router';
+import { BaseInput } from './input/base_input.jsx'
+import { EmailInput } from './input/email_input.jsx';
+import { PasswordInput } from './input/password_input.jsx';
+import { FullNameInput } from './input/full_name_input.jsx';
+import { Validator } from './validator.jsx';
 
 
 class RegistrationComponent extends React.Component {
@@ -19,7 +21,8 @@ class RegistrationComponent extends React.Component {
         super(props);
         this.state = {
             registration_process: "Registration",
-            isRegistrated: false
+            isRegistrated: false,
+            modal_text: ""
         };
         this.ajaxSuccess = this.ajaxSuccess.bind(this);
         this.submitAll = this.submitAll.bind(this);
@@ -47,10 +50,14 @@ class RegistrationComponent extends React.Component {
             });
         }
         else if(response['RulesError'] === 1){
-            console.log("Validation is not right");
+            this.setState({
+                modal_text: "Validation error occured on server..."
+            })
         }
         else{
-            console.log("Some other error");
+            this.setState({
+                modal_text: "Unknown error occured...reload"
+            })
         }
     }
 
@@ -90,48 +97,73 @@ class RegistrationComponent extends React.Component {
         //In case of success validation, send data to server
         $.ajax({
             type: 'POST',
-            url: 'api/registration',
+            url: '/api/registration',
             dataType: "json",
             data: data,
-            success: ajaxSuccess
+            success: this.ajaxSuccess
         });
     }
 
+    routeToLogin(){
+        if(this.state.isRegistrated)
+        {
+            browserHistory.push('/login');
+            return null;
+        }
+    }
+
+    showServerError(){
+        if(this.state.modal_text)
+        {
+            return (
+                <div className="header-div registrated">
+                    <h2>I have returned {this.state.modal_text}</h2>
+                </div>
+            );
+        }
+    }
+
     render() {
-        //Render form component
-        if(this.state.isRegistrated === false) {
+        //Render form component, in case of successful registration route to login page
+        if(!this.state.isRegistrated && !this.state.modal_text) {
         return (
-            <form onSubmit={this.submit} className="form-horizontal registration-form">
+            <form className="form-horizontal registration-form">
                 <fieldset>
                     <div className="header-div">
                         <h2>Registration</h2>
                     </div>
-                    <FullNameInput value={this.name} name="name"
-                    id="name-input-field" father={this} error={this.state.name_error}/>
+
+                    <BaseInput value={this.name} name="name" placeholder="full name" type="text"
+                    id="name-input-field" father={this} error={this.state.name_error} icon="person_outline"/>
                     <p className="form-tip">Only letters(first letters - uppercase),
                      dash and apostrophe are allowed</p>
+
                     <EmailInput value={this.email} name="email"
                     id="email-input-field" father={this} error={this.state.email_error}/>
                     <p className="form-tip">Standart email style, for example - youremail@gmail.com</p>
+
                     <PasswordInput value={this.password} name="password"
                     id="password-input-field" father={this} error={this.state.password_error}/>                
                     <p className="form-tip">Length more that 8, can contain letters, numbers, dot and '_'</p>
+
                     <PasswordInput value={this.password_confirm} name="password_confirm"
                     id="password-confirm-input-field" father={this} error={this.state.password_confirm_error}/>
                     <p className="form-tip">Re-type password</p>
-                    <div className="control-group">
+                    
+                    <div className="control-group reg-log">
                         <div className="controls">
-                            <button type="submit" className="btn btn-success register-button" onClick={this.submitAll}>Register</button>
+                            <button type="submit" className="btn" id="register-button" onClick={this.submitAll}>Register</button>
                         </div>
                     </div>
                 </fieldset>
             </form>
             );
         }
-        else{
-            return (
-                <div className="header-div registrated">
-                    <h2>You have been successfully registrated!</h2>
+        else {
+            return(
+                <div>
+                    { this.routeToLogin() }
+                    { this.showServerError() }
                 </div>
             );
         }

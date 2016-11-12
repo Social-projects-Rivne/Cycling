@@ -1,13 +1,16 @@
 import React from 'react';
 
 
+// this input should be used as basic component
+// required props:
+// name - this prop is name of variable that represents value of input in father
+// father - ref to father class which should handle this input value
 class BaseInput extends React.Component {
 
   constructor(props) {
     super(props);
 
-    this.state = {
-    };
+    this.state = {};
 
     // setting up default values
     if ("error" in this.props)
@@ -58,7 +61,7 @@ class BaseInput extends React.Component {
 
   render() {
     return (
-      <div className="control-group">
+      <div className="control-group reg-log">
           <div className="controls">
               <span style={this.getStyle()} className="material-icons input-icons">{this.props.icon}</span>
               <input placeholder={this.state.placeholder} type={this.state.type} id={this.props.id} name={this.props.name}

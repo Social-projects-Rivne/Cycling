@@ -1,8 +1,15 @@
-textarea:hover, 
-input:hover, 
-textarea:active, 
-input:active, 
-textarea:focus, 
+/*Reset rules*/
+* 
+{
+    margin: 0px;
+    padding: 0px;
+}
+
+textarea:hover,
+input:hover,
+textarea:active,
+input:active,
+textarea:focus,
 input:focus,
 button:focus,
 button:active,
@@ -15,7 +22,177 @@ label:focus,
     -webkit-appearance:none;
 }
 
-.control-group
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+    text-decoration: none;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+/*End reset rules*/
+
+/*Main template*/
+.main-header
+{
+    background-color: #106CC8;
+}
+
+.sidebar-nav
+{
+    float: left;
+    margin-top: 70px;
+    position: fixed;
+}
+
+.icon
+{
+    color: #fff;
+    float: left;
+    cursor: pointer;
+    margin-top: 13px;
+    margin-left: 8px;
+}
+
+.navbar-brand.logo-line
+{
+    color: #fff;
+}
+
+.navbar-brand.logo-line:hover
+{
+    color: #fff;
+    cursor: pointer;
+}
+
+#avatar
+{
+    padding-top: 0px;
+}
+
+.page-content-wrapper
+{
+    margin-top: 51px;
+}
+
+.header-right {
+    float: right;
+    margin-right: 10px;
+    opacity: .9;
+    font-size: 16px;
+    text-align: center;
+    padding-top: 8px;
+}
+
+.header-button
+{
+    float: right;
+    margin-right: 10px;
+    background-color: #1E90FF;
+    color: #fff;
+    opacity: .9;
+    width: 120px;
+    font-size: 16px;
+    height: 35px;
+    line-height: 2.2;
+}
+
+.header-button:active
+{
+    opacity: 1;
+}
+
+#header-button-a
+{
+    text-decoration: none;
+    color: #fff;
+}
+
+#header-button-a:hover
+{
+    text-decoration: none;
+    color: #fff;
+}
+
+#header-button-a:focus
+{
+    color: #fff;
+    cursor: pointer;
+}
+
+#header-button-a:active
+{
+    color: #fff;
+}
+
+@media screen and (max-width: 400px) {
+    .header-button
+    {
+        width: 80px;
+        font-size: 13px;
+    }
+    #header-button-a
+    {
+        line-height: 2.5;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .header-button
+    {
+        width: 65px;
+        font-size: 12px;
+    }
+    #header-button-a
+    {
+        line-height: 2.8;
+    }
+}
+
+.navbar-header
+{
+    width: 100%;
+}
+/*End of base template*/
+
+/*registration & inpunts*/
+.control-group.reg-log
 {
     text-align: center;
 }
@@ -56,119 +233,30 @@ label:focus,
     font-size: 60px;
 }
 
-.register-button
+#register-button
 {
-    background-color: #106CC8 !important;
-    color: #fff !important;
-    background-image: none !important;
+    background-color: #106CC8;
+    color: #fff;
+    background-image: none;
     opacity: .8;
     width: 150px;
-    border-radius: 0px !important;
-    border: none !important;
+    border-radius: 0px;
+    border: none;
     margin-top: 35px;
-    font-size: 16px !important;
+    font-size: 16px;
     height: 40px;
 }
 
-.register-button:hover
-{
-    background-color: #106CC8 !important;
-    opacity: .9;
-    
-}
-
-.register-button:active
-{
-    background-color: #106CC8 !important;
-    opacity: 1;
-}
-
-.main-header
+#register-button:hover
 {
     background-color: #106CC8;
-}
-
-.sidebar-nav
-{
-    float: left;
-    margin-top: 70px;
-    position: fixed;
-}
-
-.icon
-{
-    color: #fff;
-    float: left;
-    cursor: pointer;
-    margin-top: 13px;
-    margin-left: 8px;
-}
-
-.logo-line
-{
-    color: #fff !important;
-}
-
-.logo-line:hover
-{
-    color: #fff !important;
-    cursor: pointer;
-}
-
-.page-content-wrapper
-{
-    margin-top: 51px;
-    text-align: center;
-}
-
-.header-button
-{
-    float: right;
-    margin-top: 8px;
-    margin-right: 10px;
-    background-color: #1E90FF;
-    color: #fff;
     opacity: .9;
-    width: 120px;
-    border: none;
-    font-size: 16px;
-    height: 35px;
-    text-align: center;
 }
 
-.header-button:active
+#register-button:active
 {
+    background-color: #106CC8;
     opacity: 1;
-}
-
-.header-button a
-{
-    text-decoration: none !important;   
-    color: #fff;
-    display: block;
-    margin-top: 6px;
-}
-
-.header-button a:hover
-{
-    text-decoration: none !important;
-    color: #fff;
-}
-
-.header-button a:focus
-{
-    color: #fff;
-    cursor: pointer;
-}
-
-.header-button a:active
-{
-    color: #fff;
-}
-
-.navbar-header
-{
-    width: 100%;
 }
 
 .form-tip
@@ -177,70 +265,214 @@ label:focus,
     color: #999999;
     font-size: 10px;
 }
+/*End of registration & inputs*/
 
+/*
+ ***********************
+ *** LOADING SPINNER ***
+ ***********************
+*/
+.spinner {
+  width: 60px;
+  text-align: center;
+}
+
+.spinner > div {
+  width: 12px;
+  height: 12px;
+  background-color: #fff;
+
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.spinner .bounce1 {
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+
+@-webkit-keyframes sk-bouncedelay {
+  0%, 80%, 100% { -webkit-transform: scale(0) }
+  40% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes sk-bouncedelay {
+  0%, 80%, 100% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  } 40% {
+    -webkit-transform: scale(1.0);
+    transform: scale(1.0);
+  }
+}
+/*End of spinner*/
+
+/*Marker details page*/
 .marker-details-content
 {
-    width: 940px;
     margin: 0 auto;
-}
-
-.card {
-  background: #fff;
-  border-radius: 2px;
-  display: inline-block;
-  height: 300px;
-  position: relative;
-  width: 300px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.19), 0 3px 4px rgba(0,0,0,0.23);
-}
-
-.card.details
-{
-    width: 500px;
-}
-
-.card.location
-{
-    width: 400px;
-    height: 100px;
-    bottom: 200px;
-    position: relative;
-}
-
-.card.info
-{
-    width: 400px;
-    height: 180px;
-    position: relative;
-    left: 260px;
-    bottom: 205px;
-}
-
-.detail-cards-header
-{
-    float: left;
-    color: #999999;
-    margin: 10px 0px 0px 10px;
 }
 
 .photo-container
 {
     width: 920px;
     height: 250px;
-    background-image: url(../card.jpg);
+    background-image: url(../bicycle.jpg);
+    background-position: 30% 60%;
     margin: 0 auto;
 }
 
 .photo-header
 {
-    position: relative;
     float: left;
     margin-left: 50px;
     margin-top: 160px;
     font-size: 70px;
-    color: #fff;
-    
+    color: #000;
 }
+
+@media screen and (max-width: 800px) {
+    .photo-container
+    {
+        background-position: 50% 60%;
+    }
+}
+
+@media screen and (max-width: 1100px) {
+    .photo-header 
+    {
+        text-align: center;
+        float: none;
+        margin-left: 0px;
+        margin-top: 170px;
+        font-size: 30px;
+    }
+}
+
+.card {
+    border-radius: 2px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.19), 0 3px 4px rgba(0,0,0,0.23);
+    margin: 15px 0;
+    padding: 5px;
+    min-width: 220px;
+    text-align: left;
+}
+
+.card.location,
+.card.info
+{
+    min-height: 90px;
+}
+
+.card.info span:nth-child(2)
+{
+    display: block;
+}
+
+.card.details
+{
+    min-height: 138px;
+}
+
+.address
+{
+    position: relative;
+    bottom: 7px;
+}
+
+.card p
+{
+    margin: 10px 0px 10px 10px;
+    font-size: 20px;
+    color: #106CC8;
+}
+
+.detail-cards-header
+{
+    text-align: left;
+    color: #999999;
+    margin: 10px 0px 0px 10px;
+    font-size: 30px;
+}
+
+#location-icon
+{
+    font-size: 30px;
+    margin-right: 0px;
+}
+
+#inner-marker-div
+{
+    text-align: center;
+}
+
+#inner-marker-div span
+{
+    font-weight: bold;
+    display: block;
+}
+
+#inner-marker-div a:hover
+{
+    cursor: pointer;
+    display: block;
+}
+
+#inner-marker-div p
+{
+    margin: 5px;
+}
+
+.marker-link
+{
+    color: #1B8CFA;
+}
+
+.marker-link:hover
+{
+    cursor: pointer;
+    color: #106CC8;
+}
+/*End of marker details page*/
+
+/*ACTIVE CATEGORIES LIST STYLE*/
+.categories-ul {
+  list-style: none;
+  text-decoration: none;
+  text-transform: capitalize;
+  padding-left: 5px;
+  background-color: #d3d3d3;
+}
+
+.categories-li {
+  cursor: pointer;
+}
+
+.ctg-li-active {
+  background-color: #106CC8;
+  color: #ffffff;
+}
+
+.ctg-li-active:hover {
+  background-color: #1E90FF;
+}
+
+.ctg-li-unactive {
+  color: #106CC8;
+}
+
+.ctg-li-unactive:hover {
+  background-color: #999999;
+
+}
+/*End of category list*/
 
 /* PROFILE STYLES */
 
