@@ -4,6 +4,7 @@
 *.ini
 *.log
 .vscode/
+.ropeproject/
 
 # Databases
 *.db
