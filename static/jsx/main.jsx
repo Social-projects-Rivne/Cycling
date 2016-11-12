@@ -210,7 +210,6 @@ class SideBar extends React.Component {
         <div id="sidebar-wrapper" role="navigation">
             <ul className="sidebar-nav">
                 <li><Link onlyActiveOnIndex activeStyle={{color:'#53acff'}} to='/'>Home</Link></li>
-                <li><a href="#">View</a></li>
                 <li><a href="#">Display Objects</a>
                   <ul className="categories-ul">
                     {this.getCategoriesView()}
