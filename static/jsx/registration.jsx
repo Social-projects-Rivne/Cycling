@@ -27,6 +27,13 @@ class RegistrationComponent extends React.Component {
         this.ajaxSuccess = this.ajaxSuccess.bind(this);
         this.submitAll = this.submitAll.bind(this);
         this.validator = new Validator();
+        this.changeValue = this.changeValue.bind(this);
+    }
+
+    changeValue(event) {
+       let state = [];
+       state[event.target.name] = event.target.value;
+       this.setState(state);
     }
 
     ajaxSuccess(response) {
@@ -39,17 +46,17 @@ class RegistrationComponent extends React.Component {
             password_error: false,
             name_error: false,
         });
-        if(response['EmailError'] === 1){
+        if(response['EmailError']){
             this.setState({
                 email_error: true
             });
         }
-        else if(response['Success'] === 1){
+        else if(response['Success']){
             this.setState({
                 isRegistrated: true
             });
         }
-        else if(response['RulesError'] === 1){
+        else if(response['RulesError']){
             this.setState({
                 modal_text: "Validation error occured on server..."
             })
@@ -71,10 +78,10 @@ class RegistrationComponent extends React.Component {
         let ajaxSuccess=this.ajaxSuccess;        
         let self;
         self = this;
-        let valid_name = this.validator.validateName(this.name);
-        let valid_pass = this.validator.validatePassword(this.password);
-        let valid_email = this.validator.validateEmail(this.email);
-        let valid_confirm_password = (this.password === this.password_confirm);
+        let valid_name = this.validator.validateName(this.state.name);
+        let valid_pass = this.validator.validatePassword(this.state.password);
+        let valid_email = this.validator.validateEmail(this.state.email);
+        let valid_confirm_password = (this.state.password === this.state.password_confirm);
 
         //Validate input values.
         if (!valid_name || !valid_email || !valid_pass || !valid_confirm_password){
@@ -89,9 +96,9 @@ class RegistrationComponent extends React.Component {
 
         //Prepare data for sending to server.
         let data = {
-            full_name: this.name,
-            email: this.email,
-            password: this.password
+            full_name: this.state.name,
+            email: this.state.email,
+            password: this.state.password
         }
 
         //In case of success validation, send data to server
@@ -133,23 +140,24 @@ class RegistrationComponent extends React.Component {
                         <h2>Registration</h2>
                     </div>
 
-                    <BaseInput value={this.name} name="name" placeholder="full name" type="text"
-                    id="name-input-field" father={this} error={this.state.name_error} icon="person_outline"/>
+                    <BaseInput value={this.state.name} name="name" placeholder="full name" icon="person_outline"
+                    type="text" id="name-input-field" valChange={this.changeValue} error={this.state.name_error}/>
                     <p className="form-tip">Only letters(first letters - uppercase),
                      dash and apostrophe are allowed</p>
 
-                    <EmailInput value={this.email} name="email"
-                    id="email-input-field" father={this} error={this.state.email_error}/>
+                    <BaseInput value={this.state.email} name="email" placeholder="email" icon="email" type="email"
+                    id="email-input-field" valChange={this.changeValue} error={this.state.email_error}/>
                     <p className="form-tip">Standart email style, for example - youremail@gmail.com</p>
 
-                    <PasswordInput value={this.password} name="password"
-                    id="password-input-field" father={this} error={this.state.password_error}/>                
+                    <BaseInput value={this.state.password} name="password" placeholder="password" icon="lock_outline" type="password"
+                    id="password-input-field" valChange={this.changeValue} error={this.state.password_error}/>
                     <p className="form-tip">Length more that 8, can contain letters, numbers, dot and '_'</p>
 
-                    <PasswordInput value={this.password_confirm} name="password_confirm"
-                    id="password-confirm-input-field" father={this} error={this.state.password_confirm_error}/>
-                    <p className="form-tip">Re-type password</p>
-                    
+                    <BaseInput value={this.state.password_confirm} name="password_confirm" placeholder="re-type password"
+                    icon="lock_outline" type="password" id="password-confirm-input-field" valChange={this.changeValue} 
+                    error={this.state.password_confirm_error}/>
+                    <p className="form-tip">Length more that 8, can contain letters, numbers, dot and '_'</p>
+
                     <div className="control-group reg-log">
                         <div className="controls">
                             <button type="submit" className="btn" id="register-button" onClick={this.submitAll}>Register</button>

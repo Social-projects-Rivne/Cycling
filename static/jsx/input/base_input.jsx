@@ -32,15 +32,11 @@ class BaseInput extends React.Component {
       this.state.value = this.props.value;
     else
       this.state.value = "";
-
-    this.handleChange = this.handleChange.bind(this);
   }
 
   getStyle() {
     // this part define style in common
-    let styleObj = {
-
-    };
+    let styleObj = {};
     // this part set specific part depending on state of field
     if (!this.props.error) {
       styleObj.color = '#106CC8';
@@ -52,20 +48,13 @@ class BaseInput extends React.Component {
     return styleObj;
   }
 
-  // this method handle input and refresh data to father
-  handleChange(e) {
-    let value = e.target.value;
-    this.props.father[this.props.name] = value;
-    this.setState({value: value});
-  }
-
   render() {
     return (
       <div className="control-group reg-log">
           <div className="controls">
               <span style={this.getStyle()} className="material-icons input-icons">{this.props.icon}</span>
               <input placeholder={this.state.placeholder} type={this.state.type} id={this.props.id} name={this.props.name}
-              className="input-xlarge value-input" value={this.state.value} onChange={this.handleChange}/>
+              className="input-xlarge value-input" value={this.state.value} onChange={this.props.valChange}/>
           </div>
       </div>
     );
