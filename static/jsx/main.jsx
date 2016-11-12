@@ -10,6 +10,7 @@ import { RegistrationComponent }  from './registration.jsx';
 import { LoginComponent } from './login.jsx';
 import Home               from './home.jsx';
 import { MarkerDetails } from './marker_detail_page.jsx';
+import { Profile }        from './profile.jsx';
 
 
 class APP extends React.Component{
@@ -100,7 +101,10 @@ ReactDOM.render(
          <Route path = "/login" component = {LoginComponent} />
          <Route path = "/registration" component = {RegistrationComponent} />
          <Route path = "/marker_details" component = {MarkerDetails} />
+         <Route path = "/user/:user_id" component = {Profile} />
          <Route path='*' component={NotFound} />
       </Route>
   </Router>),
   document.getElementById('app'));
+
+
