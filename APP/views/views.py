@@ -26,7 +26,7 @@ _password_master = PasswordMaster()
 
 def index(request):
     context = {
-        'message': "Привіт, світе! Ви на головній сторінці Рівненського велододатку.",
+        'message': "Welcome to Rivne Cycling",
         }
     return render(request, 'APP/index.html', context)
 
