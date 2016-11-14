@@ -229,7 +229,11 @@ def get_stolen_bikes_by_points(request):
 
 def get_user_data(request, user_id):
     """Gets User data from db (except password column) and returns it
-    as JsonResponse"""
+    as JsonResponse
+    { is_active: true, role_id: "0", is_logged_in: false,
+    full_name: "John Doe", email: "ekim0@ox.ac.uk",
+    avatar: "http://road.cc/sites/default/files/…" }
+    """
     try:
         # what about to use .filter instead of .get? cause .values loads all
         # usrs and only then select from them pk=user_id.
@@ -282,7 +286,9 @@ def get_user_parkings_data(request, user_id):
 
 def get_user_places_data(request, user_id):
     """Gets data from db about user's Places and their images from
-    Attachments and output it as JsonResponse."""
+    Attachments and output it as JsonResponse.
+
+    """
     try:
         user_places_list = list(Place.objects.filter(owner_id=user_id).values())
     except:
@@ -302,6 +308,7 @@ def edit_user_data(request, user_id):
     in the database."""
     user = User.objects.get(pk=user_id)
     user.full_name = request.POST['full_name']
+    user.avatar = request.POST['avatar_url']
     user.save()
     return redirect('/user/%s/' % user_id)
 
