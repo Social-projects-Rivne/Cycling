@@ -56,29 +56,22 @@ class MapComponent extends React.Component {
   loadPointers(bounds_obj){
     let ne = bounds_obj._northEast.lat.toPrecision(9) + ',' + bounds_obj._northEast.lng.toPrecision(9);
     let sw = bounds_obj._southWest.lat.toPrecision(9) + ',' + bounds_obj._southWest.lng.toPrecision(9);
-    let params = {ne:ne, sw:sw};
+    let pointData = {ne:ne, sw:sw};
 
     this.serverRequest1 = $.get(
     {
       url: '/api/parkings/search',
-      data: {ne:ne, sw:sw}
+      data: pointData
     },
     function (data) {
       this.setState({parkings: data, silverMarkerLatLng: null});
       // console.log(this.state.parkings.length);
     }.bind(this));
 
-
-    // forming data object for places
-    let placeParamsObject = {ne:ne, sw:sw};
-    if (this.props.categories) {
-      placeParamsObject.categories =  this.getActiveCategoriesString();
-    }
-
     this.serverRequest2 = $.get(
     {
       url: '/api/places/search',
-      data: placeParamsObject,
+      data: pointData,
       success: function (data) {
         this.setState({places: data, silverMarkerLatLng: null});
       }.bind(this),
@@ -90,11 +83,12 @@ class MapComponent extends React.Component {
     this.serverRequest3 = $.get(
     {
       url: '/api/stolen/search',
-      data: {ne:ne, sw:sw}
+      data: pointData
     },
     function (data) {
         this.setState({stolens: data, silverMarkerLatLng: null});
     }.bind(this));
+
   };
 
   onOverlayadd(e){
@@ -239,6 +233,7 @@ class MapComponent extends React.Component {
 
   render() {
     const position = [center_lat(), center_lng()];
+
     return (
       <Map center={position} zoom={zoom()}
               zoomControl={false}

@@ -466,7 +466,7 @@ table {
 }
 
 .ctg-li-unactive {
-  color: #106CC8;
+  color: #0b4680;
 }
 
 .ctg-li-unactive:hover {
@@ -587,3 +587,11 @@ h1 {
     display: flex;
 }
 */
+
+.avatar-header {
+  height: 40px;
+  width: 40px;
+  border: 2px solid white;
+  border-radius: 20px;
+  margin-top: 4px;
+}

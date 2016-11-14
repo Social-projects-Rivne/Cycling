@@ -2,8 +2,7 @@ import React from 'react';
 
 import { Link, browserHistory } from 'react-router';
 
-import { EmailInput } from './input/email_input.jsx';
-import { PasswordInput } from './input/password_input.jsx';
+import { BaseInput } from './input/base_input.jsx';
 import { Validator } from './validator.jsx';
 
 //this component handle logining...
@@ -17,6 +16,7 @@ export class LoginComponent extends React.Component {
         };
         this.validator = new Validator();
         this.login = this.login.bind(this);
+        this.changeValue = this.changeValue.bind(this);
     }
 
     // this part check if user is already logged in...
@@ -38,15 +38,16 @@ export class LoginComponent extends React.Component {
 
     login(event){
         event.preventDefault();
-        console.log("CLICK");
-        let valid_pass = this.validator.validatePassword(this.password);
-        let valid_email = this.validator.validateEmail(this.email);
+
+        let valid_pass = this.validator.validatePassword(this.state.password);
+        let valid_email = this.validator.validateEmail(this.state.email);
+        console.log(this.state.email);
+        console.log(this.state.password);
         console.log(valid_pass + " " + valid_email);
 
         // if one of params is false, than we can`t accept input...
         // prepare new state
         if (!valid_pass || !valid_email){
-          console.log(valid_email + " " + valid_pass);
           this.setState({
             email_error: !valid_email,
             password_error: !valid_pass
@@ -55,8 +56,8 @@ export class LoginComponent extends React.Component {
 
 
         let data = {
-          email: this.email,
-          password: this.password
+          email: this.state.email,
+          password: this.state.password
         };
 
         let context = this;
@@ -87,6 +88,12 @@ export class LoginComponent extends React.Component {
             });
     }
 
+    changeValue(event) {
+       let state = [];
+       state[event.target.name] = event.target.value;
+       this.setState(state);
+    }
+
     getErrorLabel() {
       if (this.state.error_message){
         return (
@@ -99,6 +106,7 @@ export class LoginComponent extends React.Component {
         return null;
       }
     }
+
     render() {
       return (
         <div>
@@ -108,8 +116,13 @@ export class LoginComponent extends React.Component {
                       <h2 className="register-header">Login</h2>
                   </div>
                   {this.getErrorLabel()}
-                  <EmailInput value={this.email} name="email" id="email-input-field" father={this} error={this.state.email_error}/>
-                  <PasswordInput value={this.password} name="password" id="password-input-field" father={this} error={this.state.password_error}/>
+
+                  <BaseInput value={this.state.email} name="email" placeholder="full name" icon="email"
+                  type="text" id="email-input-field" valChange={this.changeValue} error={this.state.email_error}/>
+
+                  <BaseInput value={this.state.password} name="password" placeholder="password" icon="lock_outline"
+                  type="password" id="password-input-field" valChange={this.changeValue} error={this.state.password_error}/>
+
                   <div className="control-group reg-log">
                       <div className="controls">
                           <button type="submit" className="btn" id="register-button" onClick={this.login}>Login</button>

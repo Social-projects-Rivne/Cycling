@@ -72,19 +72,12 @@ class Header extends React.Component {
       var headerRightContent;
 
       if (localStorage['token']) {
-        console.log("token found");
+
         // if he is logged in but there is no profile data
         // we should place loading spinner
         if (this.state.avatar){
-          let styleObj = {
-            height: "40px",
-            width: "40px",
-            border: "2px solid white",
-            borderRadius: "20px",
-            marginTop: "4px"
-          };
           return (
-            <img src={this.state.avatar} id="avatar" className="header-right" style={styleObj}/>
+            <img src={this.state.avatar} id="avatar" className="header-right avatar-header"/>
           );
         }
         else{
@@ -113,7 +106,6 @@ class Header extends React.Component {
         }
       }
       else {
-        console.log("token not found");
         return (
           <div className="header-right">
             <div className="header-button"><Link id="header-button-a" to='/login'>Login</Link></div>
@@ -122,9 +114,8 @@ class Header extends React.Component {
         );
       }
     }
+
     render() {
-
-
 
       return(
           <div className="navbar navbar-fixed-top main-header" role="navigation">
@@ -211,8 +202,8 @@ class SideBar extends React.Component {
         <div id="sidebar-wrapper" role="navigation">
             <ul className="sidebar-nav">
                 <li><Link onlyActiveOnIndex activeStyle={{color:'#53acff'}} to='/'>Home</Link></li>
-                <li><a href="#">Display Objects</a>
-                  <ul className="categories-ul">
+                <li><a href="#" data-toggle="collapse" data-target="#display-list">Display Objects</a>
+                  <ul className="collapse categories-ul" id="display-list">
                     {this.getCategoriesView()}
                   </ul>
                 </li>
@@ -256,5 +247,3 @@ ReactDOM.render(
       </Route>
   </Router>),
   document.getElementById('app'));
-
-
