@@ -96,10 +96,12 @@ class Header extends React.Component {
           },
           function (data) {
             console.log(data);
-            if ("error" in data)
+            if ("error" in data){
               browserHistory.push("/login");
-            else
+            }
+            else{
               this.setState({avatar: data.result.avatar});
+            }
           }.bind(this));
 
           return (
@@ -181,10 +183,12 @@ class SideBar extends React.Component {
       let newCategories = [];
       for (let i = 0; i < this.props.categories.length; i+=1) {
         newCategories[i] = {};
-        if (this.props.categories[i].id === id)
+        if (this.props.categories[i].id === id){
           newCategories[i].active = !this.props.categories[i].active;
-        else
+        }
+        else{
           newCategories[i].active = this.props.categories[i].active;
+        }
         newCategories[i].name = this.props.categories[i].name;
         newCategories[i].id = this.props.categories[i].id;
       }
@@ -210,7 +214,7 @@ class SideBar extends React.Component {
         return (
         <div id="sidebar-wrapper" role="navigation">
             <ul className="sidebar-nav">
-                <li><Link onlyActiveOnIndex activeStyle={{color:'#53acff'}} to='/'>Home</Link></li>
+                <li><Link onlyActiveOnIndex activeStyle={{ color:'#53acff' }} to='/'>Home</Link></li>
                 <li><a href="#">Display Objects</a>
                   <ul className="categories-ul">
                     {this.getCategoriesView()}
@@ -256,5 +260,3 @@ ReactDOM.render(
       </Route>
   </Router>),
   document.getElementById('app'));
-
-

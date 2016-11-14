@@ -1,10 +1,7 @@
 import React from 'react';
 
-import { Link, browserHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 import { BaseInput } from './input/base_input.jsx'
-import { EmailInput } from './input/email_input.jsx';
-import { PasswordInput } from './input/password_input.jsx';
-import { FullNameInput } from './input/full_name_input.jsx';
 import { Validator } from './validator.jsx';
 
 
@@ -75,9 +72,6 @@ class RegistrationComponent extends React.Component {
          * If something is wrong, it show it to user
          */
         event.preventDefault();
-        let ajaxSuccess=this.ajaxSuccess;        
-        let self;
-        self = this;
         let valid_name = this.validator.validateName(this.state.name);
         let valid_pass = this.validator.validatePassword(this.state.password);
         let valid_email = this.validator.validateEmail(this.state.email);
@@ -123,9 +117,7 @@ class RegistrationComponent extends React.Component {
         if(this.state.modal_text)
         {
             return (
-                <div className="header-div registrated">
-                    <h2>I have returned {this.state.modal_text}</h2>
-                </div>
+                <h2 className="reg-log-header">{this.state.modal_text} </h2>
             );
         }
     }
@@ -136,9 +128,7 @@ class RegistrationComponent extends React.Component {
         return (
             <form className="form-horizontal registration-form">
                 <fieldset>
-                    <div className="header-div">
-                        <h2>Registration</h2>
-                    </div>
+                    <h2 className="reg-log-header">Registration</h2>
 
                     <BaseInput value={this.state.name} name="name" placeholder="full name" icon="person_outline"
                     type="text" id="name-input-field" valChange={this.changeValue} error={this.state.name_error}/>

@@ -1,7 +1,5 @@
 import React from 'react';
-
-import { Link, browserHistory } from 'react-router';
-
+import { browserHistory } from 'react-router';
 import { BaseInput } from './input/base_input.jsx';
 import { Validator } from './validator.jsx';
 
@@ -82,7 +80,7 @@ export class LoginComponent extends React.Component {
                     }
                 },
                 error: function(response) {
-                  console.log(response);
+                    console.log(response);
                 }
 
             });
@@ -112,9 +110,7 @@ export class LoginComponent extends React.Component {
         <div>
           <form onSubmit={this.submit} className="form-horizontal registration-form">
               <fieldset>
-                  <div className="header-div">
-                      <h2 className="register-header">Login</h2>
-                  </div>
+                  <h2 className="reg-log-header">Login</h2>
                   {this.getErrorLabel()}
 
                   <BaseInput value={this.state.email} name="email" placeholder="full name" icon="email"
