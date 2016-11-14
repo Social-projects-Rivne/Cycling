@@ -13,25 +13,33 @@ class BaseInput extends React.Component {
     this.state = {};
 
     // setting up default values
-    if ("error" in this.props)
+    if ("error" in this.props) {
       this.state.error = this.props.error;
-    else
+    }
+    else{
       this.state.error = false;
+    }
 
-    if ("placeholder" in this.props)
+    if ("placeholder" in this.props){
       this.state.placeholder = this.props.placeholder;
-    else
+    }
+    else{
       this.state.placeholder = "";
+    }
 
-    if ("type" in this.props)
+    if ("type" in this.props){
       this.state.type = this.props.type;
-    else
+    }
+    else{
       this.state.type = "text";
+    }
 
-    if ("value" in this.props)
+    if ("value" in this.props){
       this.state.value = this.props.value;
-    else
+    }
+    else{
       this.state.value = "";
+    }
   }
 
   getStyle() {
