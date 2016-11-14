@@ -5,23 +5,6 @@
     padding: 0px;
 }
 
-textarea:hover,
-input:hover,
-textarea:active,
-input:active,
-textarea:focus,
-input:focus,
-button:focus,
-button:active,
-button:hover,
-label:focus,
-.btn:active,
-.btn.active
-{
-    outline:0px !important;
-    -webkit-appearance:none;
-}
-
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -412,6 +395,12 @@ table {
 {
     font-size: 30px;
     margin-right: 0px;
+}
+
+.location-text
+{
+    position: relative;
+    bottom: 8px;
 }
 
 #inner-marker-div
