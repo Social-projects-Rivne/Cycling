@@ -582,3 +582,11 @@ h1 {
     display: flex;
 }
 */
+
+.pencil {
+    float: right;
+}
+
+.item-image {
+    width: 100%;
+}
