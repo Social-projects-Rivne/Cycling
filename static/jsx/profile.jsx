@@ -3,7 +3,9 @@ import { Modal } from 'react-bootstrap';
 
 
 class UserData extends React.Component {
-    
+    // Render header of profile page which contains user's avatar, full name
+    // and email. Edit user data possibility is also provided with modal
+    // pop-up.
     constructor(props) {
         super(props);
         this.state =  {
@@ -18,15 +20,16 @@ class UserData extends React.Component {
         this.revert = this.revert.bind(this);
       //  this.getAvatar = this.getAvatar.bind(this);
         this.avatarPreview = this.avatarPreview.bind(this);
+        this.avatarUrlPreview = this.avatarUrlPreview.bind(this);
     }
 
 
     componentDidMount() {
-        $.get("/api/user_data/" + this.props.user_id + "/", 
-            function (response) { 
+        // Fetch data from the django api.
+        $.get("/api/user_data/" + this.props.user_id + "/",
+            function (response) {
                 console.log(response);
-                console.log(response.avatar);
-                
+                // If user has no avatar create default one for him.
                 if (response.avatar != 'None') {
                     this.setState ({
                         avatarSrc: response.avatar,
@@ -46,37 +49,47 @@ class UserData extends React.Component {
                     });
                 }.bind(this)
         );
-        
+
     }
     avatarPreview(event) {
-        /* 
+        // Make avatar preview event if user uploads image file.
+        /*
         let img = document.getElementById('avatarPreview');
         img.src = URL.createObjectURL(event.target.files[0]);
         */
         console.log(URL.createObjectURL(event.target.files[0]));
-        
-        this.setState({avatarPreviewSrc: URL.createObjectURL(event.target.files[0])});
-        
 
+        this.setState({avatarPreviewSrc: URL.createObjectURL(event.target.files[0])});
+
+
+    }
+    avatarUrlPreview(event) {
+        // Make avatar preview event if user notes image url in the input field.
+        this.setState({avatarPreviewSrc: document.getElementById("modalAvatarUrl").value})
     }
     /*
     getAvatar() {
         if (this.state.api_output.avatar == 'None') {
-            this.setState ({avatarSrc: "/static/av.png"}); 
+            this.setState ({avatarSrc: "/static/av.png"});
         } else {
             this.setState({avatarSrc: this.state.api_output.avatar});
         }
     }
     */
     close() {
+        // Event for modal pop-up closing.
         this.setState({ showModal: false });
         this.revert();
     }
 
     open () {
+        // Event for modal pop-up appearance when user has clicked on the 
+        // "Edit user" button.
         this.setState({showModal: true });
     }
     revert () {
+        // Event for Revert button which restores after edits all old user's 
+        // data which came from API initial request.
         this.setState({
             avatarPreviewSrc: this.state.avatarSrc
         // I can't change state of .defaultValue attribute of input tag cause it's purpose is
@@ -108,21 +121,21 @@ class UserData extends React.Component {
             <div className="profile-header">
             <div id="centralizer" className="container">
 
-                <div className="row">
-                <div className="col-md-2">
+                <div id="headerDataRow" className="row">
+                <div className="col-md-2 headerItems vertical-center">
                 <img id="userAvatar" src={this.state.avatarSrc}
                     className="img-responsive img-circle margin"
                     width="150px" height="150px" alt="image unavailable"/>
                 </div>
-                <div className="col-md-3">
-                <span id="Headers">    
-                    <p>{this.state.api_output.full_name}</p>
-                    <p>{this.state.api_output.email}</p>
+                <div className="col-md-3 headerItems vertical-center">
+                <span>
+                    <p id="headerFullName">{this.state.api_output.full_name}</p>
+                    <p id="headerEmail">{this.state.api_output.email}</p>
                 </span>
                 </div>
-                <div className="col-md-3"></div>
-                <div className="col-md-2">
-                <button id="editUserButton" type="button" 
+                <div className="col-md-3 headerItems vertical-center"></div>
+                <div className="col-md-2 headerItems vertical-center">
+                <button id="editUserButton" type="button"
                     className="btn btn-default" onClick={this.open}>
                     Edit profile</button>
                 </div>
@@ -132,39 +145,49 @@ class UserData extends React.Component {
 
             {/* make this modal as separate component later */}
             {/*<EditUserPopup api_output={this.state.api_output} /> */}
- 
+
             <Modal show={this.state.showModal} onHide={this.close}>
                 <Modal.Header closeButton>
                     <Modal.Title>Edit profile</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <form id="edit_user_form" className="form-horizontal" 
+                    <form id="edit_user_form" className="form-horizontal"
                         action="/api/edit_user_data/1/" method="post">
-                    
+
                         <div className="form-group">
                             <label className="control-label col-sm-3" htmlFor="fullName">
                                 Full name:
                             </label>
                             <div className="col-sm-5">
-                                <input type="text" name="full_name" id="modalFullName" 
-                                    className="form-control" 
+                                <input type="text" name="full_name" id="modalFullName"
+                                    className="form-control"
                                     defaultValue={this.state.fullName} />
                             </div>
                         </div>
 
+                        <div className="form-group">
+                            <label className="control-label col-sm-3" htmlFor="">
+                                Avatar URL:
+                            </label>
+                            <div className="col-sm-5">
+                                <input type="text" name="avatar_url" id="modalAvatarUrl"
+                                    className="form-control" onChange={this.avatarUrlPreview}
+                                    defaultValue={this.state.api_output.avatar} />
+                            </div>
+                        </div>
                         <div className="form-group row">
-                            <label className="control-label col-sm-3"> Avatar:</label>
+                            <label className="control-label col-sm-3"> Upload:</label>
                             <div className="col-sm-5">
                                 <label className="btn btn-default btn-file">
-                                    Browse... 
+                                    Browse...
                                     <input type="file" accept="image/*" style={{"display": "none"}}
-                                        onChange={this.avatarPreview}/> 
+                                        onChange={this.avatarPreview}/>
                                 </label>
                                 <span className="label label-info" id="upload-file-info"></span>
                             </div>
                         </div>
-                        <div className="row"> 
-                            <img id="avatarPreview" src={this.state.avatarPreviewSrc}    
+                        <div className="row">
+                            <img id="avatarPreview" src={this.state.avatarPreviewSrc}
                                 className="img-responsive img-circle margin"
                                 width="150px" height="150px" alt="image unavailable"/>
                         </div>
@@ -177,7 +200,7 @@ class UserData extends React.Component {
                     <label className="btn btn-success" htmlFor="submit-form">Save</label>
                 </Modal.Footer>
             </Modal>
-            
+
             </div>
         )
     }
@@ -186,7 +209,7 @@ class UserData extends React.Component {
 
 /*
 class EditUserPopup extends React.Component {
-    
+
     constructor(props) {
         super(props);
         this.state =  {
@@ -213,12 +236,12 @@ class EditUserPopup extends React.Component {
                 </Modal.Header>
                 <Modal.Body>
                     <form id="edit_user_form" className="form-horizontal" action="/api/edit_user_data/1/" method="post">
-                    
+
                     <div className="form-group">
                         <label className="control-label col-sm-2" htmlFor="fullName">Full name:</label>
                         <div className="col-sm-5">
-                            <input type="text" name="full_name" 
-                                className="form-control" 
+                            <input type="text" name="full_name"
+                                className="form-control"
                                 defaultValue={this.state.api_output.full_name} />
                         </div>
                     </div>
@@ -227,8 +250,8 @@ class EditUserPopup extends React.Component {
                         <label className="control-label col-sm-2"> Avatar:</label>
                         <div className="col-sm-5">
                             <label className="btn btn-default btn-file">
-                                Browse... 
-                                <input type="file" style={{"display": "none"}} 
+                                Browse...
+                                <input type="file" style={{"display": "none"}}
                                     onChange="$('#upload-file-info').html($(this).val());"/>
                             </label>
                             <span className="label label-info" id="upload-file-info"></span>
@@ -242,7 +265,7 @@ class EditUserPopup extends React.Component {
                     <button className="btn btn-danger" type="button">Revert</button>
                     <label className="btn btn-success" htmlFor="submit-form">Save</label>
                 </Modal.Footer>
-            </Modal>  
+            </Modal>
         )
     }
 
@@ -250,15 +273,16 @@ class EditUserPopup extends React.Component {
 */
 
 class Bike extends React.Component {
+    // Render single card for the bike.
     render () {
         return (
         <div className="my-card col-md-5">
-            
-            <div >
+
+            <div>
                 <h4 className="item-name">{this.props.bike.name}</h4>
-                <span className="edit-button"> click</span>
+                <span id="location-icon" className="material-icons pencil">edit</span>
             </div>
-            <img src=""    
+            <img src={this.props.bike.images_urls[0].url} className="item-image"
             alt="image unavailable" />
             <div className="card-block">
                 <p> {this.props.bike.description} </p>
@@ -270,6 +294,9 @@ class Bike extends React.Component {
 }
 
 class BikesRow extends React.Component {
+    // Render Bootstrap's row from one or two existing bikes. If there is only
+    // one bike this class inserts to this row AddItem card with plus button as
+    // the second item.
     render () {
         if (this.props.bikesPair.length === 1) {
             return (
@@ -293,21 +320,23 @@ class BikesRow extends React.Component {
 }
 
 class BicycleData extends React.Component {
+    // Render data about all user's bikes.
 
     state = {
         api_output: ''
-    } 
+    }
 
     componentDidMount() {
-        $.get("/api/user_bikes_data/"+this.props.owner_id+"/", 
+        // Fetch data from the django api.
+        $.get("/api/user_bikes_data/"+this.props.owner_id+"/",
             function (response) {
-                console.log(response);
+                console.log(JSON.stringify(response));
                 this.setState ({
                         api_output: response
                     });
             }.bind(this)
         )
-            
+
     }
 
     render() {
@@ -324,7 +353,7 @@ class BicycleData extends React.Component {
                         pairs[pairs.length -1].push(bike);
                         return pairs;
                     }, []).map(function(pair, index, arr) {
-                        
+
                         if (index == arr.length-1 && this.state.api_output.length % 2 === 0) {
                             return (
                             <div>
@@ -334,32 +363,33 @@ class BicycleData extends React.Component {
                                 </div>
                             </div>
                             );
-                        } else { 
+                        } else {
                         return (<BikesRow key={index} bikesPair={pair} />)
                         }
                     }.bind(this))
                 }
                 </div>
             );
-        } 
+        }
     }
 }
 
 class Place extends React.Component {
+    // Render single card for the place.
     render () {
         return (
         <div className="my-card col-md-5">
-            
+
             <div >
                 <h4 className="item-name">{this.props.place.name}</h4>
-                <span className="edit-button"> click</span>
+                <span id="location-icon" className="material-icons pencil">edit</span>
             </div>
-            <img src=""    
+            <img src=""
             alt="image unavailable" />
             <div className="card-block">
                 <p>Lattitude: {this.props.place.lat} Longtitude: {this.props.place.lng}</p>
                 <p> {this.props.place.description} </p>
-                <p> {this.props.place.from_hour} {this.props.place.to_hour} </p>
+                <p>Open from {this.props.place.from_hour} to {this.props.place.to_hour} </p>
             </div>
 
         </div>
@@ -368,6 +398,9 @@ class Place extends React.Component {
 }
 
 class PlacesRow extends React.Component {
+    // Render Bootstrap's row from one or two existing places. If there is only
+    // one place this class inserts to this row AddItem card with plus button as
+    // the second item.
     render () {
         if (this.props.placesPair.length === 1) {
             return (
@@ -392,13 +425,16 @@ class PlacesRow extends React.Component {
 
 
 class PlacesData extends React.Component {
+    // Render data about all user's places.
 
     state =  {
         api_output: ''
-    } 
+    }
     componentDidMount() {
-        $.get("/api/user_places_data/" + this.props.owner_id + "/", 
-            function (response) { 
+        // Fetch data from the django api.
+        $.get("/api/user_places_data/" + this.props.owner_id + "/",
+            function (response) {
+                console.log(JSON.stringify(response));
                 this.setState ({
                         api_output: response
                     });
@@ -417,7 +453,7 @@ class PlacesData extends React.Component {
                 </div>
             );
         }
-    } 
+    }
 */
 
     render() {
@@ -434,7 +470,7 @@ class PlacesData extends React.Component {
                         pairs[pairs.length -1].push(place);
                         return pairs;
                     }, []).map(function(pair, index, arr) {
-                        
+
                         if (index == arr.length-1 && this.state.api_output.length % 2 === 0) {
                             return (
                             <div>
@@ -444,28 +480,29 @@ class PlacesData extends React.Component {
                                 </div>
                             </div>
                             );
-                        } else { 
+                        } else {
                         return (<PlacesRow key={index} placesPair={pair} />)
                         }
                     }.bind(this))
                 }
                 </div>
             );
-        } 
+        }
     }
 
 };
 
 class Parking extends React.Component {
+    // Render single card for the parking.
     render () {
         return (
         <div className="my-card col-md-5">
-            
+
             <div >
                 <h4 className="item-name">{this.props.parking.name}</h4>
-                <span className="edit-button"> click</span>
+                <span id="location-icon" className="material-icons pencil">edit</span>
             </div>
-            <img src=""    
+            <img src=""
             alt="image unavailable" />
             <div className="card-block">
                 <p>Lattitude: {this.props.parking.lat} Longtitude: {this.props.parking.lng}</p>
@@ -481,6 +518,9 @@ class Parking extends React.Component {
 }
 
 class ParkingsRow extends React.Component {
+    // Render Bootstrap's row from one or two existing parkings. If there is 
+    // only one parking then this class inserts to this row AddItem card with 
+    // plus button as the second item. 
     render () {
         if (this.props.parkingsPair.length === 1) {
             return (
@@ -505,14 +545,16 @@ class ParkingsRow extends React.Component {
 
 
 class ParkingsData extends React.Component {
+    // Render data about all user's parkings.
 
     state =  {
         api_output: ''
-    } 
+    }
 
     componentDidMount() {
-        $.get("/api/user_parkings_data/" + this.props.owner_id + "/", 
-            function (response) { 
+        $.get("/api/user_parkings_data/" + this.props.owner_id + "/",
+            function (response) {
+                console.log(JSON.stringify(response));
                 this.setState ({
                         api_output: response
                     });
@@ -547,7 +589,7 @@ class ParkingsData extends React.Component {
                         pairs[pairs.length -1].push(parking);
                         return pairs;
                     }, []).map(function(pair, index, arr) {
-                        
+
                         if (index == arr.length-1 && this.state.api_output.length % 2 === 0) {
                             return (
                             <div>
@@ -557,19 +599,20 @@ class ParkingsData extends React.Component {
                                 </div>
                             </div>
                             );
-                        } else { 
+                        } else {
                         return (<ParkingsRow key={index} parkingsPair={pair} />)
                         }
                     }.bind(this))
                 }
                 </div>
             );
-        } 
+        }
     }
 
 };
 
 class AddItemCard extends React.Component {
+    // Render Add item card with button.
     render () {
         return (
             <div className="my-card col-md-5">
@@ -582,41 +625,26 @@ class AddItemCard extends React.Component {
     }
 }
 
-class TestPlayground extends React.Component {
-    
-    render() {
-        return (
-        <div className="container">
-            <div className="row">
-            <AddItemCard />
-            <AddItemCard />
-            </div>
-        </div>
-        )
-    }
-
-}
-
 
 class Profile extends React.Component {
-
+    // Render components with user's data, bikes, places and parkings.
     render() {
         this.user_id = this.props.params['user_id'];
         return (
             <div id="profile-container" className="container" >
-            
-            
+
+
             <UserData user_id={this.user_id}/>
-            
+
             <h4>My bikes</h4>
             <BicycleData owner_id={this.user_id} />
 
             <h4>Places added by me</h4>
             <PlacesData owner_id={this.user_id} />
-            
+
             <h4>Parkings added by me</h4>
             <ParkingsData owner_id={this.user_id} />
-            
+
             </div>
         )
     }

@@ -5,23 +5,6 @@
     padding: 0px;
 }
 
-textarea:hover,
-input:hover,
-textarea:active,
-input:active,
-textarea:focus,
-input:focus,
-button:focus,
-button:active,
-button:hover,
-label:focus,
-.btn:active,
-.btn.active
-{
-    outline:0px !important;
-    -webkit-appearance:none;
-}
-
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -265,6 +248,12 @@ table {
     color: #999999;
     font-size: 10px;
 }
+
+.reg-log-header
+{
+    text-align: center;
+    color: #106CC8;
+}
 /*End of registration & inputs*/
 
 /*
@@ -406,6 +395,12 @@ table {
 {
     font-size: 30px;
     margin-right: 0px;
+}
+
+.location-text
+{
+    position: relative;
+    bottom: 8px;
 }
 
 #inner-marker-div
@@ -594,4 +589,12 @@ h1 {
   border: 2px solid white;
   border-radius: 20px;
   margin-top: 4px;
+}
+
+.pencil {
+    float: right;
+}
+
+.item-image {
+    width: 100%;
 }

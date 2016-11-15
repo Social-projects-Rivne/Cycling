@@ -89,10 +89,12 @@ class Header extends React.Component {
           },
           function (data) {
             console.log(data);
-            if ("error" in data)
+            if ("error" in data){
               browserHistory.push("/login");
-            else
+            }
+            else{
               this.setState({avatar: data.result.avatar});
+            }
           }.bind(this));
 
           return (
@@ -172,10 +174,12 @@ class SideBar extends React.Component {
       let newCategories = [];
       for (let i = 0; i < this.props.categories.length; i+=1) {
         newCategories[i] = {};
-        if (this.props.categories[i].id === id)
+        if (this.props.categories[i].id === id){
           newCategories[i].active = !this.props.categories[i].active;
-        else
+        }
+        else{
           newCategories[i].active = this.props.categories[i].active;
+        }
         newCategories[i].name = this.props.categories[i].name;
         newCategories[i].id = this.props.categories[i].id;
       }
@@ -246,4 +250,8 @@ ReactDOM.render(
          <Route path = '*' component={NotFound} />
       </Route>
   </Router>),
+<<<<<<< HEAD
   document.getElementById('app'));
+=======
+  document.getElementById('app'));
+>>>>>>> cbe57ef8d1b6b72c6149ae3f128c199a78a34370

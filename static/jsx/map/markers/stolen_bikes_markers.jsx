@@ -21,6 +21,9 @@ let stolenMarkers = function(bikes){
   console.log('Stolen bikes: ', bikes.length);
   if (bikes){
     let my_array = bikes.map(function(bike, i){
+        if(bike.fields.is_found ){
+          return(null);
+        };
         const position = [parseFloat(bike.fields.lat), parseFloat(bike.fields.lng)];
         let id = bike.pk;
         return(
