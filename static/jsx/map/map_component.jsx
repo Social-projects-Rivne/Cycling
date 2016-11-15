@@ -243,7 +243,7 @@ class MapComponent extends React.Component {
       <Map center={position} zoom={zoom()}
               zoomControl={false}
               ref='map'
-              style={{height: '100vh', width:'100vw'}}
+              style={{height: 'calc(100vh - 51px)', width:'100vw'}}
               onOverlayadd={this.onOverlayadd}
               onBaselayerchange={this.onBaselayerchange}
               onOverlayremove={this.onOverlayremove}

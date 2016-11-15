@@ -113,7 +113,7 @@ export class LoginComponent extends React.Component {
                   <h2 className="reg-log-header">Login</h2>
                   {this.getErrorLabel()}
 
-                  <BaseInput value={this.state.email} name="email" placeholder="full name" icon="email"
+                  <BaseInput value={this.state.email} name="email" placeholder="email" icon="email"
                   type="text" id="email-input-field" valChange={this.changeValue} error={this.state.email_error}/>
 
                   <BaseInput value={this.state.password} name="password" placeholder="password" icon="lock_outline"

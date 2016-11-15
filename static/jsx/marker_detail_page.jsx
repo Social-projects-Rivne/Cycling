@@ -131,7 +131,10 @@ export class MarkerDetails extends React.Component {
 					<div className="col-xs-12 col-md-6 col-lg-6">
 						<div className="card location">
 							<h3 className="detail-cards-header">Location</h3>
-							<p className="address"><span id="location-icon" className="material-icons">place</span>{this.state.street.split(',', 4).join(',')}</p>
+							<p className="address">
+								<span id="location-icon" className="material-icons">place</span>
+								<span className="location-text">{this.state.street.split(',', 4).join(',')}</span>
+							</p>
 						</div>
 					</div>
 					<div className="col-xs-12 col-md-6 col-lg-6">
