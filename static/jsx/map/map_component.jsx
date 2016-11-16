@@ -174,18 +174,18 @@ class MapComponent extends React.Component {
     // this.openPopup("Right click", e.latlng, {minWidth:300, className:"test"});
   };
 
-  convertSilverMarkerToPlace(){
+  convertSilverMarkerToPlace(state){
     let places =  this.state.places;
     places.push({
         fields: {
           lat: this.state.silverMarkerLatLng.lat,
           lng: this.state.silverMarkerLatLng.lng,
-          name: "",
-          category_id: "",
+          name: state.nameValue,
+          category_id: state.categoryValue,
           owner: "",
           from_hour: "",
           to_hour: "",
-          description: ""
+          description: state.descriptionValue
         },
         pk: "",
         model: "APP.place"
