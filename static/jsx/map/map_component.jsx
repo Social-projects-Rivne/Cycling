@@ -53,6 +53,25 @@ class MapComponent extends React.Component {
       this.serverRequest3.abort();
   }
 
+  refreshPlaces(){
+    let bounds_obj = this.refs.map.leafletElement.getBounds();
+    let ne = bounds_obj._northEast.lat.toPrecision(9) + ',' + bounds_obj._northEast.lng.toPrecision(9);
+    let sw = bounds_obj._southWest.lat.toPrecision(9) + ',' + bounds_obj._southWest.lng.toPrecision(9);
+    let pointData = {ne:ne, sw:sw};
+
+    this.serverRequest2 = $.get(
+    {
+      url: '/api/places/search',
+      data: pointData,
+      success: function (data) {
+        this.setState({places: data, silverMarkerLatLng: null});
+      }.bind(this),
+      error: function(response) {
+        console.log("get places error:\n", response);
+      }
+    });
+  }
+
   loadPointers(bounds_obj){
     let ne = bounds_obj._northEast.lat.toPrecision(9) + ',' + bounds_obj._northEast.lng.toPrecision(9);
     let sw = bounds_obj._southWest.lat.toPrecision(9) + ',' + bounds_obj._southWest.lng.toPrecision(9);
@@ -175,7 +194,7 @@ class MapComponent extends React.Component {
           lat: this.state.silverMarkerLatLng.lat,
           lng: this.state.silverMarkerLatLng.lng,
           name: "",
-          category_id: "",
+          category_id: this.state.silverMarker.categoryValue,
           owner: "",
           from_hour: "",
           to_hour: "",
@@ -191,6 +210,7 @@ class MapComponent extends React.Component {
   };
 
   convertSilverMarkerToParking(){
+
     let parkings =  this.state.parkings;
     parkings.push({
         fields: {

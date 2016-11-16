@@ -250,8 +250,4 @@ ReactDOM.render(
          <Route path = '*' component={NotFound} />
       </Route>
   </Router>),
-<<<<<<< HEAD
   document.getElementById('app'));
-=======
-  document.getElementById('app'));
->>>>>>> cbe57ef8d1b6b72c6149ae3f128c199a78a34370

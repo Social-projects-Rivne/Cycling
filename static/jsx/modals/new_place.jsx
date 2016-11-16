@@ -95,7 +95,7 @@ class NewPlaceModal extends React.Component{
                       // console.log(message);
                       this.props.father.refs.successNotification.showMe(message);
                       // console.log(this.state.parkings.length);
-                      this.props.father.refs.map.convertSilverMarkerToPlace();
+                      this.props.father.refs.map.refreshPlaces();
                       this.closeMe();
                     }.bind(this)
                       }
