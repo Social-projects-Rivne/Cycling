@@ -21,7 +21,9 @@
     "react-dom": "^15.3.2",
     "react-leaflet": "^0.12.3",
     "react-router": "^2.8.1",
-    "source-map-loader": "^0.1.5"
+	"source-map-loader": "^0.1.5",
+	"bootstrap": "^3.3.7",
+	"jquery": "^2.2.4"
   },
   "devDependencies": {
     "babel": "^6.5.2",

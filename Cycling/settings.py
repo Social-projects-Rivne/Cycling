@@ -134,7 +134,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = ((os.path.join(BASE_DIR, 'static')),
                     (os.path.join(BASE_DIR, 'node_modules')),
-                   )
+                    )
 
 #                [latitude , longitude]
 RIVNE_LOCATION = [50.619776, 26.251265]
