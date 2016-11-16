@@ -136,6 +136,7 @@ class SideBar extends React.Component {
         super(props);
 
         this.state = {};
+        // this.getProfileUrl = this.getProfileUrl.bind(this);
         // this.handleCategoryItemClick = this.handleCategoryItemClick.bind(this);
     }
 
@@ -201,6 +202,18 @@ class SideBar extends React.Component {
       return categories_list;
     }
 
+    getProfileUrlString() {
+        /* Function for 'to' attribute of profile Link button in the sidebar.
+         * Returns user's profile URL if he's logged in,
+         * otherwise redirects him to the /login page
+         */
+        if (localStorage['token']) {
+            return '/user/' + localStorage['id']
+        } else {
+            return '/login'
+        }
+    }
+
     render() {
         return (
         <div id="sidebar-wrapper" role="navigation">
@@ -213,7 +226,7 @@ class SideBar extends React.Component {
                 </li>
                 <li><a href="#">Stolen Bycicles</a></li>
                 <li><a href="#">Races Table</a></li>
-                <li><a href="#">Profile</a></li>
+                <li><Link onlyActiveOnIndex activeStyle={{color:'#53acff'}} to={this.getProfileUrlString()}>Profile</Link></li>
             </ul>
         </div>
       );
