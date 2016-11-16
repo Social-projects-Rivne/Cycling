@@ -8,10 +8,21 @@ class Validator {
 
 
     validateName(full_name){
-      return /^[A-Z][A-z-']+[A-z]\s[A-Z][A-z-']+[a-z]$/.test(full_name);
+      /*
+       * Regexp that validate if every word of full name begins from uppercase
+       * letter, and can consist only from letters, dash between words,
+       * and "'" symbol
+       */
+
+      return /^[A-Z][a-z-']+[A-z]\s[A-Z][A-z-']+[a-z]$/.test(full_name);
     }
 
     validateEmail(email){
+      /*
+       * Regexp that validate if email has right form - standart email form.
+       * For example -  JohnDoe@email.com
+       */
+
       return /^[A-z\d\._-]+@[A-z\d_-]+\.[a-z]+[\.a-z]*[a-z]$/.test(email);
     }
 
