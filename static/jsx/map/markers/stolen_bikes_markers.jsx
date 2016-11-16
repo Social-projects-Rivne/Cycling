@@ -18,7 +18,7 @@ let RedIcon = L.Icon.Default.extend({
 let redIcon = new RedIcon();
 
 let stolenMarkers = function(bikes){
-  console.log('Stolen bikes: ', bikes.length);
+  // console.log('Stolen bikes: ', bikes.length);
   if (bikes){
     let my_array = bikes.map(function(bike, i){
         if(bike.fields.is_found ){

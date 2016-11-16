@@ -18,7 +18,7 @@ let GreenIcon = L.Icon.Default.extend({
 let greenIcon = new GreenIcon();
 
 let placesMarkers = function(places, categories){
-  console.log('Places: ', places.length);
+  // console.log('Places: ', places.length);
 
   // making list of categories id for faster check
   if (categories){
@@ -27,7 +27,7 @@ let placesMarkers = function(places, categories){
       if (categories[i].active)
         activeCategories.push(categories[i].id);
     }
-    console.log("active categories: ", activeCategories);
+    // console.log("active categories: ", activeCategories);
   }
 
   if (places){
@@ -35,8 +35,9 @@ let placesMarkers = function(places, categories){
       // if categories not empty, then we should filter markers
       if (categories){
 
-        if (activeCategories.indexOf(place.fields.category_id) == -1)
-          return null;
+        if (activeCategories.indexOf(place.fields.category_id) == -1){
+          console.log(place.fields.category_id, activeCategories);
+          return null;}
       }
       const position = [parseFloat(place.fields.lat), parseFloat(place.fields.lng)];
       let id = place.pk;

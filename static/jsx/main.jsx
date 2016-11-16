@@ -206,7 +206,7 @@ class SideBar extends React.Component {
         <div id="sidebar-wrapper" role="navigation">
             <ul className="sidebar-nav">
                 <li><Link onlyActiveOnIndex activeStyle={{color:'#53acff'}} to='/'>Home</Link></li>
-                <li><a href="#" data-toggle="collapse" data-target="#display-list">Display Objects</a>
+                <li><a href="#" data-toggle="collapse" data-target="#display-list">Places to Display</a>
                   <ul className="collapse categories-ul" id="display-list">
                     {this.getCategoriesView()}
                   </ul>

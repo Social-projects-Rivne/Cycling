@@ -29,8 +29,8 @@ function handleClick(link){
 }
 
 let parkingsMarkers = function(parkings){
-  console.log('Parkings: ', parkings.length);
-  console.log(parkings);
+  // console.log('Parkings: ', parkings.length);
+  // console.log(parkings);
   if (parkings){
     let my_array = parkings.map(function(parkng, i){
         const position = [parseFloat(parkng.fields.lat), parseFloat(parkng.fields.lng)];
