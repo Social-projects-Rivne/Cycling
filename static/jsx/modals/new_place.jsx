@@ -37,7 +37,7 @@ class NewPlaceModal extends React.Component{
       descriptionValue: '',
       fromHourValue: '',
       toHourValue: '',
-      categoryValue: 2 });
+      categoryValue: '2' });
     this.props.father.refs.map.setState({silverMarkerLatLng: null});
   };
 

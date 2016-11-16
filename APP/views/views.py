@@ -185,7 +185,7 @@ def get_points(request, model_cls):
                 lat__lte=ne_point[0]).filter(lat__gte=sw_point[0])
 
         data = serializers.serialize("json", entities)
-        print "DATA, DATA: ", data
+
         return HttpResponse(data, content_type="application/json")
     else:
         return HttpResponse(status=405)
@@ -227,6 +227,7 @@ def get_stolen_bikes_by_points(request):
     """
     return get_points(request, StolenBike)
 
+
 def get_user_data(request, user_id):
     """Gets User data from db (except password column) and returns it
     as JsonResponse
@@ -239,10 +240,10 @@ def get_user_data(request, user_id):
         # usrs and only then select from them pk=user_id.
         # think bout it, pls
         user_data = User.objects.values('full_name', 'email', 'is_active',
-                                'avatar', 'role_id' ).get(pk=user_id)
+                                        'avatar', 'role_id').get(pk=user_id)
         user_data['is_logged_in'] = True if user_data['email'] in request.session else False
 
-    #except User.DoesNotExist:
+    # except User.DoesNotExist:
     except User.DoesNotExist:
         # output message if usr doesn't exist. Or 404 if there is
         # attempt to visit page with this id.

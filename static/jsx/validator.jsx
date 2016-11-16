@@ -4,7 +4,7 @@ class Validator {
     /*
      * Class for validation of inputs.
      * Use regexp, validate full name, email, password
-     */    
+     */
 
 
     validateName(full_name){
@@ -16,7 +16,7 @@ class Validator {
     }
 
     validatePassword(password){
-      /* 
+      /*
        * requirements to password:
        * - length more that 8
        * - can contain numbers, characters and . _
