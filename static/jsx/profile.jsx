@@ -191,7 +191,7 @@ class UserData extends React.Component {
                 </Modal.Header>
                 <Modal.Body>
                     <form id="edit_user_form" className="form-horizontal"
-                        action="/api/edit_user_data/1/" method="post">
+                        action={"/api/edit_user_data/" + localStorage['id'] + '/'} method="post">
 
                         <div className="form-group">
                             <label className="control-label col-sm-3" htmlFor="fullName">
