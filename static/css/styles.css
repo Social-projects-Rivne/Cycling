@@ -475,7 +475,36 @@ table {
 
 .ctg-li-unactive:hover {
   background-color: #999999;
+}
 
+.toggle-arrow
+{
+    float: right;
+    margin: 10px 10px 0px 0px;
+    cursor: pointer;
+}
+
+#display-obj
+{
+    color: #999999;
+}
+
+#display-obj:hover
+{
+    background-color: #ccc;
+    cursor: pointer;
+    color: #fff;
+}
+
+#display-obj .toggle-arrow
+{
+    transition: ease-out transform .3s;
+}
+
+#display-obj.collapsed .toggle-arrow
+{
+    transform: rotateX(180deg);
+    transition: ease-out transform .3s;
 }
 /*End of category list*/
 

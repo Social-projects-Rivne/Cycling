@@ -68,9 +68,7 @@ class RegistrationComponent extends React.Component {
             });
         }
         else if(response['Success']){
-            this.setState({
-                isRegistrated: true
-            });
+            browserHistory.push('/login');
         }
         else if(response['RulesError']){
             this.setState({
@@ -124,13 +122,6 @@ class RegistrationComponent extends React.Component {
         });
     }
 
-    routeToLogin(){
-        if(this.state.isRegistrated)
-        {
-            browserHistory.push('/login');
-        }
-    }
-
     showServerError(){
         if(this.state.modal_text)
         {
@@ -178,7 +169,6 @@ class RegistrationComponent extends React.Component {
         else {
             return(
                 <div>
-                    { this.routeToLogin() }
                     { this.showServerError() }
                 </div>
             );
