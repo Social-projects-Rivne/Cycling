@@ -26,8 +26,19 @@ export class MarkerDetails extends React.Component {
 		 * Cheks if localStorage doesn't have token
 		 * and redirect to login page
 		 */
+
         if (!localStorage['token']) {
             browserHistory.push("/login");
+        }
+        else
+        {
+        	$.ajax({
+				type: 'GET',
+      			url: '/api/marker_details',
+      			dataType: "json",
+      			data: {type: this.state.marker_type, id: this.state.marker_id},
+      			success: this.ajaxSuccess
+			});
         }
     }
 
@@ -37,6 +48,7 @@ export class MarkerDetails extends React.Component {
 	 	 * ajax success. Set state value of 'street' as
 	 	 * address of marker
 	 	 */
+
 		this.setState({
 			street: response.display_name
 		});
@@ -67,13 +79,7 @@ export class MarkerDetails extends React.Component {
 		 * to server and get marker details that depends
 		 * on marker type and id
 		 */
-		$.ajax({
-			type: 'GET',
-      		url: '/api/marker_details',
-      		dataType: "json",
-      		data: {type: this.state.marker_type, id: this.state.marker_id},
-      		success: this.ajaxSuccess
-		});
+		
 	}
 
 	renderPlaceCondition(){
@@ -130,7 +136,7 @@ export class MarkerDetails extends React.Component {
 
 	render() {
 		//Render method of component
-		console.log(this.state.street.split(','));
+		//console.log(this.state.street.split(','));
 		return (
 			<div className="container-fluid marker-details-content">
 				<div className="row">
