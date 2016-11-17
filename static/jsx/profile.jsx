@@ -18,6 +18,8 @@ class UserData extends React.Component {
         this.open = this.open.bind(this);
         this.close = this.close.bind(this);
         this.revert = this.revert.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+
       //  this.getAvatar = this.getAvatar.bind(this);
         this.avatarPreview = this.avatarPreview.bind(this);
         this.avatarUrlPreview = this.avatarUrlPreview.bind(this);
@@ -118,7 +120,6 @@ class UserData extends React.Component {
     close() {
         // Event for modal pop-up closing.
         this.setState({ showModal: false });
-        this.revert();
     }
 
     open () {
@@ -142,18 +143,36 @@ class UserData extends React.Component {
         });
         document.getElementById("modalFullName").value = this.state.api_output.full_name;
     }
-
-/*
-    save() {
-        let formData = JSON.stringify(document.getElementById('edit_user_form').serializeArray());
+    
+    handleSubmit(event) {
+        event.preventDefault();
+        let data_to_send = {
+            full_name: event.target.elements[0].value,
+            avatar_url: event.target.elements[1].value,
+            token: localStorage['token']
+        };
         $.ajax({
                 type: 'POST',
                 url: '/api/edit_user_data/' + this.props.user_id + '/',
                 dataType: "json",
-                data: formData
+                data: data_to_send,
+                success: function(response) {
+                    // INSERT SUCCESS CONFIRMATION NOTIFICATION
+                    console.log('success!!!');
+                    this.close();
+                    //let path = `/user/${this.props.user_id}`;
+                    //browserHistory.push(path);
+                    
+                    // browserHistory.push doesn't work for urls with dynamic 
+                    // ids. Need to do more research, refresh the page for now.
+                    window.location.reload()
+                }.bind(this),
+                error: function(response) {
+                    console.log('error');
+                }
         });
     }
-*/
+
     render() {
         return (
             <div>
@@ -191,8 +210,7 @@ class UserData extends React.Component {
                 </Modal.Header>
                 <Modal.Body>
                     <form id="edit_user_form" className="form-horizontal"
-                        action={"/api/edit_user_data/" + localStorage['id'] + '/'} method="post">
-
+                        onSubmit={this.handleSubmit}>
                         <div className="form-group">
                             <label className="control-label col-sm-3" htmlFor="fullName">
                                 Full name:
@@ -237,7 +255,7 @@ class UserData extends React.Component {
                     <button className="btn btn-default" onClick={this.close}>Close</button>
                     <button className="btn btn-danger" onClick={this.revert} type="button">Revert</button>
                     <label className="btn btn-success" htmlFor="submit-form">Save</label>
-                </Modal.Footer>
+               </Modal.Footer>
             </Modal>
 
             </div>
