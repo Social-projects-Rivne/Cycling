@@ -8,6 +8,9 @@ function handleClick(link){
 }
 
 const src = require('../../../images/marker-icon-green.png');
+const cafe_src = require('../../../images/coffee-n-tea.png');
+const store_src = require('../../../images/shopping.png');
+const service_src = require('../../../images/local-services.png');
 //Extend the Default marker class
 let GreenIcon = L.Icon.Default.extend({
   options: {
@@ -16,6 +19,34 @@ let GreenIcon = L.Icon.Default.extend({
   }
 });
 let greenIcon = new GreenIcon();
+
+let CafeIcon = L.Icon.Default.extend({
+  options: {
+        iconSize: [30, 41],
+        iconUrl: cafe_src
+  }
+});
+let cafeIcon = new CafeIcon();
+
+let StoreIcon = L.Icon.Default.extend({
+  options: {
+        iconSize: [30, 41],
+        iconUrl: store_src
+  }
+});
+let storeIcon = new StoreIcon();
+
+let ServiseIcon = L.Icon.Default.extend({
+  options: {
+        iconSize: [30, 41],
+        iconUrl: service_src
+  }
+});
+let serviceIcon = new ServiseIcon();
+
+let custom_icon = {'2': cafeIcon,
+                   '0': storeIcon,
+                   '1': serviceIcon};
 
 let placesMarkers = function(places, categories){
   // console.log('Places: ', places.length);
@@ -42,7 +73,7 @@ let placesMarkers = function(places, categories){
       const position = [parseFloat(place.fields.lat), parseFloat(place.fields.lng)];
       let id = place.pk;
       return(
-        <Marker position={position} key={i} icon={greenIcon}>
+        <Marker position={position} key={i} icon={custom_icon[place.fields.category_id]}>
           <Popup>
             <div id="inner-marker-div"><span>Place: {place.fields.name}</span>
             <div className="marker-link" onClick={handleClick.bind(this, "marker_details/" + id + "?type=Place")}>Show details...</div>
