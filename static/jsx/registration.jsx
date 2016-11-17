@@ -27,6 +27,25 @@ class RegistrationComponent extends React.Component {
         this.changeValue = this.changeValue.bind(this);
     }
 
+    componentWillMount() {
+        /*
+         * Cheks if localStorage have a token
+         * and redirect to main page
+         */
+        if (localStorage['token']) {
+          $.get(
+          {
+            url: '/api/tokenvalid',
+            data: {token: localStorage['token']}
+          },
+          function (data) {
+
+            if (data["result"] === "ok")
+              browserHistory.push("/");
+          });
+        }
+    }
+
     changeValue(event) {
        let state = [];
        state[event.target.name] = event.target.value;
@@ -109,7 +128,6 @@ class RegistrationComponent extends React.Component {
         if(this.state.isRegistrated)
         {
             browserHistory.push('/login');
-            return null;
         }
     }
 

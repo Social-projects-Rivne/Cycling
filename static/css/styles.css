@@ -26,6 +26,7 @@ time, mark, audio, video {
     vertical-align: baseline;
     text-decoration: none;
 }
+
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
@@ -62,6 +63,12 @@ table {
     float: left;
     margin-top: 70px;
     position: fixed;
+}
+
+.leaflet-control-layers-base label, 
+.leaflet-control-layers-overlays label
+{
+    padding: 5px;
 }
 
 .icon
@@ -189,6 +196,8 @@ table {
     margin: 15px;
     width: 300px;
     line-height: 3;
+    outline: 0px !important;
+    -webkit-appearance:none;
 }
 
 .value-input:focus

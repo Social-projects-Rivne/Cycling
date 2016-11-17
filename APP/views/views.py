@@ -95,7 +95,7 @@ def registration(request):
     validate and in case of success add user
     with that credentials to database
     and return json with success
-    or error in case of error
+    or error in case of error.
     """
 
     if request.method == "POST":
@@ -106,7 +106,6 @@ def registration(request):
             if User.objects.filter(email=request.POST["email"]).exists():
                 result_dict['EmailError'] = 1
             if not result_dict:
-
                 hashed_password = _password_master.hash_password(
                     request.POST['password'])
                 token = _password_master.generate_token()
@@ -122,12 +121,16 @@ def registration(request):
 
 
 def marker_details(request):
+    """Receive json with marker type and id,
+    validate, select data from database in addition
+    to type and id and return that data via JsonResponse.
+    """
+
     if request.method == "GET":
         print "It's me"
         table = str(request.GET.get("type"))
         ID = int(request.GET.get("id"))
         targer_class = None
-
         if table == "StolenBike":
             target_class = StolenBike
         elif table == "Place":

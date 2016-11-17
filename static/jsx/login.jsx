@@ -112,9 +112,8 @@ export class LoginComponent extends React.Component {
         <div>
           <form onSubmit={this.submit} className="form-horizontal registration-form">
               <fieldset>
-                  <div className="header-div">
-                      <h2 className="register-header">Login</h2>
-                  </div>
+                  <h2 className="reg-log-header">Login</h2>
+
                   {this.getErrorLabel()}
 
                   <BaseInput value={this.state.email} name="email" placeholder="full name" icon="email"

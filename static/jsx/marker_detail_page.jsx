@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { browserHistory } from 'react-router';
+
 
 export class MarkerDetails extends React.Component {
 	/*
@@ -18,6 +20,16 @@ export class MarkerDetails extends React.Component {
 		this.ajaxSuccess = this.ajaxSuccess.bind(this);
 		this.streetAjaxSuccess = this.streetAjaxSuccess.bind(this);
 	}
+
+	componentWillMount() {
+		/*
+		 * Cheks if localStorage doesn't have token
+		 * and redirect to login page
+		 */
+        if (!localStorage['token']) {
+            browserHistory.push("/login");
+        }
+    }
 
 	streetAjaxSuccess(response){
 		/*
