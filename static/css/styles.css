@@ -506,6 +506,15 @@ table {
     transform: rotateX(180deg);
     transition: ease-out transform .3s;
 }
+
+.li-name, 
+#display-obj
+{
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
 /*End of category list*/
 
 /* PROFILE STYLES */

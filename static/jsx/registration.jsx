@@ -126,7 +126,7 @@ class RegistrationComponent extends React.Component {
         if(this.state.modal_text)
         {
             return (
-                <h2 className="reg-log-header">{this.state.modal_text} </h2>
+                <h2 className="reg-log-header">{this.state.modal_text}</h2>
             );
         }
     }
