@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal } from 'react-bootstrap';
-
+import { browserHistory } from 'react-router';
 
 class UserData extends React.Component {
     // Render header of profile page which contains user's avatar, full name
@@ -23,7 +23,7 @@ class UserData extends React.Component {
         this.avatarUrlPreview = this.avatarUrlPreview.bind(this);
     }
 
-
+/*
     componentDidMount() {
         // Fetch data from the django api.
         $.get("/api/user_data/" + this.props.user_id + "/",
@@ -51,6 +51,45 @@ class UserData extends React.Component {
         );
 
     }
+*/
+    componentDidMount () {
+        //Fetch data from the django api.
+        // user_api_url = "api/user_data/" + this.props.user_id + "/";
+
+        $.ajax({
+                type: "GET",
+                url: "/api/user_data/" + this.props.user_id + "/",
+                contentType: "application/json",
+                dataType: "json",
+                success: function (response) {
+                    console.log(response.full_name);
+                    // If user has no avatar create default one for him.
+                    if (response.avatar != 'None') {
+                        this.setState ({
+                            avatarSrc: response.avatar,
+                            avatarPreviewSrc: response.avatar,
+                        });
+                    } else {
+                        this.setState ({
+                            avatarSrc: "/static/av.png",
+                            avatarPreviewSrc: "/static/av.png"
+                        });
+                    }
+
+                    this.setState ({
+                        api_output: response,
+                        //    avatarSrc: response.avatar,
+                        fullName: response.full_name
+                    });
+                }.bind(this),
+                error: function (response) {
+                    console.log("error loading api with ajax");
+                    browserHistory.push('/404');
+                }
+        });
+    }
+
+    
     avatarPreview(event) {
         // Make avatar preview event if user uploads image file.
         /*
