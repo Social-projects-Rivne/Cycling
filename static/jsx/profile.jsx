@@ -20,41 +20,10 @@ class UserData extends React.Component {
         this.close = this.close.bind(this);
         this.revert = this.revert.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-
-      //  this.getAvatar = this.getAvatar.bind(this);
         this.avatarPreview = this.avatarPreview.bind(this);
         this.avatarUrlPreview = this.avatarUrlPreview.bind(this);
     }
 
-/*
-    componentDidMount() {
-        // Fetch data from the django api.
-        $.get("/api/user_data/" + this.props.user_id + "/",
-            function (response) {
-                console.log(response);
-                // If user has no avatar create default one for him.
-                if (response.avatar != 'None') {
-                    this.setState ({
-                        avatarSrc: response.avatar,
-                        avatarPreviewSrc: response.avatar,
-                    });
-                } else {
-                    this.setState ({
-                        avatarSrc: "/static/av.png",
-                        avatarPreviewSrc: "/static/av.png"
-                    });
-                }
-
-                this.setState ({
-                    api_output: response,
-                //    avatarSrc: response.avatar,
-                    fullName: response.full_name
-                    });
-                }.bind(this)
-        );
-
-    }
-*/
     componentDidMount () {
         //Fetch data from the django api.
         // user_api_url = "api/user_data/" + this.props.user_id + "/";
@@ -108,10 +77,6 @@ class UserData extends React.Component {
     
     avatarPreview(event) {
         // Make avatar preview event if user uploads image file.
-        /*
-        let img = document.getElementById('avatarPreview');
-        img.src = URL.createObjectURL(event.target.files[0]);
-        */
         console.log(URL.createObjectURL(event.target.files[0]));
 
         this.setState({avatarPreviewSrc: URL.createObjectURL(event.target.files[0])});
@@ -122,15 +87,7 @@ class UserData extends React.Component {
         // Make avatar preview event if user notes image url in the input field.
         this.setState({avatarPreviewSrc: document.getElementById("modalAvatarUrl").value})
     }
-    /*
-    getAvatar() {
-        if (this.state.api_output.avatar == 'None') {
-            this.setState ({avatarSrc: "/static/av.png"});
-        } else {
-            this.setState({avatarSrc: this.state.api_output.avatar});
-        }
-    }
-    */
+
     close() {
         // Event for modal pop-up closing.
         this.setState({ showModal: false });
@@ -140,6 +97,7 @@ class UserData extends React.Component {
         // Event for modal pop-up appearance when user has clicked on the 
         // "Edit user" button.
         this.setState({showModal: true });
+    a
     }
     revert () {
         // Event for Revert button which restores after edits all old user's 
@@ -632,20 +590,7 @@ class ParkingsData extends React.Component {
             }.bind(this)
         )
     }
-/*
-    render() {
-        if (this.state.api_output[0] == undefined) {
-            return (<p>No parkings were added</p>);
-        }
-        else {
-            return (
-                <div>
-                {this.state.api_output.map((parking, index) => (<p key={index}>{JSON.stringify(parking)}</p>))}
-                </div>
-            );
-        }
-    }
-*/
+
     render() {
         if (this.state.api_output[0] == undefined) {
             return (<p>No parkings were added</p>);
