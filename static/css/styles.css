@@ -519,12 +519,6 @@ table {
 
 /* PROFILE STYLES */
 
-#profile-container {
-    /*
-    margin: 0% 3% 0% 3%;
-    */
-    overflow: auto;
-}
 .profile-header {
     background-image: url(/static/bg.jpg);
     background-repeat: no-repeat;
