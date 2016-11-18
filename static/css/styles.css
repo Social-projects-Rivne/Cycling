@@ -549,21 +549,7 @@ h1, h2, h4 {
 }
 
 
-/*
-h1 {
-    padding-top: 40px;
-}
 
-
-
-#userHeaders {
-    display: inline;
-}
-
-#userAvatar, #editUserButton {
-    display: inline-block;
-}
-*/
 #userAvatar {
     display: inline;
 }
@@ -585,27 +571,6 @@ h1 {
 #avatarPreview {
     margin: 0 auto;
 }
-/*
-.btn-circle {
-    width: 30px;
-    height: 30px;
-    text-align: center;
-    padding: 6px 0;
-    font-size: 12px;
-    line-height: 1.428571429;
-    border-radius: 15px;
-}
-
-
-.btn-circle {
-    width: 34px;
-    height: 40px;
-    line-height: 40px;
-    padding: 0;
-    border-radius: 50%;
-}
-*/
-
 
 /* .btn-circle > .class-name
  * in order to avoid important
@@ -615,14 +580,6 @@ h1 {
 .btn-circle {
     border-radius: 50%  !important;
 }
-/*
-.row-eq-height {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox !important;
-    display: flex;
-}
-*/
 
 .avatar-header {
   height: 40px;

@@ -151,22 +151,22 @@ class UserData extends React.Component {
         return (
             <div>
             <div className="profile-header">
-            <div id="centralizer" className="container">
+            <div className="container">
 
-                <div id="headerDataRow" className="row">
-                <div className="col-md-2 headerItems vertical-center">
+                <div className="row">
+                <div className="col-md-2">
                 <img id="userAvatar" src={this.state.avatarSrc}
                     className="img-responsive img-circle margin"
                     width="150px" height="150px" alt="image unavailable"/>
                 </div>
-                <div className="col-md-3 headerItems vertical-center">
+                <div className="col-md-3">
                 <span>
                     <p id="headerFullName">{this.state.api_output.full_name}</p>
                     <p id="headerEmail">{this.state.api_output.email}</p>
                 </span>
                 </div>
-                <div className="col-md-3 headerItems vertical-center"></div>
-                <div className="col-md-2 headerItems vertical-center">
+                <div className="col-md-3"></div>
+                <div className="col-md-2">
                     {this.renderEditButtonIfLogged()}
                 </div>
                 </div>
