@@ -299,11 +299,11 @@ def get_user_places_data(request, user_id):
         pass
     for place in user_places_list:
         try:
-            place['images_url'] = list(Attachment.objects.filter(place_id=place['id']).values('image_url'))
-            if not place['image_url']:
-                place['image_url'] = None
+            place['images_urls'] = list(Attachment.objects.filter(place_id=place['id']).values('image_url'))
+            if not place['images_urls']:
+                place['images_urls'] = None
         except:
-            place['image_url'] = None
+            place['images_urls'] = None
     return JsonResponse(user_places_list, safe = False)
 
 #@need_token

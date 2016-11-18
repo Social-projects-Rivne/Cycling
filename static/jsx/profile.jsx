@@ -34,7 +34,9 @@ class UserData extends React.Component {
                 contentType: "application/json",
                 dataType: "json",
                 success: function (response) {
-                    console.log(response.full_name);
+                    console.log('get_user_data api output: ');
+
+                    console.log(JSON.stringify(response));
                     // If user has no avatar create default one for him.
                     if (response.avatar != 'None') {
                         this.setState ({
@@ -309,6 +311,29 @@ class EditUserPopup extends React.Component {
 
 class Bike extends React.Component {
     // Render single card for the bike.
+    
+    constructor(props) {
+        super(props);
+        this.renderImg = this.renderImg.bind(this);
+    }
+
+
+    
+    renderImg() {
+        if (this.props.bike.images_urls == null) {
+            return (
+                <img src="" alt="No picture was provided yet" />
+            )
+        } else {
+            return (
+            <img src={this.props.bike.images_urls[0].url} 
+                className="img-responsive item-image"
+                alt="image unavailable" />
+            )
+        }
+    }
+ 
+    
     render () {
         return (
         <div className="my-card col-md-5">
@@ -317,8 +342,7 @@ class Bike extends React.Component {
                 <h4 className="item-name">{this.props.bike.name}</h4>
                 <span id="location-icon" className="material-icons pencil">edit</span>
             </div>
-            <img src={this.props.bike.images_urls[0].url} className="img-responsive item-image"
-            alt="image unavailable" />
+            {this.renderImg()}
             <div className="card-block">
                 <p> {this.props.bike.description} </p>
             </div>
@@ -354,6 +378,7 @@ class BicycleData extends React.Component {
         // Fetch data from the django api.
         $.get("/api/user_bikes_data/"+this.props.owner_id+"/",
             function (response) {
+                console.log('user_bikes_data api output: ');
                 console.log(JSON.stringify(response));
                 this.setState ({
                         api_output: response
@@ -388,6 +413,27 @@ class BicycleData extends React.Component {
 
 class Place extends React.Component {
     // Render single card for the place.
+    constructor(props) {
+        super(props);
+        this.renderImg = this.renderImg.bind(this);
+    }
+
+
+    
+    renderImg() {
+        if (this.props.place.images_urls == null) {
+            return (
+                <img src="" alt="No picture was provided yet" />
+            )
+        } else {
+            return (
+            <img src={this.props.place.images_urls[0].url} 
+                className="img-responsive item-image"
+                alt="image unavailable" />
+            )
+        }
+    }
+    
     render () {
         return (
         <div className="my-card col-md-5">
@@ -396,8 +442,7 @@ class Place extends React.Component {
                 <h4 className="item-name">{this.props.place.name}</h4>
                 <span id="location-icon" className="material-icons pencil">edit</span>
             </div>
-            <img className="img-responsive" src=""
-            alt="image unavailable" />
+            {this.renderImg()}
             <div className="card-block">
                 <p>Lattitude: {this.props.place.lat} Longtitude: {this.props.place.lng}</p>
                 <p> {this.props.place.description} </p>
@@ -436,6 +481,7 @@ class PlacesData extends React.Component {
         // Fetch data from the django api.
         $.get("/api/user_places_data/" + this.props.owner_id + "/",
             function (response) {
+                console.log('user_places_data api output: ');
                 console.log(JSON.stringify(response));
                 this.setState ({
                         api_output: response
@@ -470,6 +516,25 @@ class PlacesData extends React.Component {
 
 class Parking extends React.Component {
     // Render single card for the parking.
+    constructor(props) {
+        super(props);
+        this.renderImg = this.renderImg.bind(this);
+    }
+    
+    renderImg() {
+        if (this.props.parking.images_urls == null) {
+            return (
+                <img src="" alt="No picture was provided yet" />
+            )
+        } else {
+            return (
+            <img src={this.props.parking.images_urls[0].url} 
+                className="img-responsive item-image"
+                alt="image unavailable" />
+            )
+        }
+    }
+ 
     render () {
         return (
         <div className="my-card col-md-5">
@@ -478,12 +543,11 @@ class Parking extends React.Component {
                 <h4 className="item-name">{this.props.parking.name}</h4>
                 <span id="location-icon" className="material-icons pencil">edit</span>
             </div>
-            <img className="img-responsive" src=""
-            alt="image unavailable" />
+            {this.renderImg()}
             <div className="card-block">
                 <p>Lattitude: {this.props.parking.lat} Longtitude: {this.props.parking.lng}</p>
                 <p> {this.props.parking.description} </p>
-                <p> Is free {this.props.parking.is_free} </p>
+                <p> Is free: {this.props.parking.is_free ? 'Yes' : 'No'} </p>
                 <p> Slots avail.: {this.props.parking.amount} </p>
                 <p> Security: {this.props.parking.security} </p>
             </div>
@@ -519,6 +583,7 @@ class ParkingsData extends React.Component {
     componentDidMount() {
         $.get("/api/user_parkings_data/" + this.props.owner_id + "/",
             function (response) {
+                console.log('user_parkings_data api output: ');
                 console.log(JSON.stringify(response));
                 this.setState ({
                         api_output: response
