@@ -15,6 +15,7 @@ class UserData extends React.Component {
             avatarPreviewSrc: null,
             fullName: null
         };
+        this.renderEditButtonIfLogged = this.renderEditButtonIfLogged.bind(this);
         this.open = this.open.bind(this);
         this.close = this.close.bind(this);
         this.revert = this.revert.bind(this);
@@ -91,6 +92,19 @@ class UserData extends React.Component {
         });
     }
 
+    renderEditButtonIfLogged() {
+        // Make edit button to be rendered only on the profile page
+        // of logged-in user.
+        if (this.props.user_id === localStorage['id']) {
+            return (
+                <button id="editUserButton" type="button"
+                    className="btn btn-default" onClick={this.open}>
+                    Edit profile
+                </button>
+            );
+        }
+    }
+
     
     avatarPreview(event) {
         // Make avatar preview event if user uploads image file.
@@ -145,6 +159,8 @@ class UserData extends React.Component {
     }
     
     handleSubmit(event) {
+        // Catch modal popup form submit, get data from it, add user's token
+        // and send to it to the server with POST method.
         event.preventDefault();
         let data_to_send = {
             full_name: event.target.elements[0].value,
@@ -193,9 +209,7 @@ class UserData extends React.Component {
                 </div>
                 <div className="col-md-3 headerItems vertical-center"></div>
                 <div className="col-md-2 headerItems vertical-center">
-                <button id="editUserButton" type="button"
-                    className="btn btn-default" onClick={this.open}>
-                    Edit profile</button>
+                    {this.renderEditButtonIfLogged()}
                 </div>
                 </div>
             </div>
