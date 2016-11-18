@@ -147,7 +147,7 @@ class SideBar extends React.Component {
       let context = this;
       $.ajax({
               type: 'GET',
-              url: 'api/v1/categories',
+              url: '/api/categories',
               contentType: 'application/json',
               dataType: "json",
               success: function(response) {
@@ -219,8 +219,11 @@ class SideBar extends React.Component {
         <div id="sidebar-wrapper" role="navigation">
             <ul className="sidebar-nav">
                 <li><Link onlyActiveOnIndex activeStyle={{color:'#53acff'}} to='/'>Home</Link></li>
-                <li className="collapsed" id="display-obj" data-toggle="collapse" data-target="#display-list"><span className="li-name">Places to Display</span>
-                  <span className="toggle-arrow material-icons">keyboard_arrow_up</span>
+                <li>
+                  <div className="collapsed" id="display-obj" data-toggle="collapse" data-target="#display-list">
+                    <span className="li-name">Places to Display</span>
+                    <span className="toggle-arrow material-icons">keyboard_arrow_up</span>
+                  </div>
                   <ul className="collapse categories-ul" id="display-list">
                     {this.getCategoriesView()}
                   </ul>
