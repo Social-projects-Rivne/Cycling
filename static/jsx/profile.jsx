@@ -323,18 +323,8 @@ class Bike extends React.Component {
 }
 
 class BikesRow extends React.Component {
-    // Render Bootstrap's row from one or two existing bikes. If there is only
-    // one bike this class inserts to this row AddItem card with plus button as
-    // the second item.
+    // Render Bootstrap's row from one or two existing bikes.
     render () {
-        if (this.props.bikesPair.length === 1) {
-            return (
-                <div className="row">
-                    <Bike key="1" bike={this.props.bikesPair[0]} />
-                    <AddItemCard />
-                </div>
-            )
-        } else {
             return (
             <div className="row">
                 {
@@ -345,7 +335,6 @@ class BikesRow extends React.Component {
             </div>
             )
         }
-    }
 }
 
 class BicycleData extends React.Component {
@@ -381,21 +370,9 @@ class BicycleData extends React.Component {
                         }
                         pairs[pairs.length -1].push(bike);
                         return pairs;
-                    }, []).map(function(pair, index, arr) {
-
-                        if (index == arr.length-1 && this.state.api_output.length % 2 === 0) {
-                            return (
-                            <div>
-                                <BikesRow key={index} bikesPair={pair} />
-                                <div className="row">
-                                    <AddItemCard />
-                                </div>
-                            </div>
-                            );
-                        } else {
+                    }, []).map(function(pair, index) {
                         return (<BikesRow key={index} bikesPair={pair} />)
-                        }
-                    }.bind(this))
+                    })
                 }
                 </div>
             );
@@ -427,18 +404,8 @@ class Place extends React.Component {
 }
 
 class PlacesRow extends React.Component {
-    // Render Bootstrap's row from one or two existing places. If there is only
-    // one place this class inserts to this row AddItem card with plus button as
-    // the second item.
+    // Render Bootstrap's row from one or two existing places.
     render () {
-        if (this.props.placesPair.length === 1) {
-            return (
-                <div className="row">
-                    <Place key="1" place={this.props.placesPair[0]} />
-                    <AddItemCard />
-                </div>
-            )
-        } else {
             return (
             <div className="row">
                 {
@@ -448,8 +415,8 @@ class PlacesRow extends React.Component {
                 }
             </div>
             )
+        
         }
-    }
 }
 
 
@@ -470,20 +437,6 @@ class PlacesData extends React.Component {
             }.bind(this)
         )
     }
-/*
-    render() {
-        if (this.state.api_output[0] == undefined) {
-            return (<p>No places were added</p>);
-        }
-        else {
-            return (
-                <div>
-                {this.state.api_output.map((place, index) => (<p key={index}>{JSON.stringify(place)}</p>))}
-                </div>
-            );
-        }
-    }
-*/
 
     render() {
         if (this.state.api_output[0] == undefined) {
@@ -498,21 +451,9 @@ class PlacesData extends React.Component {
                         }
                         pairs[pairs.length -1].push(place);
                         return pairs;
-                    }, []).map(function(pair, index, arr) {
-
-                        if (index == arr.length-1 && this.state.api_output.length % 2 === 0) {
-                            return (
-                            <div>
-                                <PlacesRow key={index} placesPair={pair} />
-                                <div className="row">
-                                    <AddItemCard />
-                                </div>
-                            </div>
-                            );
-                        } else {
+                    }, []).map(function(pair, index) {
                         return (<PlacesRow key={index} placesPair={pair} />)
-                        }
-                    }.bind(this))
+                    })
                 }
                 </div>
             );
@@ -547,18 +488,8 @@ class Parking extends React.Component {
 }
 
 class ParkingsRow extends React.Component {
-    // Render Bootstrap's row from one or two existing parkings. If there is 
-    // only one parking then this class inserts to this row AddItem card with 
-    // plus button as the second item. 
+    // Render Bootstrap's row from one or two existing parkings.
     render () {
-        if (this.props.parkingsPair.length === 1) {
-            return (
-                <div className="row">
-                    <Parking key="1" parking={this.props.parkingsPair[0]} />
-                    <AddItemCard />
-                </div>
-            )
-        } else {
             return (
             <div className="row">
                 {
@@ -569,7 +500,6 @@ class ParkingsRow extends React.Component {
             </div>
             )
         }
-    }
 }
 
 
@@ -604,21 +534,9 @@ class ParkingsData extends React.Component {
                         }
                         pairs[pairs.length -1].push(parking);
                         return pairs;
-                    }, []).map(function(pair, index, arr) {
-
-                        if (index == arr.length-1 && this.state.api_output.length % 2 === 0) {
-                            return (
-                            <div>
-                                <ParkingsRow key={index} parkingsPair={pair} />
-                                <div className="row">
-                                    <AddItemCard />
-                                </div>
-                            </div>
-                            );
-                        } else {
+                    }, []).map(function(pair, index) {
                         return (<ParkingsRow key={index} parkingsPair={pair} />)
-                        }
-                    }.bind(this))
+                    })
                 }
                 </div>
             );
@@ -626,21 +544,6 @@ class ParkingsData extends React.Component {
     }
 
 };
-
-class AddItemCard extends React.Component {
-    // Render Add item card with button.
-    render () {
-        return (
-            <div className="my-card col-md-5">
-                <button type="button"
-                className="btn-lg btn-default btn-circle">
-                +
-                </button>
-            </div>
-        )
-    }
-}
-
 
 class Profile extends React.Component {
     // Render components with user's data, bikes, places and parkings.
