@@ -20,12 +20,24 @@ module.exports = {
     ],
     loaders: [
       {
-        test: /.jsx?$/,
+        test: /\.jsx?$/,
         loader: 'babel-loader',
         exclude: /node_modules/,
         query: {
           presets: ['es2015', 'stage-0', 'react']
         }
+      },
+      {
+        test: /\.css$/, 
+        loader: "style-loader!css-loader" 
+      },
+      {
+        test: /\.scss$/,
+        loaders: ['style', 'css', 'postcss', 'sass']
+      }, 
+      {
+        test: /\.less$/,
+        loaders: ['style', 'css', 'less']
       },
       {
         test: /\.(jpg|png)$/,

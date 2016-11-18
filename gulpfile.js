@@ -5,9 +5,9 @@ var webpack = require('webpack-stream');
 
 var path = {
   HTML: 'APP/templates/APP/index.html',
-  ALL: ['static/jsx/*.js', 'static/jsx/**/*.js', 'static/jsx/*.jsx', 'static/jsx/**/*.jsx'],
-  JS: ['static/jsx/*.js', 'static/jsx/**/*.js', 'static/jsx/*.jsx', 'static/jsx/**/*.jsx'],
-  MINIFIED_OUT: 'build.min.js',
+  ALL: ['static/css/*.css', 'static/jsx/**/*.js', 'static/jsx/*.jsx', 'static/jsx/**/*.jsx'],
+  JSX: ['static/jsx/*.jsx', 'static/jsx/**/*.jsx'],
+  MINIFIED_OUT: 'bundle.js',
   DEST_BUILD: 'static/js/app',
 };
 
@@ -20,9 +20,18 @@ function swallowError (error) {
 }
 
 gulp.task('transform', function() {
-  return gulp.src(path.JS)
+  return gulp.src(path.JSX)
     .pipe(webpack( require('./webpack.config.js') ))
     .on('error', swallowError)
+    .pipe(gulp.dest(path.DEST_BUILD));
+});
+
+gulp.task('build', function(){
+  return gulp.src(path.JSX)
+    .pipe(webpack( require('./webpack.config.js') ))
+    .on('error', swallowError)
+    .pipe(concat(path.MINIFIED_OUT))
+    .pipe(uglify(path.MINIFIED_OUT))
     .pipe(gulp.dest(path.DEST_BUILD));
 });
 
