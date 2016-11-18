@@ -2,6 +2,9 @@
 *.pyo
 *.egg-info
 *.ini
+*.log
+.vscode/
+.ropeproject/
 
 # Databases
 *.db
