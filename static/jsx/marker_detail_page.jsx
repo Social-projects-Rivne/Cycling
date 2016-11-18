@@ -15,7 +15,7 @@ export class MarkerDetails extends React.Component {
 			marker_type: this.props.location.query.type,
 			marker_id: this.props.params.id,
 			marker_value: "",
-			street: ""
+			full_street: ""
 		};
 		this.ajaxSuccess = this.ajaxSuccess.bind(this);
 		this.streetAjaxSuccess = this.streetAjaxSuccess.bind(this);
@@ -29,6 +29,16 @@ export class MarkerDetails extends React.Component {
         if (!localStorage['token']) {
             browserHistory.push("/login");
         }
+        else
+        {
+        	$.ajax({
+				type: 'GET',
+      			url: '/api/marker_details',
+      			dataType: "json",
+      			data: {type: this.state.marker_type, id: this.state.marker_id},
+      			success: this.ajaxSuccess
+			});
+        }
     }
 
 	streetAjaxSuccess(response){
@@ -38,7 +48,8 @@ export class MarkerDetails extends React.Component {
 	 	 * address of marker
 	 	 */
 		this.setState({
-			street: response.display_name
+			street: response.display_name,
+			full_street: response.address
 		});
 	}
 
@@ -56,23 +67,9 @@ export class MarkerDetails extends React.Component {
 		});
 		$.ajax({
 				type: 'GET',
-    			url: 'http://nominatim.openstreetmap.org/reverse?format=json&lat=' + this.state.marker_value.lat + '&lon=' + this.state.marker_value.lng + '&addressdetails=1',
+    			url: 'http://nominatim.openstreetmap.org/reverse?format=json&lat=' + this.state.marker_value.lat 
+    			+ '&lon=' + this.state.marker_value.lng + '&addressdetails=1&accept-language=en',
     			success: this.streetAjaxSuccess
-		});
-	}
-
-	componentDidMount() {
-		/*
-		 * When component is mounted, make ajax response
-		 * to server and get marker details that depends
-		 * on marker type and id
-		 */
-		$.ajax({
-			type: 'GET',
-      		url: '/api/marker_details',
-      		dataType: "json",
-      		data: {type: this.state.marker_type, id: this.state.marker_id},
-      		success: this.ajaxSuccess
 		});
 	}
 
@@ -130,7 +127,7 @@ export class MarkerDetails extends React.Component {
 
 	render() {
 		//Render method of component
-		console.log(this.state.street.split(','));
+		console.log(this.state.full_street.city);
 		return (
 			<div className="container-fluid marker-details-content">
 				<div className="row">
@@ -145,7 +142,9 @@ export class MarkerDetails extends React.Component {
 							<h3 className="detail-cards-header">Location</h3>
 							<p className="address">
 								<span id="location-icon" className="material-icons">place</span>
-								<span className="location-text">{this.state.street.split(',', 4).join(',')}</span>
+								<span className="location-text">{this.state.full_street.house_number ? 
+								(this.state.full_street.house_number + ', ' + this.state.full_street.road)
+								: this.state.full_street.road}</span>
 							</p>
 						</div>
 					</div>

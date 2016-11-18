@@ -475,18 +475,50 @@ table {
 
 .ctg-li-unactive:hover {
   background-color: #999999;
+}
 
+.toggle-arrow
+{
+    float: right;
+    margin: 10px 10px 0px 0px;
+    cursor: pointer;
+}
+
+#display-obj
+{
+    color: #999999;
+}
+
+#display-obj:hover
+{
+    background-color: #ccc;
+    cursor: pointer;
+    color: #fff;
+}
+
+#display-obj .toggle-arrow
+{
+    transition: ease-out transform .3s;
+}
+
+#display-obj.collapsed .toggle-arrow
+{
+    transform: rotateX(180deg);
+    transition: ease-out transform .3s;
+}
+
+.li-name, 
+#display-obj
+{
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 /*End of category list*/
 
 /* PROFILE STYLES */
 
-#profile-container {
-    /*
-    margin: 0% 3% 0% 3%;
-    */
-    overflow: auto;
-}
 .profile-header {
     background-image: url(/static/bg.jpg);
     background-repeat: no-repeat;
@@ -517,21 +549,7 @@ h1, h2, h4 {
 }
 
 
-/*
-h1 {
-    padding-top: 40px;
-}
 
-
-
-#userHeaders {
-    display: inline;
-}
-
-#userAvatar, #editUserButton {
-    display: inline-block;
-}
-*/
 #userAvatar {
     display: inline;
 }
@@ -553,27 +571,6 @@ h1 {
 #avatarPreview {
     margin: 0 auto;
 }
-/*
-.btn-circle {
-    width: 30px;
-    height: 30px;
-    text-align: center;
-    padding: 6px 0;
-    font-size: 12px;
-    line-height: 1.428571429;
-    border-radius: 15px;
-}
-
-
-.btn-circle {
-    width: 34px;
-    height: 40px;
-    line-height: 40px;
-    padding: 0;
-    border-radius: 50%;
-}
-*/
-
 
 /* .btn-circle > .class-name
  * in order to avoid important
@@ -583,14 +580,6 @@ h1 {
 .btn-circle {
     border-radius: 50%  !important;
 }
-/*
-.row-eq-height {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox !important;
-    display: flex;
-}
-*/
 
 .avatar-header {
   height: 40px;
@@ -606,4 +595,21 @@ h1 {
 
 .item-image {
     width: 100%;
+}
+
+#headerFullName, #headerEmail {
+    color: white;
+    font-weight: bold;
+    font-size: 1.3em;
+    margin-bottom: 0px;
+}
+
+#data-container {
+    display: table;
+}
+
+#vertical-center-row {
+    display: table-cell;
+    vertical-align: middle;
+    height: 100%;
 }

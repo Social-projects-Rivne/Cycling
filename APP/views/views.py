@@ -267,8 +267,7 @@ def get_user_bikes_data(request, user_id):
                 bike['images_urls'] = None
         except TypeError:
             bike['images_urls'] = None
-
-    bike['is_stolen'] = StolenBike.objects.filter(bike_id=bike['id']).exists()
+        bike['is_stolen'] = StolenBike.objects.filter(bike_id=bike['id']).exists()
     return JsonResponse(user_bikes_list, safe = False)
 
 def get_user_parkings_data(request, user_id):
@@ -300,13 +299,14 @@ def get_user_places_data(request, user_id):
         pass
     for place in user_places_list:
         try:
-            place['images_url'] = list(Attachment.objects.filter(place_id=place['id']).values('image_url'))
-            if not place['image_url']:
-                place['image_url'] = None
+            place['images_urls'] = list(Attachment.objects.filter(place_id=place['id']).values('image_url'))
+            if not place['images_urls']:
+                place['images_urls'] = None
         except:
-            place['image_url'] = None
+            place['images_urls'] = None
     return JsonResponse(user_places_list, safe = False)
 
+#@need_token
 def edit_user_data(request, user_id):
     """Accept POST request for user data changes and then updates these changes
     in the database."""
@@ -314,7 +314,8 @@ def edit_user_data(request, user_id):
     user.full_name = request.POST['full_name']
     user.avatar = request.POST['avatar_url']
     user.save()
-    return redirect('/user/%s/' % user_id)
+    # return HttpResponse(status=200)
+    return JsonResponse({'status': 'ok'})
 
 @need_token
 def get_avatar(request):
