@@ -596,3 +596,20 @@ h1, h2, h4 {
 .item-image {
     width: 100%;
 }
+
+#headerFullName, #headerEmail {
+    color: white;
+    font-weight: bold;
+    font-size: 1.3em;
+    margin-bottom: 0px;
+}
+
+#data-container {
+    display: table;
+}
+
+#vertical-center-row {
+    display: table-cell;
+    vertical-align: middle;
+    height: 100%;
+}

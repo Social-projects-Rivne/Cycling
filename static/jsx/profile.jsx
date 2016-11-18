@@ -67,7 +67,7 @@ class UserData extends React.Component {
         if (this.props.user_id === localStorage['id']) {
             return (
                 <button id="editUserButton" type="button"
-                    className="btn btn-default" onClick={this.open}>
+                    className="btn btn-default center-block" onClick={this.open}>
                     Edit profile
                 </button>
             );
@@ -151,24 +151,30 @@ class UserData extends React.Component {
         return (
             <div>
             <div className="profile-header">
-            <div className="container">
+                <div id="data-container" className="container">
 
-                <div className="row">
-                <div className="col-md-2">
-                <img id="userAvatar" src={this.state.avatarSrc}
-                    className="img-responsive img-circle margin"
-                    width="150px" height="150px" alt="image unavailable"/>
-                </div>
-                <div className="col-md-3">
-                <span>
-                    <p id="headerFullName">{this.state.api_output.full_name}</p>
-                    <p id="headerEmail">{this.state.api_output.email}</p>
-                </span>
-                </div>
-                <div className="col-md-3"></div>
-                <div className="col-md-2">
-                    {this.renderEditButtonIfLogged()}
-                </div>
+                    <div id="vertical-center-row" className="row">
+
+                        <div className="col-md-2">
+                            <img id="userAvatar" src={this.state.avatarSrc}
+                            className="img-responsive img-circle margin"
+                            width="150px" height="150px" alt="image unavailable"/>
+                        </div>
+
+                        <div className="col-md-3">
+                            <span>
+                                <p id="headerFullName">{this.state.api_output.full_name}</p>
+                                <p id="headerEmail">{this.state.api_output.email}</p>
+                            </span>
+                        </div>
+
+                        <div className="col-md-3">
+                        </div>
+
+                        <div className="col-md-2">
+                            {this.renderEditButtonIfLogged()}
+                        </div>
+
                 </div>
             </div>
             </div>
@@ -311,7 +317,7 @@ class Bike extends React.Component {
                 <h4 className="item-name">{this.props.bike.name}</h4>
                 <span id="location-icon" className="material-icons pencil">edit</span>
             </div>
-            <img src={this.props.bike.images_urls[0].url} className="item-image"
+            <img src={this.props.bike.images_urls[0].url} className="img-responsive item-image"
             alt="image unavailable" />
             <div className="card-block">
                 <p> {this.props.bike.description} </p>
@@ -390,7 +396,7 @@ class Place extends React.Component {
                 <h4 className="item-name">{this.props.place.name}</h4>
                 <span id="location-icon" className="material-icons pencil">edit</span>
             </div>
-            <img src=""
+            <img className="img-responsive" src=""
             alt="image unavailable" />
             <div className="card-block">
                 <p>Lattitude: {this.props.place.lat} Longtitude: {this.props.place.lng}</p>
@@ -472,7 +478,7 @@ class Parking extends React.Component {
                 <h4 className="item-name">{this.props.parking.name}</h4>
                 <span id="location-icon" className="material-icons pencil">edit</span>
             </div>
-            <img src=""
+            <img className="img-responsive" src=""
             alt="image unavailable" />
             <div className="card-block">
                 <p>Lattitude: {this.props.parking.lat} Longtitude: {this.props.parking.lng}</p>
