@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
 import json
+import logging
 from datetime import datetime
 
 from django.shortcuts import render, redirect
@@ -15,13 +16,17 @@ from APP.models import (User, Bicycle, StolenBike, Parking, Place, Image,
                         Attachment)
 from APP.utils.validator import Validator
 from APP.utils.need_token import need_token
+from APP.utils.log_util import log_request
 from APP.models.bicycles import Bicycle
 
 _valid_inputs = Validator()
 _password_master = PasswordMaster()
+_logger = logging.getLogger("console.logger")
 
 
 def index(request):
+    _logger.info("index request")
+    log_request(request, _logger)
     context = {
         'message': "Welcome to Rivne Cycling",
         }
@@ -56,26 +61,37 @@ def login(request):
 
     * - this errors should be handled by client side ...
     """
+    _logger.info("login request")
+    log_request(request, _logger)
+
     try:
         data = json.loads(request.body)
     except ValueError:
+        _logger.info("json body parse error")
         return json_parse_error()
 
     if 'email' not in data:
+        _logger.info("email error")
         return json_agr_missing('email', 101)
     if 'password' not in data:
+        _logger.info("password error")
         return json_agr_missing('password', 102)
 
     user = User.objects.filter(email=data['email']).first()
     if not user:
+        _logger.info("user with %s email not found", data['email'])
         return JsonResponse({
             "error": "User with specified email not found",
             "code": 103
             })
 
+    _logger.debug("founded user %s", user.full_name)
+
     if _password_master.check_password(data['password'], user.password):
         user.token = _password_master.generate_token()
+        _logger.debug("generated token: %s", user.token)
     else:
+        _logger.info("invalid password")
         return JsonResponse({
             "error": "Invalid password!",
             "code": 104
@@ -83,6 +99,8 @@ def login(request):
 
     user.save()
 
+    _logger.info("login success")
+    _logger.debug("user\nid: %s\n new token:%s", user.id, user.token)
     return JsonResponse({
         'ok': 200,
         'id': user.id,
@@ -150,12 +168,11 @@ def get_points(request, model_cls):
 
     If we looking for Place we can filter points by category...
     If there is no categories JSON parameter it returns all categories.
-    Params:
+    Arguments:
     sw - (optional)
     ne - (optional)
     categories - (optional) default all, format [1, 3, 4] where 1, 3, 4 - ids.
     """
-
     def str_to_point(txt_point):
         return [float(x) for x in txt_point.split(',')]
 
@@ -169,8 +186,8 @@ def get_points(request, model_cls):
         if model_cls == Place:
             # if user specified categories to filter
             categories = request.GET.get('categories', None)
-            print categories
             if categories:
+                _logger.debug("found categories param: %s", categories)
                 entities = entities.filter(category_id__in=categories)
 
         if sw_point[1] > ne_point[1]:
@@ -317,18 +334,19 @@ def edit_user_data(request, user_id):
     # return HttpResponse(status=200)
     return JsonResponse({'status': 'ok'})
 
+
 @need_token
 def get_avatar(request):
     """
     This function accept token as parameter and return avatar
     or default picture if there is no avatar
     """
+    _logger.info("get avatar request")
+    log_request(request, _logger)
     if request.user.avatar:
         result = request.user.avatar
-    else:
-        result = "".join(["https://cdn1.iconfinder.com/",
-                          "data/icons/logotypes/32/twitter-128.png"])
 
+    _logger.info("returning avatar link: %s", result)
     return JsonResponse({"result": {"avatar": result}})
 
 
@@ -337,6 +355,9 @@ def check_token(request):
     """
     This function just return OK if token is valid
     """
+    _logger.info("check token request")
+    log_request(request, _logger)
+    _logger.info("token valid")
     return JsonResponse({"result": "ok"})
 
 
@@ -495,10 +516,14 @@ def get_categories(request):
     Error code:
       105 - unsupported method type
     """
+    _logger.info("get categories request")
+    log_request(request, _logger)
     if request.method != "GET":
+        _logger.info("unsupported request method: %s", request.method)
         return JsonResponse({"error": "Unsupported method", "code": 105})
 
     result = []
     for category_id, category_name in Place.CATEGORY:
         result.append({"id": category_id, "name": category_name})
+    _logger.info("returning categories: %s", result)
     return JsonResponse({"response": result})
