@@ -65,7 +65,7 @@ table {
     position: fixed;
 }
 
-.leaflet-control-layers-base label, 
+.leaflet-control-layers-base label,
 .leaflet-control-layers-overlays label
 {
     padding: 5px;
@@ -102,7 +102,7 @@ table {
 }
 
 .header-right {
-    float: right;
+    float: right !important;
     margin-right: 10px;
     opacity: .9;
     font-size: 16px;
@@ -112,6 +112,7 @@ table {
 
 .header-button
 {
+    display: block;
     float: right;
     margin-right: 10px;
     background-color: #1E90FF;
@@ -455,6 +456,29 @@ table {
   background-color: #d3d3d3;
 }
 
+.markers-ul {
+  list-style: none;
+  text-decoration: none;
+  text-transform: capitalize;
+  padding-left: 5px;
+  background-color: #aaa;
+  color: #999999;
+}
+
+.markers-li{
+    line-height: 30px !important;
+    cursor: pointer;
+}
+
+.markers-li-active {
+    background-color: #106CC8;
+    color: #d3d3d3;
+}
+
+.markers-li-unactive {
+  color: #0b4680;
+}
+
 .categories-li {
   line-height: 25px !important;
   cursor: pointer;
@@ -484,16 +508,54 @@ table {
     cursor: pointer;
 }
 
-#display-obj
+.expand-obj
 {
     color: #999999;
 }
 
-#display-obj:hover
+.expand-obj:hover
 {
     background-color: #ccc;
     cursor: pointer;
     color: #fff;
+}
+
+#layers-obj .toggle-arrow
+{
+    transition: ease-out transform .3s;
+}
+
+#layers-obj.collapsed .toggle-arrow
+{
+    transform: rotateX(180deg);
+    transition: ease-out transform .3s;
+}
+
+#layers-obj
+{
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#markers-obj .toggle-arrow
+{
+    transition: ease-out transform .3s;
+}
+
+#markers-obj.collapsed .toggle-arrow
+{
+    transform: rotateX(180deg);
+    transition: ease-out transform .3s;
+}
+
+#markers-obj
+{
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 #display-obj .toggle-arrow
@@ -507,7 +569,7 @@ table {
     transition: ease-out transform .3s;
 }
 
-.li-name, 
+.li-name,
 #display-obj
 {
     -webkit-user-select: none;
