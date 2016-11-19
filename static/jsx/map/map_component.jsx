@@ -9,8 +9,8 @@ import createPointerPopup, {MyPopup} from './popups/create_pointer.jsx';
 import SilverMarker            from './markers/silver_marker.jsx';
 
 let stored_layer = () => (localStorage['map_layer'] || 'MapBox');
-let show_parkings = () => (localStorage['show_parkings'] === 'true');
-let show_places = () => (localStorage['show_places'] === 'true');
+let show_parkings = () => (localStorage['show_parkings'] === 'false'? false : true);
+let show_places = () => (localStorage['show_places'] === 'false'? false : true);
 let show_stolens = () => (localStorage['show_stolens'] === 'true');
 let center_lat = () => (localStorage['center_lat'] ? parseFloat(localStorage['center_lat']) : 50.619776);
 let center_lng = () => (localStorage['center_lng'] ? parseFloat(localStorage['center_lng']) : 26.251265);
