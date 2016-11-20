@@ -270,7 +270,7 @@ class SideBar extends React.Component {
         let context = this;
         let show_places = this.props.map_settings.show_places();
 
-        let additionalClassesPlaces = ["expand-obj"];
+        let additionalClassesPlaces = ["categories-expand"];
         let placesUlClasses = ["categories-ul collapse"];
 
         if (show_places)
@@ -279,40 +279,41 @@ class SideBar extends React.Component {
             additionalClassesPlaces.push("collapsed");
 
         return (
-            <ul className="collapse markers-ul" id="markers-list">
-                <MarkerItem markerName={PARKINGS_MARKER_NAME} isActive={this.props.map_settings.show_parkings()}
+            <ul className="collapse display-ul" id="markers-list">
+                <DisplayItem markerName={PARKINGS_MARKER_NAME} isActive={this.props.map_settings.show_parkings()}
                     onClick={context.handleMarkerItemClick.bind(context, "show_parkings")}/>
-                <MarkerItem markerName={STOLEN_BICYCLES_MARKER_NAME} isActive={this.props.map_settings.show_stolens()}
+                <DisplayItem markerName={STOLEN_BICYCLES_MARKER_NAME} isActive={this.props.map_settings.show_stolens()}
                     onClick={context.handleMarkerItemClick.bind(context, "show_stolens")}/>
-                <MarkerItem markerName={PLACES_MARKER_NAME} isActive={show_places}
+                <DisplayItem markerName={PLACES_MARKER_NAME} isActive={show_places}
                     onClick={context.handleMarkerItemClick.bind(context, "show_places")} additionalClasses={additionalClassesPlaces.join(" ")}
                     data_toggle="collapse" data_target="#display-list">
 
                     <ul className={placesUlClasses.join(" ")} id="display-list">
                       {this.getCategoriesView()}
                     </ul>
-                </MarkerItem>
+                </DisplayItem>
             </ul>
 
         );
     }
 
     render() {
+
         return (
         <div id="sidebar-wrapper" role="navigation">
             <ul className="sidebar-nav">
                 <li><Link onlyActiveOnIndex activeStyle={{color:'#53acff'}} to='/'>Home</Link></li>
                 <li>
-                  <div className="collapsed expand-obj" id="layers-obj" data-toggle="collapse" data-target="#layers-list">
+                  <div className="layers-expand" id="layers-obj" data-toggle="collapse" data-target="#layers-list">
                     <span className="li-name">Layers</span>
                     <span className="toggle-arrow material-icons">keyboard_arrow_up</span>
                   </div>
-                    <ul className="collapse categories-ul" id="layers-list">
+                    <ul className="collapse in layers-ul" id="layers-list">
                       {this.getLayersView()}
                     </ul>
                 </li>
                 <li>
-                    <div className="collapsed expand-obj" id="display-obj" data-toggle="collapse" data-target="#markers-list">
+                    <div className="collapsed display-expand" id="display-obj" data-toggle="collapse" data-target="#markers-list">
                         <span className="li-name">Display</span>
                         <span className="toggle-arrow material-icons">keyboard_arrow_up</span>
                     </div>
@@ -329,9 +330,9 @@ class SideBar extends React.Component {
 class CategoryItem extends React.Component {
 
   render() {
-    let liStyleClass = "ctg-li-unactive";
+    let liStyleClass = "categories-li-unactive";
     if (this.props.isActive)
-       liStyleClass = "ctg-li-active";
+       liStyleClass = "categories-li-active";
 
     return (
        <li className={"categories-li " + liStyleClass} onClick={this.props.onClick}>{this.props.categoryName}</li>
@@ -343,32 +344,31 @@ class CategoryItem extends React.Component {
 class LayerItem extends React.Component {
 
     render() {
-        let liStyleClass = "ctg-li-unactive";
+        let liStyleClass = "layers-li-unactive";
         if (this.props.isActive)
-            liStyleClass = "ctg-li-active";
+            liStyleClass = "layers-li-active";
 
         return (
-            <li className={"categories-li " + liStyleClass} onClick={this.props.onClick}>
+            <li className={"layers-li " + liStyleClass} onClick={this.props.onClick}>
                 {this.props.layerName}
-
             </li>
         );
     }
 }
 
-class MarkerItem extends React.Component {
+class DisplayItem extends React.Component {
 
     render() {
-        let liStyleClass = "markers-li-unactive";
+        let liStyleClass = "display-li-unactive";
         if (this.props.isActive)
-            liStyleClass = "markers-li-active";
+            liStyleClass = "display-li-active";
 
         if (this.props.additionalClasses)
             liStyleClass = [liStyleClass,  this.props.additionalClasses].join(" ");
 
         return (
             <li>
-                <div className={"markers-li " + liStyleClass} onClick={this.props.onClick}
+                <div className={"display-li " + liStyleClass} onClick={this.props.onClick}
                     id={this.props.id} data-toggle={this.props.data_toggle} data-target={this.props.data_target}>
                     <span className="li-name">{this.props.markerName}</span>
                 </div>
