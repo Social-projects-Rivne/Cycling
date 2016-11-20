@@ -16,19 +16,22 @@ def marker_details(request):
     """
 
     if request.method == "GET":
-        print "It's me"
-        table = str(request.GET.get("type"))
-        ID = int(request.GET.get("id"))
-        targer_class = None
-        if table == "StolenBike":
-            target_class = StolenBike
-        elif table == "Place":
-            target_class = Place
-        elif table == "Parking":
-            target_class = Parking
-        data = target_class.objects.filter(pk=ID).first()
-        return JsonResponse({
-            "marker_details": serializers.serialize("json", [data])})
+        result_dict = dict()
+        try:
+            table = str(request.GET.get("type"))
+            ID = int(request.GET.get("id"))
+            targer_class = None
+            if table == "StolenBike":
+                target_class = StolenBike
+            elif table == "Place":
+                target_class = Place
+            elif table == "Parking":
+                target_class = Parking
+            data = target_class.objects.filter(pk=ID).first()
+            result_dict["marker_details"] = serializers.serialize("json", [data])
+            return JsonResponse(result_dict)
+        except:
+            return JsonResponse({"error": 1})
 
 
 def get_points(request, model_cls):
