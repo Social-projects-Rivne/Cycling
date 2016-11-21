@@ -16,21 +16,20 @@ class UserData extends React.Component {
             fullName: null
         };
         this.renderEditButtonIfLogged = this.renderEditButtonIfLogged.bind(this);
-        this.open = this.open.bind(this);
-        this.close = this.close.bind(this);
-        this.revert = this.revert.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.avatarPreview = this.avatarPreview.bind(this);
-        this.avatarUrlPreview = this.avatarUrlPreview.bind(this);
+        this._open = this._open.bind(this);
+        this._close = this._close.bind(this);
+        this._revert = this._revert.bind(this);
+        this._handleSubmit = this._handleSubmit.bind(this);
+        this._avatarPreview = this._avatarPreview.bind(this);
+        this._avatarUrlPreview = this._avatarUrlPreview.bind(this);
     }
 
-    componentDidMount () {
+    componentWillMount () {
         //Fetch data from the django api.
-        // user_api_url = "api/user_data/" + this.props.user_id + "/";
 
         $.ajax({
                 type: "GET",
-                url: "/api/user_data/" + this.props.user_id + "/",
+                url: `/api/user_data/${this.props.user_id}/`,
                 contentType: "application/json",
                 dataType: "json",
                 success: function (response) {
@@ -69,7 +68,7 @@ class UserData extends React.Component {
         if (this.props.user_id === localStorage['id']) {
             return (
                 <button id="editUserButton" type="button"
-                    className="btn btn-default center-block" onClick={this.open}>
+                    className="btn btn-default center-block" onClick={this._open}>
                     Edit profile
                 </button>
             );
@@ -77,7 +76,7 @@ class UserData extends React.Component {
     }
 
     
-    avatarPreview(event) {
+    _avatarPreview(event) {
         // Make avatar preview event if user uploads image file.
         console.log(URL.createObjectURL(event.target.files[0]));
 
@@ -85,23 +84,23 @@ class UserData extends React.Component {
 
 
     }
-    avatarUrlPreview(event) {
+    _avatarUrlPreview(event) {
         // Make avatar preview event if user notes image url in the input field.
         this.setState({avatarPreviewSrc: document.getElementById("modalAvatarUrl").value})
     }
 
-    close() {
+    _close() {
         // Event for modal pop-up closing.
         this.setState({ showModal: false });
     }
 
-    open () {
+    _open () {
         // Event for modal pop-up appearance when user has clicked on the 
         // "Edit user" button.
         this.setState({showModal: true });
     a
     }
-    revert () {
+    _revert () {
         // Event for Revert button which restores after edits all old user's 
         // data which came from API initial request.
         this.setState({
@@ -118,7 +117,7 @@ class UserData extends React.Component {
         document.getElementById("modalFullName").value = this.state.api_output.full_name;
     }
     
-    handleSubmit(event) {
+    _handleSubmit(event) {
         // Catch modal popup form submit, get data from it, add user's token
         // and send to it to the server with POST method.
         event.preventDefault();
@@ -129,13 +128,14 @@ class UserData extends React.Component {
         };
         $.ajax({
                 type: 'POST',
-                url: '/api/edit_user_data/' + this.props.user_id + '/',
+                url: `/api/edit_user_data/${this.props.user_id}/`,
+                // url: '/api/edit_user_data/' + this.props.user_id + '/',
                 dataType: "json",
                 data: data_to_send,
                 success: function(response) {
                     // INSERT SUCCESS CONFIRMATION NOTIFICATION
                     console.log('success!!!');
-                    this.close();
+                    this._close();
                     //let path = `/user/${this.props.user_id}`;
                     //browserHistory.push(path);
                     
@@ -184,13 +184,13 @@ class UserData extends React.Component {
             {/* make this modal as separate component later */}
             {/*<EditUserPopup api_output={this.state.api_output} /> */}
 
-            <Modal show={this.state.showModal} onHide={this.close}>
+            <Modal show={this.state.showModal} onHide={this._close}>
                 <Modal.Header closeButton>
                     <Modal.Title>Edit profile</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <form id="edit_user_form" className="form-horizontal"
-                        onSubmit={this.handleSubmit}>
+                        onSubmit={this._handleSubmit}>
                         <div className="form-group">
                             <label className="control-label col-sm-3" htmlFor="fullName">
                                 Full name:
@@ -208,7 +208,7 @@ class UserData extends React.Component {
                             </label>
                             <div className="col-sm-5">
                                 <input type="text" name="avatar_url" id="modalAvatarUrl"
-                                    className="form-control" onChange={this.avatarUrlPreview}
+                                    className="form-control" onChange={this._avatarUrlPreview}
                                     defaultValue={this.state.api_output.avatar} />
                             </div>
                         </div>
@@ -218,7 +218,7 @@ class UserData extends React.Component {
                                 <label className="btn btn-default btn-file">
                                     Browse...
                                     <input type="file" accept="image/*" style={{"display": "none"}}
-                                        onChange={this.avatarPreview}/>
+                                        onChange={this._avatarPreview}/>
                                 </label>
                                 <span className="label label-info" id="upload-file-info"></span>
                             </div>
@@ -232,8 +232,8 @@ class UserData extends React.Component {
                     </form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <button className="btn btn-default" onClick={this.close}>Close</button>
-                    <button className="btn btn-danger" onClick={this.revert} type="button">Revert</button>
+                    <button className="btn btn-default" onClick={this._close}>Close</button>
+                    <button className="btn btn-danger" onClick={this._revert} type="button">Revert</button>
                     <label className="btn btn-success" htmlFor="submit-form">Save</label>
                </Modal.Footer>
             </Modal>
@@ -244,70 +244,6 @@ class UserData extends React.Component {
 
 };
 
-/*
-class EditUserPopup extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state =  {
-            api_output: this.props.api_output,
-            showModal: false
-        };
-        this.open = this.open.bind(this);
-        this.close = this.close.bind(this);
-    }
-
-    close() {
-        this.setState({ showModal: false });
-    }
-
-    open () {
-        this.setState({showModal: true });
-    }
-
-    render () {
-        return (
-            <Modal show={UserData.state.showModal} onHide={this.close}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Edit profile</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <form id="edit_user_form" className="form-horizontal" action="/api/edit_user_data/1/" method="post">
-
-                    <div className="form-group">
-                        <label className="control-label col-sm-2" htmlFor="fullName">Full name:</label>
-                        <div className="col-sm-5">
-                            <input type="text" name="full_name"
-                                className="form-control"
-                                defaultValue={this.state.api_output.full_name} />
-                        </div>
-                    </div>
-
-                    <div className="form-group">
-                        <label className="control-label col-sm-2"> Avatar:</label>
-                        <div className="col-sm-5">
-                            <label className="btn btn-default btn-file">
-                                Browse...
-                                <input type="file" style={{"display": "none"}}
-                                    onChange="$('#upload-file-info').html($(this).val());"/>
-                            </label>
-                            <span className="label label-info" id="upload-file-info"></span>
-                        </div>
-                    </div>
-                        <input type="submit" id="submit-form" className="hidden" />
-                    </form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <button className="btn btn-default" onClick={this.close}>Close</button>
-                    <button className="btn btn-danger" type="button">Revert</button>
-                    <label className="btn btn-success" htmlFor="submit-form">Save</label>
-                </Modal.Footer>
-            </Modal>
-        )
-    }
-
-}
-*/
 
 class Bike extends React.Component {
     // Render single card for the bike.
@@ -374,9 +310,10 @@ class BicycleData extends React.Component {
         api_output: ''
     }
 
-    componentDidMount() {
+    componentWillMount() {
         // Fetch data from the django api.
-        $.get("/api/user_bikes_data/"+this.props.owner_id+"/",
+        //  $.get("/api/user_bikes_data/"+this.props.owner_id+"/",
+        $.get(`/api/user_bikes_data/${this.props.owner_id}/`,   
             function (response) {
                 console.log('user_bikes_data api output: ');
                 console.log(JSON.stringify(response));
@@ -477,9 +414,10 @@ class PlacesData extends React.Component {
     state =  {
         api_output: ''
     }
-    componentDidMount() {
+    componentWillMount() {
         // Fetch data from the django api.
-        $.get("/api/user_places_data/" + this.props.owner_id + "/",
+        //  $.get("/api/user_places_data/" + this.props.owner_id + "/",
+        $.get(`/api/user_places_data/${this.props.owner_id}/`,
             function (response) {
                 console.log('user_places_data api output: ');
                 console.log(JSON.stringify(response));
@@ -580,8 +518,10 @@ class ParkingsData extends React.Component {
         api_output: ''
     }
 
-    componentDidMount() {
-        $.get("/api/user_parkings_data/" + this.props.owner_id + "/",
+    componentWillMount() {
+
+        //$.get("/api/user_parkings_data/" + this.props.owner_id + "/",
+        $.get(`/api/user_parkings_data/${this.props.owner_id}/`,
             function (response) {
                 console.log('user_parkings_data api output: ');
                 console.log(JSON.stringify(response));
