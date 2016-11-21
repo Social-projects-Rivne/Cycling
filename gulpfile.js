@@ -10,7 +10,7 @@ var path = {
   JSX: ['static/jsx/*.jsx', 'static/jsx/**/*.jsx'],
   MINIFIED_OUT: 'bundle.js',
   DEST_BUILD: 'static/js/app',
-  LESS: 'static/less/*.less',
+  LESS: 'static/less/main.less',
   CSS: 'static/css',
 };
 
