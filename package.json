@@ -52,6 +52,7 @@
     "file-loader": "^0.8.5",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
+    "gulp-clean-css": "^2.0.13",
     "gulp-concat": "^2.6.0",
     "gulp-html-replace": "^1.6.1",
     "gulp-less": "^3.3.0",

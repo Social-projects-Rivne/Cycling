@@ -3,6 +3,7 @@ var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var webpack = require('webpack-stream');
 var less = require('gulp-less');
+var cleanCSS = require('gulp-clean-css');
 
 var path = {
   HTML: 'APP/templates/APP/index.html',
@@ -26,6 +27,8 @@ function swallowError (error) {
 gulp.task('less', function(){
     return gulp.src(path.MainLESS)
         .pipe(less())
+        .on('error', swallowError)
+        .pipe(cleanCSS())
         .on('error', swallowError)
         .pipe(gulp.dest(path.CSS));
 });
