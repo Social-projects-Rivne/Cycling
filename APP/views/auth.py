@@ -2,6 +2,7 @@
 """Contains registration and login"""
 
 import json
+import logging
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -10,9 +11,12 @@ from APP.utils.password_master import PasswordMaster
 from APP.utils.json_parser import json_parse_error, json_agr_missing
 from APP.models import User
 from APP.utils.validator import Validator
+from APP.utils.log_util import log_request
 
 valid_inputs = Validator()
 password_master = PasswordMaster()
+_logger = logging.getLogger(__name__)
+
 
 @csrf_exempt
 def login(request):
@@ -42,9 +46,12 @@ def login(request):
 
     * - this errors should be handled by client side ...
     """
+    _logger.info("login request")
+    log_request(request, _logger)
     try:
         data = json.loads(request.body)
     except ValueError:
+        _logger.info("json parse error")
         return json_parse_error()
 
     if 'email' not in data:

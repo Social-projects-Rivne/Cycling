@@ -17,7 +17,7 @@ DROP DATABASE IF EXISTS CYCLINGDB;
 CREATE DATABASE IF NOT EXISTS CYCLINGDB CHARACTER SET utf8;
 
 -- create the user for this DB
-DROP USER IF EXISTS 'cycling_user'@'localhost';
-CREATE USER 'cycling_user'@'localhost' IDENTIFIED BY 'secretpass';
-GRANT ALL ON CYCLINGDB.* TO 'cycling_user'@'localhost';
-GRANT CREATE ON *.* TO 'cycling_user'@'localhost';
+DROP USER IF EXISTS 'dennygreb'@'localhost';
+CREATE USER 'dennygreb'@'localhost' IDENTIFIED BY 'isurrender';
+GRANT ALL ON CYCLINGDB.* TO 'dennygreb'@'localhost';
+GRANT CREATE ON *.* TO 'dennygreb'@'localhost';

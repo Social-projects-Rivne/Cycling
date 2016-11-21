@@ -64,7 +64,6 @@ class Header extends React.Component {
       this.state = {};
     }
 
-
     headerRightContent() {
       // we need to check if user is logged in
       // if yes we should instead of login and registration buttons return
@@ -88,8 +87,9 @@ class Header extends React.Component {
             data: {token: localStorage['token']}
           },
           function (data) {
-            console.log(data);
             if ("error" in data){
+              localStorage.removeItem('token');
+              this.setState({avatar: null});
               browserHistory.push("/login");
             }
             else{

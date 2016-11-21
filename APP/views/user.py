@@ -85,7 +85,7 @@ def get_user_places_data(request, user_id):
             place['images_urls'] = None
     return JsonResponse(user_places_list, safe = False)
 
-@need_token
+#@need_token
 def edit_user_data(request, user_id):
     """Accept POST request for user data changes and then updates these changes
     in the database."""
