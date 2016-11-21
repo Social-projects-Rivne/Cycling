@@ -1,8 +1,11 @@
-var gulp = require('gulp');
-var concat = require('gulp-concat');
-var uglify = require('gulp-uglify');
-var webpack = require('webpack-stream');
-var less = require('gulp-less');
+var gulp         = require('gulp');
+var concat       = require('gulp-concat');
+var uglify       = require('gulp-uglify');
+var webpack      = require('webpack-stream');
+var less         = require('gulp-less');
+/*var postcss      = require('gulp-postcss');
+var sourcemaps   = require('gulp-sourcemaps');
+var autoprefixer = require('autoprefixer');*/
 
 var path = {
   HTML: 'APP/templates/APP/index.html',
@@ -12,6 +15,7 @@ var path = {
   LESS: 'static/less/*.less',
   MainLESS: 'static/less/main.less',
   CSS: 'static/css',
+  CSSFiles: 'static/css/*.css'
 };
 
 function swallowError (error) {
@@ -46,9 +50,16 @@ gulp.task('build', function(){
     .pipe(gulp.dest(path.DEST_BUILD));
 });
 
+/*gulp.task('autoprefixer', function () {
+    return gulp.src(path.CSSFiles)
+        .pipe(postcss([ autoprefixer({ browsers: ['last 6 versions'] }) ]))
+        .pipe(gulp.dest('static/css/prefmain.css'));
+});*/
+
 gulp.task('watch', function(){
   gulp.watch(path.JSX, ['transform']);
   gulp.watch(path.LESS, ['less']);
+  /*gulp.watch(path.CSS, ['autoprefixer']);*/
 });
 
 gulp.task('default', ['less', 'transform', 'watch']);

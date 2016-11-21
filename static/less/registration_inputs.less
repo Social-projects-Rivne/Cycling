@@ -9,7 +9,7 @@
     border-top: none;
     border-right: none;
     border-left: none;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid @simple-grey;
     margin: 15px;
     width: 300px;
     line-height: 3;
@@ -19,7 +19,7 @@
 
 .value-input:focus
 {
-    border-bottom: 1px solid #106CC8;
+    border-bottom: 1px solid @deep-blue;
 }
 
 .input-icons
@@ -27,13 +27,13 @@
     position: relative;
     top: 20px;
     font-size: 35px;
-    color: #106CC8;
+    color: @deep-blue;
 }
 
 .header-div
 {
     text-align: center;
-    color: #106CC8;
+    color: @deep-blue;
 }
 
 .header-div.registrated h2
@@ -44,10 +44,9 @@
 
 #register-button
 {
-    background-color: #106CC8;
-    color: #fff;
+    background-color: lighten(@deep-blue);
+    color: @white;
     background-image: none;
-    opacity: .8;
     width: 150px;
     border-radius: 0px;
     border: none;
@@ -58,26 +57,26 @@
 
 #register-button:hover
 {
-    background-color: #106CC8;
-    opacity: .9;
+    background-color: @deep-blue;
 }
 
 #register-button:active
 {
-    background-color: #106CC8;
-    opacity: 1;
+    background-color: darken(@deep-blue);
+    -webkit-box-shadow: none;
+    box-shadow: none;
 }
 
 .form-tip
 {
     text-align: center;
-    color: #999999;
+    color: @deep-grey;
     font-size: 10px;
 }
 
 .reg-log-header
 {
     text-align: center;
-    color: #106CC8;
+    color: @deep-blue;
 }
 /*End of registration & inputs*/

@@ -1,3 +1,11 @@
+@white: #fff;
+@black: #000;
+@deep-blue: #106CC8;
+@light-blue: #1E90FF;
+@simple-grey: #ccc;
+@deep-grey: #999;
+@light-grey: #d3d3d3;
+
 @import "registration_inputs.less";
 @import "profile.less";
 @import "reset.less";
@@ -9,13 +17,13 @@
 /*Main template*/
 .main-header
 {
-    background-color: #106CC8;
+    background-color: @deep-blue;
 }
 
 .sidebar-nav
 {
     float: left;
-    margin-top: 70px;
+    margin-top: 51px;
     position: fixed;
 }
 
@@ -27,7 +35,7 @@
 
 .icon
 {
-    color: #fff;
+    color: @white;
     float: left;
     cursor: pointer;
     margin-top: 13px;
@@ -36,12 +44,12 @@
 
 .navbar-brand.logo-line
 {
-    color: #fff;
+    color: @white;
 }
 
 .navbar-brand.logo-line:hover
 {
-    color: #fff;
+    color: @white;
     cursor: pointer;
 }
 
@@ -68,8 +76,8 @@
 {
     float: right;
     margin-right: 10px;
-    background-color: #1E90FF;
-    color: #fff;
+    background-color: @light-blue;
+    color: @white;
     opacity: .9;
     width: 120px;
     font-size: 16px;
@@ -85,24 +93,24 @@
 #header-button-a
 {
     text-decoration: none;
-    color: #fff;
+    color: @white;
 }
 
 #header-button-a:hover
 {
     text-decoration: none;
-    color: #fff;
+    color: @white;
 }
 
 #header-button-a:focus
 {
-    color: #fff;
+    color: @white;
     cursor: pointer;
 }
 
 #header-button-a:active
 {
-    color: #fff;
+    color: @white;
 }
 
 @media screen and (max-width: 400px) {
