@@ -54,6 +54,7 @@
     "gulp-babel": "^6.1.2",
     "gulp-concat": "^2.6.0",
     "gulp-html-replace": "^1.6.1",
+    "gulp-less": "^3.3.0",
     "gulp-react": "^3.1.0",
     "gulp-uglify": "^2.0.0",
     "lodash": "^4.16.4",
