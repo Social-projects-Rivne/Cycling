@@ -51,4 +51,4 @@ gulp.task('watch', function(){
   gulp.watch(path.LESS, ['less']);
 });
 
-gulp.task('default', ['transform', 'watch']);
+gulp.task('default', ['less', 'transform', 'watch']);
