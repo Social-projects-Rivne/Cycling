@@ -1,0 +1,70 @@
+/*ACTIVE CATEGORIES LIST STYLE*/
+.categories-ul {
+  list-style: none;
+  text-decoration: none;
+  text-transform: capitalize;
+  padding-left: 5px;
+  background-color: #d3d3d3;
+}
+
+.categories-li {
+  line-height: 25px !important;
+  cursor: pointer;
+}
+
+.ctg-li-active {
+  background-color: #106CC8;
+  color: #d3d3d3;
+}
+
+.ctg-li-active:hover {
+  background-color: #1E90FF;
+}
+
+.ctg-li-unactive {
+  color: #0b4680;
+}
+
+.ctg-li-unactive:hover {
+  background-color: #999999;
+}
+
+.toggle-arrow
+{
+    float: right;
+    margin: 10px 10px 0px 0px;
+    cursor: pointer;
+}
+
+#display-obj
+{
+    color: #999999;
+}
+
+#display-obj:hover
+{
+    background-color: #ccc;
+    cursor: pointer;
+    color: #fff;
+}
+
+#display-obj .toggle-arrow
+{
+    transition: ease-out transform .3s;
+}
+
+#display-obj.collapsed .toggle-arrow
+{
+    transform: rotateX(180deg);
+    transition: ease-out transform .3s;
+}
+
+.li-name, 
+#display-obj
+{
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+/*End of category list*/

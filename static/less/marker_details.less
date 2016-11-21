@@ -1,0 +1,133 @@
+/*Marker details page*/
+.marker-details-content
+{
+    margin: 0 auto;
+}
+
+.photo-container
+{
+    width: 920px;
+    height: 250px;
+    background-image: url(../bicycle.jpg);
+    background-position: 30% 60%;
+    margin: 0 auto;
+}
+
+.photo-header
+{
+    float: left;
+    margin-left: 50px;
+    margin-top: 160px;
+    font-size: 70px;
+    color: #000;
+}
+
+@media screen and (max-width: 800px) {
+    .photo-container
+    {
+        background-position: 50% 60%;
+    }
+}
+
+@media screen and (max-width: 1100px) {
+    .photo-header
+    {
+        text-align: center;
+        float: none;
+        margin-left: 0px;
+        margin-top: 170px;
+        font-size: 30px;
+    }
+}
+
+.card {
+    border-radius: 2px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.19), 0 3px 4px rgba(0,0,0,0.23);
+    margin: 15px 0;
+    padding: 5px;
+    min-width: 220px;
+    text-align: left;
+}
+
+.card.location,
+.card.info
+{
+    min-height: 90px;
+}
+
+.card.info span:nth-child(2)
+{
+    display: block;
+}
+
+.card.details
+{
+    min-height: 138px;
+}
+
+.address
+{
+    position: relative;
+    bottom: 7px;
+}
+
+.card p
+{
+    margin: 10px 0px 10px 10px;
+    font-size: 20px;
+    color: #106CC8;
+}
+
+.detail-cards-header
+{
+    text-align: left;
+    color: #999999;
+    margin: 10px 0px 0px 10px;
+    font-size: 30px;
+}
+
+#location-icon
+{
+    font-size: 30px;
+    margin-right: 0px;
+}
+
+.location-text
+{
+    position: relative;
+    bottom: 8px;
+}
+
+#inner-marker-div
+{
+    text-align: center;
+}
+
+#inner-marker-div span
+{
+    font-weight: bold;
+    display: block;
+}
+
+#inner-marker-div a:hover
+{
+    cursor: pointer;
+    display: block;
+}
+
+#inner-marker-div p
+{
+    margin: 5px;
+}
+
+.marker-link
+{
+    color: #1B8CFA;
+}
+
+.marker-link:hover
+{
+    cursor: pointer;
+    color: #106CC8;
+}
+/*End of marker details page*/

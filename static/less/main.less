@@ -1,2 +1,136 @@
-@import "styles.less";
+@import "registration_inputs.less";
+@import "profile.less";
+@import "reset.less";
+@import "marker_details.less";
+@import "sidebar_categories.less";
+@import "spinners.less";
 @import "simple-sidebar.less";
+
+/*Main template*/
+.main-header
+{
+    background-color: #106CC8;
+}
+
+.sidebar-nav
+{
+    float: left;
+    margin-top: 70px;
+    position: fixed;
+}
+
+.leaflet-control-layers-base label, 
+.leaflet-control-layers-overlays label
+{
+    padding: 5px;
+}
+
+.icon
+{
+    color: #fff;
+    float: left;
+    cursor: pointer;
+    margin-top: 13px;
+    margin-left: 8px;
+}
+
+.navbar-brand.logo-line
+{
+    color: #fff;
+}
+
+.navbar-brand.logo-line:hover
+{
+    color: #fff;
+    cursor: pointer;
+}
+
+#avatar
+{
+    padding-top: 0px;
+}
+
+.page-content-wrapper
+{
+    margin-top: 51px;
+}
+
+.header-right {
+    float: right;
+    margin-right: 10px;
+    opacity: .9;
+    font-size: 16px;
+    text-align: center;
+    padding-top: 8px;
+}
+
+.header-button
+{
+    float: right;
+    margin-right: 10px;
+    background-color: #1E90FF;
+    color: #fff;
+    opacity: .9;
+    width: 120px;
+    font-size: 16px;
+    height: 35px;
+    line-height: 2.2;
+}
+
+.header-button:active
+{
+    opacity: 1;
+}
+
+#header-button-a
+{
+    text-decoration: none;
+    color: #fff;
+}
+
+#header-button-a:hover
+{
+    text-decoration: none;
+    color: #fff;
+}
+
+#header-button-a:focus
+{
+    color: #fff;
+    cursor: pointer;
+}
+
+#header-button-a:active
+{
+    color: #fff;
+}
+
+@media screen and (max-width: 400px) {
+    .header-button
+    {
+        width: 80px;
+        font-size: 13px;
+    }
+    #header-button-a
+    {
+        line-height: 2.5;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .header-button
+    {
+        width: 65px;
+        font-size: 12px;
+    }
+    #header-button-a
+    {
+        line-height: 2.8;
+    }
+}
+
+.navbar-header
+{
+    width: 100%;
+}
+/*End of base template*/
