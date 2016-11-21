@@ -31,6 +31,8 @@ gulp.task('less', function(){
     return gulp.src(path.MainLESS)
         .pipe(less())
         .on('error', swallowError)
+        .pipe(cleanCSS())
+        .on('error', swallowError)
         .pipe(gulp.dest(path.CSS));
 });
 
