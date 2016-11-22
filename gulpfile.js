@@ -3,6 +3,7 @@ var concat       = require('gulp-concat');
 var uglify       = require('gulp-uglify');
 var webpack      = require('webpack-stream');
 var less         = require('gulp-less');
+var cleanCSS     = require('gulp-clean-css');
 /*var postcss      = require('gulp-postcss');
 var sourcemaps   = require('gulp-sourcemaps');
 var autoprefixer = require('autoprefixer');*/
