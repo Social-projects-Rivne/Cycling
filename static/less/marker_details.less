@@ -22,10 +22,47 @@
     color: @black;
 }
 
+.marker-edit-button
+{
+    width: 100px;
+    height: 30px;
+    float: right;
+    text-align: center;
+    background-color: lighten(@deep-blue, 5%);
+    color: @white;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.marker-edit-button:hover
+{
+    background-color: @deep-blue;
+}
+
+.marker-edit-button:active
+{
+    background-color: darken(@deep-blue, 5%);
+}
+
+.marker-edit-button span
+{
+    position: relative;
+    top: 5px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 @media screen and (max-width: 800px) {
     .photo-container
     {
         background-position: 50% 60%;
+    }
+    .marker-edit-button
+    {
+        float: none;
+        margin: auto;
     }
 }
 
@@ -37,6 +74,10 @@
         margin-left: 0px;
         margin-top: 170px;
         font-size: 30px;
+    }
+    .marker-edit-button
+    {
+        margin-top: 0px;
     }
 }
 
@@ -131,3 +172,35 @@
     color: @deep-blue;
 }
 /*End of marker details page*/
+
+/*Modal*/
+.close
+{
+    float: right;
+    width: 25px;
+}
+
+#hour-select
+{
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-bottom: 1px solid @simple-grey;
+    margin: 15px;
+    width: 70%;
+    line-height: 3;
+    background-color: #fff;
+    outline: 0px !important;
+    -webkit-appearance:none;
+}
+
+#hour-select:focus
+{
+    border-bottom: 1px solid @deep-blue;
+}
+
+.select-div
+{
+    text-align: center;
+}
+/*End of modal*/

@@ -174,7 +174,7 @@ class RegistrationComponent extends React.Component {
 
                     <div className="control-group reg-log">
                         <div className="controls">
-                            <button type="submit" className="btn" id="register-button" onClick={this.submitAll}>Register</button>
+                            <div type="submit" className="btn" id="register-button" onClick={this.submitAll}><span>Register</span></div>
                         </div>
                     </div>
                 </fieldset>
