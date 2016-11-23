@@ -247,6 +247,7 @@ export class MarkerDetails extends React.Component {
 					<div className="marker-edit-button" data-toggle="modal" data-target="#myModal"><span>Edit marker</span></div>
 					{/*<button type="button" className="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>*/}
 
+					{/* Need to togle class name and/or toggle style display: none */}
 					<div id="myModal" className="modal fade" role="dialog">
 					  <div className="modal-dialog">
 				  
