@@ -187,7 +187,7 @@
     border-left: none;
     border-bottom: 1px solid @simple-grey;
     margin: 15px;
-    width: 70%;
+    width: 70% !important;
     line-height: 3;
     background-color: #fff;
     outline: 0px !important;
@@ -199,8 +199,59 @@
     border-bottom: 1px solid @deep-blue;
 }
 
+.edit-div:hover label
+{
+    color: @deep-blue;
+}
+
 .select-div
 {
     text-align: center;
+}
+
+.edit-label
+{
+    margin: 0;
+    display: block;
+    position: relative;
+    top: 20px;
+    font-weight: 100;
+    color: @deep-grey;
+    right: 27%;
+    font-size: 12px;
+}
+
+#edit-modal-button
+{
+    background-color: lighten(@deep-blue, 5%);
+    color: @white;
+    display: inline-block;
+    background-image: none;
+    width: 100px;
+    border-radius: 0px;
+    border: none;
+    margin-top: 35px;
+    font-size: 16px;
+    height: 40px;
+}
+
+se
+
+#edit-modal-button:hover
+{
+    background-color: @deep-blue;
+}
+
+#edit-modal-button:active
+{
+    background-color: darken(@deep-blue, 5%);
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+#edit-modal-button span
+{
+    position: relative;
+    top: 4px;   
 }
 /*End of modal*/
