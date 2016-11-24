@@ -213,6 +213,25 @@ class SideBar extends React.Component {
             return '/login'
         }
     }
+    
+
+    signOut(event) {
+        // Clears local storage forcing current user to log out and then 
+        // redirects to the /login page.
+        event.preventDefault();
+        localStorage.clear();
+        browserHistory.push('/login');
+    }
+
+    renderSignOutBtn() {
+        // Renders Sign out button in the left navbar
+        if (localStorage['token']) {
+            return (
+                <li><Link onClick={this.signOut}>Sign out</Link></li>
+            )
+
+        }
+    }
 
     render() {
         return (
@@ -231,6 +250,7 @@ class SideBar extends React.Component {
                 <li><a href="#">Stolen Bycicles</a></li>
                 <li><a href="#">Races Table</a></li>
                 <li><Link onlyActiveOnIndex activeStyle={{color:'#53acff'}} to={this.getProfileUrlString()}>Profile</Link></li>
+                {this.renderSignOutBtn()}
             </ul>
         </div>
       );
