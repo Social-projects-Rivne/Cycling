@@ -2,13 +2,13 @@
 
 """Contains views relaited to User model"""
 
-from django.http import (JsonResponse,
-                         HttpResponse, Http404)
+import json
+
+from django.http import JsonResponse, Http404
 
 from APP.models import (User, Bicycle, StolenBike, Parking, Place, Image,
                         Attachment)
 from APP.utils.need_token import need_token
-
 
 def get_user_data(request, user_id):
     """Gets User data from db (except password column) and returns it
@@ -85,15 +85,15 @@ def get_user_places_data(request, user_id):
             place['images_urls'] = None
     return JsonResponse(user_places_list, safe = False)
 
-#@need_token
+@need_token
 def edit_user_data(request, user_id):
-    """Accept POST request for user data changes and then updates these changes
-    in the database."""
+    """Accept POST request for user data changes and then updates these
+    changes in the database."""
+    data = json.loads(request.body)
     user = User.objects.get(pk=user_id)
-    user.full_name = request.POST['full_name']
-    user.avatar = request.POST['avatar_url']
+    user.full_name = data.get('full_name')
+    user.avatar = data.get('avatar_url')
     user.save()
-    # return HttpResponse(status=200)
     return JsonResponse({'status': 'ok'})
 
 @need_token

@@ -121,11 +121,11 @@ class UserData extends React.Component {
         // Catch modal popup form submit, get data from it, add user's token
         // and send to it to the server with POST method.
         event.preventDefault();
-        let data_to_send = {
+        let data_to_send = JSON.stringify({
             full_name: event.target.elements[0].value,
             avatar_url: event.target.elements[1].value,
             token: localStorage['token']
-        };
+        });
         $.ajax({
                 type: 'POST',
                 url: `/api/edit_user_data/${this.props.user_id}/`,
