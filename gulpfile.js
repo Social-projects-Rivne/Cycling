@@ -1,14 +1,22 @@
-var gulp = require('gulp');
-var concat = require('gulp-concat');
-var uglify = require('gulp-uglify');
-var webpack = require('webpack-stream');
+var gulp         = require('gulp');
+var concat       = require('gulp-concat');
+var uglify       = require('gulp-uglify');
+var webpack      = require('webpack-stream');
+var less         = require('gulp-less');
+var cleanCSS     = require('gulp-clean-css');
+/*var postcss      = require('gulp-postcss');
+var sourcemaps   = require('gulp-sourcemaps');
+var autoprefixer = require('autoprefixer');*/
 
 var path = {
   HTML: 'APP/templates/APP/index.html',
-  ALL: ['static/css/*.css', 'static/jsx/**/*.js', 'static/jsx/*.jsx', 'static/jsx/**/*.jsx'],
   JSX: ['static/jsx/*.jsx', 'static/jsx/**/*.jsx'],
   MINIFIED_OUT: 'bundle.js',
   DEST_BUILD: 'static/js/app',
+  LESS: 'static/less/*.less',
+  MainLESS: 'static/less/main.less',
+  CSS: 'static/css',
+  CSSFiles: 'static/css/*.css'
 };
 
 function swallowError (error) {
@@ -18,6 +26,16 @@ function swallowError (error) {
 
   this.emit('end')
 }
+
+// Compiles LESS > CSS 
+gulp.task('less', function(){
+    return gulp.src(path.MainLESS)
+        .pipe(less())
+        .on('error', swallowError)
+        .pipe(cleanCSS())
+        .on('error', swallowError)
+        .pipe(gulp.dest(path.CSS));
+});
 
 gulp.task('transform', function() {
   return gulp.src(path.JSX)
@@ -35,8 +53,16 @@ gulp.task('build', function(){
     .pipe(gulp.dest(path.DEST_BUILD));
 });
 
+/*gulp.task('autoprefixer', function () {
+    return gulp.src(path.CSSFiles)
+        .pipe(postcss([ autoprefixer({ browsers: ['last 6 versions'] }) ]))
+        .pipe(gulp.dest('static/css/prefmain.css'));
+});*/
+
 gulp.task('watch', function(){
-  gulp.watch(path.ALL, ['transform']);
+  gulp.watch(path.JSX, ['transform']);
+  gulp.watch(path.LESS, ['less']);
+  /*gulp.watch(path.CSS, ['autoprefixer']);*/
 });
 
-gulp.task('default', ['watch']);
+gulp.task('default', ['less', 'transform', 'watch']);
