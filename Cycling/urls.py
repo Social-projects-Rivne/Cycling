@@ -16,11 +16,11 @@ Including another URLconf
 from django.conf.urls import url, include
 # from django.contrib import admin
 
-from APP.views import views
+from APP.views import index
 
 
 urlpatterns = [
     url(r'^api/', include('APP.urls')),
-    url(r'^', views.index, name='index'),
+    url(r'^', index.index, name='index'),
     # url(r'^admin/', admin.site.urls),
 ]
