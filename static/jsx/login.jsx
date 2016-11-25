@@ -29,7 +29,6 @@ export class LoginComponent extends React.Component {
             data: {token: localStorage['token']}
           },
           function (data) {
-
             if (data["result"] === "ok")
               browserHistory.push("/");
           }.bind(this));
