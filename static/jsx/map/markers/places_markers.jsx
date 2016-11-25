@@ -67,8 +67,8 @@ let placesMarkers = function(places, categories){
       if (categories){
 
         if (activeCategories.indexOf(place.fields.category_id) == -1){
-          console.log(place.fields.category_id, activeCategories);
-          return null;}
+          return null;
+        }
       }
       const position = [parseFloat(place.fields.lat), parseFloat(place.fields.lng)];
       let id = place.pk;
