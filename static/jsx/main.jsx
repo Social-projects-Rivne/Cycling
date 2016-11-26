@@ -13,6 +13,9 @@ import { MarkerDetails } from './marker_detail_page.jsx';
 import { Profile }        from './profile.jsx';
 import { MapSettings } from './map/map_settings.jsx';
 import layers_list          from './map/layers.jsx';
+import CreateBike          from './bikes/create_bike.jsx';
+import FailNotification from './notifications/fail.jsx';
+import SuccessNotification from './notifications/success.jsx';
 
 
 const PLACES_MARKER_NAME = "Places";
@@ -67,11 +70,15 @@ class APP extends React.Component{
       //Render main component
       return (
         <div className={this.state.showHideSidenav} id="wrapper">
+
+            <SuccessNotification ref="successNotification" father={this} />
+            <FailNotification ref="failNotification" father={this} />
+
               <Header onButtonClick={this.handleClick}/>
               <SideBar app={this} map_settings={this.state.map_settings}/>
 
               <div className="page-content-wrapper">
-                {React.cloneElement(this.props.children, this.getChildProps())}
+                {React.cloneElement(this.props.children, this.getChildProps(), {father: this})}
               </div>
         </div>
         );
@@ -412,6 +419,7 @@ ReactDOM.render(
          <Route path = "/registration" component = {RegistrationComponent} />
          <Route path = "/marker_details/:id" component = {MarkerDetails} />
          <Route path = "/user/:user_id" component = {Profile} />
+         <Route path = "/bike/create" component = {CreateBike} />
          <Route path = '*' component={NotFound} />
       </Route>
   </Router>),

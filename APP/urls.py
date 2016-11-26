@@ -1,6 +1,7 @@
 from django.conf.urls import url
 
-from .views import index, auth, points, place, parking, stolen_bike, user
+from .views import index, auth, points, place, parking, stolen_bike, user,\
+                   bike
 
 urlpatterns = [
     url(r'^login$', auth.login, name='login'),
@@ -12,6 +13,7 @@ urlpatterns = [
     url(r'^parkings/create$', parking.create_parking, name='create_parking'),
     url(r'^stolen/search$', points.get_stolen_bikes_by_points, name='get_stolen_bikes_by_points'),
     url(r'^stolen/create$', stolen_bike.create_stolen, name='create_stolen'),
+    url(r'^bike/create$', bike.create, name='create_bike'),
     url(r'^tokenvalid$', user.check_token, name='check_token'),
     url(r'^categories$', points.get_categories, name='get_categories'),
     url(r'^avatar$', user.get_avatar, name='get_avatar'),

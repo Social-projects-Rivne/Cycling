@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal } from 'react-bootstrap';
 import { browserHistory } from 'react-router';
+import { Link }           from 'react-router';
 
 class UserData extends React.Component {
     // Render header of profile page which contains user's avatar, full name
@@ -556,6 +557,19 @@ class ParkingsData extends React.Component {
 
 };
 
+let addbikeButton = function(user_id){
+    if(user_id != localStorage['id']){
+        return null;
+    };
+    return (
+        <small style={{marginLeft: "20px", display: "inline-block", verticalAlign: "middle", float: "none"}}>
+            <span className="btn-group">
+                <Link type="button" className="btn btn-default btn-xs" to='/bike/create'>Add</Link>
+            </span>
+        </small>
+    );
+};
+
 class Profile extends React.Component {
     // Render components with user's data, bikes, places and parkings.
     render() {
@@ -566,7 +580,10 @@ class Profile extends React.Component {
 
             <UserData user_id={this.user_id}/>
 
-            <h4>My bikes</h4>
+            <h4>My bikes
+                {addbikeButton(this.props.params['user_id'])}
+            </h4>
+                
             <BicycleData owner_id={this.user_id} />
 
             <h4>Places added by me</h4>
