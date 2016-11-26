@@ -53,8 +53,13 @@ export class MarkerDetails extends React.Component {
 		this.setState({
 			street: response.display_name,
 			full_street: response.address,
+			name_change: this.state.marker_value.name,
+			number_change: this.state.marker_value.amount,
+			desc_change: this.state.marker_value.description,
 			selectOne: this.state.marker_value.from_hour,
-			selectTwo: this.state.marker_value.to_hour
+			selectTwo: this.state.marker_value.to_hour,
+			parkingSelectOne: this.state.marker_value.is_free ? 1 : 0,
+			parkingSelectTwo: parseInt(this.state.marker_value.security)
 		});
 	}
 
@@ -124,6 +129,7 @@ export class MarkerDetails extends React.Component {
 					<h3 className="detail-cards-header">Info</h3>
 					<p>Amount of this parking is {this.state.marker_value.amount}</p>
 					<p>{parseInt(this.state.marker_value.security) ? "This parking is secure" : "This parking isn't secure"}</p>
+					<p>{this.state.marker_value.is_free ? "This parking is free" : "This parking isn't free"}</p>
 				</div>
 			)
 		}
@@ -158,24 +164,24 @@ export class MarkerDetails extends React.Component {
 	descriptionEditCondition(){
 			if(this.state.marker_type !== "Parking"){
 				return (
-					<BaseInput style="width: 70% !important" name="desc_change" valChange={this.changeValue} 
-				    icon="content_paste" value={this.state.name_change} placeholder="Edit description of the marker">
-					</BaseInput>
+					<div className="control-group reg-log edit-div">
+          				<div className="controls">
+						    <label className="edit-label">Edit description</label>
+              				<span className="material-icons input-icons">content_paste</span>
+              				<input type="text" id="hour-select" name="desc_change" placeholder="Edit description of the marker"
+              				className="input-xlarge value-input" value={this.state.desc_change} onChange={this.changeValue}/>
+          				</div>
+      				</div>
 				);
 			}
 		}
-	
-	handleSelect(event){
-		this.setState({
-			select1: event.target.value
-		});
-	}
 
 	infoEditCondition(){
 		if(this.state.marker_type === "Place"){
 			return (
 				<div className="select-div">
-					<div>
+					<div className="edit-div">
+						<label className="edit-label">Edit description</label>
 						<span className="material-icons input-icons">hourglass_empty</span>
 						<select name="selectOne" onChange={this.changeValue}
 						value={this.state.selectOne} id="hour-select">
@@ -184,7 +190,8 @@ export class MarkerDetails extends React.Component {
                     	</select>
 					</div>
 
-					<div>
+					<div className="edit-div">
+						<label className="edit-label">Edit description</label>
 						<span className="material-icons input-icons">hourglass_full</span>
 						<select name="selectTwo" onChange={this.changeValue}
 						value={this.state.selectTwo} id="hour-select">
@@ -198,8 +205,9 @@ export class MarkerDetails extends React.Component {
 		else if(this.state.marker_type === "Parking"){
 			return (
 				<div className="select-div">
-					<div>
-					<span className="material-icons input-icons">hourglass_empty</span>
+					<div className="edit-div">
+						<label className="edit-label">Edit description</label>
+						<span className="material-icons input-icons">hourglass_empty</span>
 						<select name="parkingSelectOne" onChange={this.changeValue}
 						value={this.state.parkingSelectOne} id="hour-select"> 
                     	    <option>--</option>
@@ -208,22 +216,29 @@ export class MarkerDetails extends React.Component {
                     	</select>
 					</div>
 
-					<div>
+					<div className="edit-div">
+						<label className="edit-label">Edit description</label>
 						<span className="material-icons input-icons">hourglass_empty</span>
 						<select name="parkingSelectTwo" onChange={this.changeValue}
 						value={this.state.parkingSelectTwo} id="hour-select">
                     	    <option>--</option>
                     		<option value="0">no</option>
-                            <option value="1">good</option>
-                            <option value="2">high</option>
+                            <option value="1">yes</option>
                     	</select>
 					</div>
+					<div className="control-group reg-log edit-div">
+          			    <div className="controls">
+						  <label className="edit-label">Edit description</label>
+              				<span className="material-icons input-icons">directions_bike</span>
+              				<input type="number" id="hour-select" name="number_change" placeholder="Edit amount of parking places"
+              				className="input-xlarge value-input" value={this.state.number_change} onChange={this.changeValue}/>
+          				</div>
+      				</div>
 				</div>
 			);
 		}
 	}
 	
-
 	renderEdit()
 	{
 		if(this.state.marker_value.owner == localStorage['id']){
@@ -232,6 +247,7 @@ export class MarkerDetails extends React.Component {
 					<div className="marker-edit-button" data-toggle="modal" data-target="#myModal"><span>Edit marker</span></div>
 					{/*<button type="button" className="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>*/}
 
+					{/* Need to togle class name and/or toggle style display: none */}
 					<div id="myModal" className="modal fade" role="dialog">
 					  <div className="modal-dialog">
 				  
@@ -241,14 +257,21 @@ export class MarkerDetails extends React.Component {
 					          <h4 className="modal-title">Edit marker</h4>
 					      </div>
 					      <div className="modal-body">
-					      	  <BaseInput name="name_change" valChange={this.changeValue} 
-							   icon="account_circle" value={this.state.name_change} placeholder="Edit your name">
-							  </BaseInput>
+							  <div className="control-group reg-log edit-div">
+          					      <div className="controls">
+									  <label className="edit-label">Edit description</label>
+              				          <span className="material-icons input-icons">account_circle</span>
+              				          <input type="text" id="hour-select" name="name_change" placeholder="Edit your name"
+              				          className="input-xlarge value-input" value={this.state.name_change} onChange={this.changeValue}/>
+          				          </div>
+      				          </div>
 						      { this.descriptionEditCondition() }
 							  { this.infoEditCondition() }
 						  </div>
 				         <div className="modal-footer">
-				        	  <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
+						 	  <div type="submit" className="btn" id="edit-modal-button" className="edit-close" onClick={this.submitEdit} data-dismiss="modal"><span>Close</span></div>
+							  <div type="submit" className="btn" id="edit-modal-button" className="edit-revert" onClick={this.submitEdit} data-dismiss="modal"><span>Revert</span></div>
+							  <div type="submit" className="btn" id="edit-modal-button" className="edit-confirm" onClick={this.submitEdit} data-dismiss="modal"><span>Confirm</span></div>
 				         </div>
 				    </div>
 				
