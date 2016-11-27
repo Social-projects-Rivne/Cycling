@@ -1,11 +1,12 @@
 import React              from 'react';
 
+let emptyImg = () => ({pk: null, url: '', bike_id: null, toDelete: null});
 
 const initialState = () => ({
     bike_id: null,
     nameValue: '',
     descriptionValue: '',
-    imagesList: [1,2,3,4].map((i) => ({pk: null, url: '', bike_id: null, toDelete: null}))
+    imagesList: [emptyImg()]
 });
 
 let stateToEdit = (bike_and_images) => {
@@ -37,6 +38,8 @@ class BikeForm extends React.Component{
     this.nameChange = this.nameChange.bind(this);
     this.descriptionChange = this.descriptionChange.bind(this);
     this.urlChange = this.urlChange.bind(this);
+    this.deleteImg = this.deleteImg.bind(this);
+    this.addImg = this.addImg.bind(this);
   };
 
 
@@ -102,6 +105,18 @@ class BikeForm extends React.Component{
       this.setState({imagesList:urls});
   };
 
+  deleteImg(e, index){
+      let urls = this.state.imagesList;
+      urls[index].toDelete = true;
+      this.setState({imagesList:urls});
+  };
+
+  addImg(e){
+      let urls = this.state.imagesList;
+      urls.push(emptyImg());
+      this.setState({imagesList:urls});
+  };
+
   render(){
     return (
                 <div>
@@ -115,7 +130,7 @@ class BikeForm extends React.Component{
                             />
                         </div>
                         <div className="form-group">
-                            <textarea className="form-control" rows="2" id="description" placeholder="Description"
+                            <textarea className="form-control" rows="3" id="description" placeholder="Description"
                                 value={this.state.descriptionValue}
                                 onChange={this.descriptionChange}>
                             </textarea>
@@ -123,12 +138,21 @@ class BikeForm extends React.Component{
 
                         <div className = "form-group">
                             {this.state.imagesList.map(
-                                (image, index)=>(
-                                    <input type = "text" className = "form-control" placeholder = "Image URL"
-                                        value={image.url}
-                                        key={index}
-                                        onChange={e => {this.urlChange(e, index);}}
-                                    />
+                                (image, index)=>(image.toDelete? null :
+                                    <div className="form-inline" key={index}>
+                                        <input type = "text" className = "form-control" placeholder = "Image URL"
+                                            value={image.url}
+                                            onChange={e => {this.urlChange(e, index);}}
+                                        />
+                                        <div className="btn-group">
+                                            <span className="btn btn-default material-icons plus" type="button"
+                                                onClick={this.addImg}
+                                            >add</span>
+                                            <span className="btn btn-default material-icons minus" type="button"
+                                                onClick={e => {this.deleteImg(e, index);}}
+                                            >-</span>
+                                        </div>
+                                    </div>
                                 )
                             )}
                         </div>
