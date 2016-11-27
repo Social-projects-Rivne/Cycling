@@ -77,14 +77,16 @@ def edit(request):
         bike.save()
         for link in params.get('imagesList', ['']):
             if link:
-                img = Image.objects.get(pk=link['pk'])
-                print link
-                if img.bike == bike:
-                    if link['toDelete']:
-                        img.delete()
-                    else:
-                        img.url = link['url']
-                        img.save()
+                if link['pk']:
+                    img = Image.objects.get(pk=link['pk'])
+                    if img.bike == bike:
+                        if link['toDelete']:
+                            img.delete()
+                        else:
+                            img.url = link['url']
+                            img.save()
+                elif link['url'] and not link['toDelete']:
+                    Image.objects.create(url=link['url'], bike=bike)
         data = serializers.serialize("json", [bike,])
         return HttpResponse(data, content_type="application/json")
     except Exception as e:
