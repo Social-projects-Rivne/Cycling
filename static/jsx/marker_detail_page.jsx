@@ -17,20 +17,24 @@ export class MarkerDetails extends React.Component {
 			marker_id: this.props.params.id,
 			marker_value: "",
 			full_street: "",
+			name_change: "",
+			number_change: 0,
+			desc_change: "",
+			from_hour_select: 0,
+			to_hour_select: 0,
+			is_free_select: 0,
+			is_secure_select: 0,
 			hoursList: [...Array(24).keys()],
 		};
 		this.ajaxSuccess = this.ajaxSuccess.bind(this);
 		this.streetAjaxSuccess = this.streetAjaxSuccess.bind(this);
 		this.changeValue = this.changeValue.bind(this);
 		this.confirmEdit = this.confirmEdit.bind(this);
+		this.ajaxEditSuccess = this.ajaxEditSuccess.bind(this);
 	}
 
-	componentWillMount() {
-		/*
-		 * Cheks if localStorage doesn't have token
-		 * and redirect to login page
-		 */
-        if (!localStorage['token']) {
+	markerData(){
+		if (!localStorage['token']) {
             browserHistory.push("/login");
         }
         else
@@ -43,6 +47,14 @@ export class MarkerDetails extends React.Component {
       			success: this.ajaxSuccess
 			});
         }
+	}
+
+	componentWillMount() {
+		/*
+		 * Cheks if localStorage doesn't have token
+		 * and redirect to login page
+		 */
+        this.markerData();
     }
 
 	streetAjaxSuccess(response){
@@ -241,7 +253,12 @@ export class MarkerDetails extends React.Component {
 	}
 
 	ajaxEditSuccess(response){
-		console.log("It Works!");
+		if(response["Success"]){
+			this.markerData();
+		}
+		else if(response["Error"]){
+			console.log("Error occured...");
+		}
 	}
 
 	confirmEdit(event){
@@ -321,7 +338,6 @@ export class MarkerDetails extends React.Component {
 
 	render() {
 		//Render method of marker details component
-		console.log(this.state);
 		if(!this.state.error) {
 			return (
 				<div className="container-fluid marker-details-content">
