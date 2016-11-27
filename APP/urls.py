@@ -7,6 +7,7 @@ urlpatterns = [
     url(r'^login$', auth.login, name='login'),
     url(r'^registration$', auth.registration),
     url(r'^marker_details$', points.marker_details),
+    url(r'^edit_marker_details$', points.edit_marker_details),
     url(r'^places/search$', points.get_places_by_points, name='get_places_by_points'),
     url(r'^places/create$', place.create_place, name='create_place'),
     url(r'^parkings/search$', points.get_parkings_by_points, name='get_parkings_by_points'),
