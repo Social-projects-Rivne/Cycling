@@ -13,7 +13,7 @@ import { MarkerDetails } from './marker_detail_page.jsx';
 import { Profile }        from './profile.jsx';
 import { MapSettings } from './map/map_settings.jsx';
 import layers_list          from './map/layers.jsx';
-import CreateBike          from './bikes/create_bike.jsx';
+import CreateBike, {EditBike} from './bikes/create_bike.jsx';
 import FailNotification from './notifications/fail.jsx';
 import SuccessNotification from './notifications/success.jsx';
 
@@ -420,6 +420,8 @@ ReactDOM.render(
          <Route path = "/marker_details/:id" component = {MarkerDetails} />
          <Route path = "/user/:user_id" component = {Profile} />
          <Route path = "/bike/create" component = {CreateBike} />
+         <Route path = "/bike/:bike_id" component = {EditBike} />
+         <Route path = '/404' component={NotFound} />
          <Route path = '*' component={NotFound} />
       </Route>
   </Router>),

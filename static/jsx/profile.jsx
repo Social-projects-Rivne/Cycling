@@ -245,6 +245,16 @@ class UserData extends React.Component {
 
 };
 
+let editBikeButton = function(bike){
+    if(bike.owner_id != localStorage['id']){
+        return null;
+    };
+    return (
+        <span id="location-icon" className="material-icons pencil">
+            <Link type="button" className="btn btn-default btn-xs" to={'/bike/' + bike.id}>edit</Link>
+        </span>
+    );
+};
 
 class Bike extends React.Component {
     // Render single card for the bike.
@@ -277,7 +287,7 @@ class Bike extends React.Component {
 
             <div>
                 <h4 className="item-name">{this.props.bike.name}</h4>
-                <span id="location-icon" className="material-icons pencil">edit</span>
+                { editBikeButton(this.props.bike) }
             </div>
             {this.renderImg()}
             <div className="card-block">
@@ -316,8 +326,6 @@ class BicycleData extends React.Component {
         //  $.get("/api/user_bikes_data/"+this.props.owner_id+"/",
         $.get(`/api/user_bikes_data/${this.props.owner_id}/`,   
             function (response) {
-                console.log('user_bikes_data api output: ');
-                console.log(JSON.stringify(response));
                 this.setState ({
                         api_output: response
                     });
@@ -557,7 +565,7 @@ class ParkingsData extends React.Component {
 
 };
 
-let addbikeButton = function(user_id){
+let addBikeButton = function(user_id){
     if(user_id != localStorage['id']){
         return null;
     };
@@ -581,7 +589,7 @@ class Profile extends React.Component {
             <UserData user_id={this.user_id}/>
 
             <h4>My bikes
-                {addbikeButton(this.props.params['user_id'])}
+                {addBikeButton(this.props.params['user_id'])}
             </h4>
                 
             <BicycleData owner_id={this.user_id} />

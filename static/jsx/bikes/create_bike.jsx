@@ -1,18 +1,37 @@
 import React              from 'react';
-import {Validator} from '../validator.jsx';
 
 
 const initialState = () => ({
+    bike_id: null,
     nameValue: '',
     descriptionValue: '',
-    urlsValueList: ['','','','']
+    imagesList: [1,2,3,4].map((i) => ({pk: null, url: '', bike_id: null, toDelete: null}))
 });
 
-export default class CreateBike extends React.Component{
+let stateToEdit = (bike_and_images) => {
+    if (!bike_and_images){
+        return null;
+    };
+    let bike = bike_and_images.slice(0, 1)[0];
+    let images = [];
+    if (bike_and_images.length > 1){
+        images = bike_and_images.slice(1,);
+    };
+    return {
+        bike_id: bike.pk,
+        nameValue: bike.fields.name,
+        descriptionValue: bike.fields.description,
+        imagesList: images.map((i) => ({pk: i.pk, url: i.fields.url, bike_id: i.fields.bike, toDelete: null}))
+    };
+};
+
+class BikeForm extends React.Component{
   constructor(props){
     super(props);
-    this.state = initialState();
-    this.validator = new Validator();
+    console.log(props.bikeData);
+    this.state = props.bikeData || initialState();
+    this.urlToSend = props.urlToSend || '/api/bike/create';
+    this.formTitle = props.formTitle || 'New Bicycle';
     this.submit = this.submit.bind(this);
 
     this.nameChange = this.nameChange.bind(this);
@@ -42,26 +61,27 @@ export default class CreateBike extends React.Component{
     };
     this.serverRequest = $.post(
       {
-        url: '/api/bike/create',
+        url: this.urlToSend,
         data: JSON.stringify(
-             {name: this.state.nameValue,
-              description: this.state.descriptionValue,
-              urls: this.state.urlsValueList,
-              token: localStorage['token']}
+            {pk: this.state.bike_id,
+                name: this.state.nameValue,
+                description: this.state.descriptionValue,
+                imagesList: this.state.imagesList,
+                token: localStorage['token']}
               ),
         dataType: "json",
         success: function (data) {
-                    let message = "The bicycle " + data[0].fields.name + " is successfully created";
+                    let message = "The bicycle " + data[0].fields.name + " is saved";
                     // console.log(message);
                     this.props.history.push('/user/' + localStorage['id']);
                     this.setState(initialState());
-                    this.props.children.father.refs.successNotification.showMe(message);
+                    this.props.successNotification.showMe(message);
                   }.bind(this)
                 }
     ).fail(function(data) {
         // console.log(data);
         let message = "Sorry. Something is wrong: " + data.responseText;
-        this.props.children.father.refs.failNotification.showMe(message);
+        this.props.failNotification.showMe(message);
       }.bind(this)
     );
 
@@ -77,15 +97,15 @@ export default class CreateBike extends React.Component{
   };
 
   urlChange(e, index){
-      let urls = this.state.urlsValueList;
-      urls[index] = e.target.value;
-      this.setState({urlsValueList:urls});
+      let urls = this.state.imagesList;
+      urls[index].url = e.target.value;
+      this.setState({imagesList:urls});
   };
 
   render(){
     return (
                 <div>
-                    <h4>New Bicycle</h4>
+                    <h4>{this.formTitle}</h4>
                     <form>
                         <div className = "form-group">
                             <input type = "text" className = "form-control" placeholder = "Name"
@@ -102,10 +122,10 @@ export default class CreateBike extends React.Component{
                         </div>
 
                         <div className = "form-group">
-                            {this.state.urlsValueList.map(
-                                (value, index)=>(
+                            {this.state.imagesList.map(
+                                (image, index)=>(
                                     <input type = "text" className = "form-control" placeholder = "Image URL"
-                                        value={value}
+                                        value={image.url}
                                         key={index}
                                         onChange={e => {this.urlChange(e, index);}}
                                     />
@@ -118,4 +138,62 @@ export default class CreateBike extends React.Component{
                 </div>
     )
   };
+};
+
+
+export default class CreateBike extends React.Component{
+    render(){
+        return <BikeForm 
+                    successNotification={this.props.children.father.refs.successNotification}
+                    failNotification={this.props.children.father.refs.failNotification}
+                    history={this.props.history}
+                />
+    };
+};
+
+export class EditBike extends React.Component{
+     constructor(props){
+        super(props);
+        this.state = {
+            bike_id: props.params['bike_id']
+        };
+     };
+
+     componentDidMount() {
+        // Fetch data from the django api.
+        //  $.get("/api/bike/"+this.props.params['bike_id']+"/",
+        $.get(`/api/bike/${this.props.params['bike_id']}/`,   
+            function (response) {
+                this.setState ({
+                        api_output: response
+                    });
+            }.bind(this)
+        ).fail(function(response) {
+            console.log(response);
+            if(response.status === '404' || response.status === 404){
+                console.log('pushing to 404');
+                this.props.history.push('/404');
+                return;
+            };
+            this.props.history.push('/user/' + localStorage['id']);
+            let message = "Sorry. Something is wrong: " + response.statusText;
+            this.props.children.father.refs.failNotification.showMe(message);
+        }.bind(this)
+        )
+
+    };
+
+     render(){
+         if (!this.state.api_output)
+            return null;
+
+        return <BikeForm 
+                    bikeData={stateToEdit(this.state.api_output)}
+                    urlToSend = '/api/bike/edit'
+                    formTitle = 'Editing the Bicycle'
+                    successNotification={this.props.children.father.refs.successNotification}
+                    failNotification={this.props.children.father.refs.failNotification}
+                    history={this.props.history}
+                />
+    };
 };
