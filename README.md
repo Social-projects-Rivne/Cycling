@@ -52,8 +52,10 @@ npm install
 
 ### Build:
 
-- `npm run gulp transform` Build all *.jsx files into one *.js bundle into `static/js/app/`
+- `npm run gulp transform` Build all *.jsx files into one bundle.js file into `static/js/app/`
+- `npm run gulp build` Build all *.jsx files into one minified bundle.js file into `static/js/app/`
+- `npm run gulp less` Build all *.less files into one main.css file into `static/css/`
 
 ### For deleoping
 
-- `npm run gulp watch` Run building every time you change any *jsx file
+- `npm run gulp watch` Run building every time you change any *jsx or *.less file
