@@ -118,6 +118,9 @@ class BikeForm extends React.Component{
   };
 
   render(){
+      if(this.state.imagesList.filter((img) => {return !Boolean(img.toDelete)}).length === 0){
+          this.state.imagesList.push(emptyImg());
+      };
     return (
                 <div>
                     <h4>{this.formTitle}</h4>
@@ -145,12 +148,12 @@ class BikeForm extends React.Component{
                                             onChange={e => {this.urlChange(e, index);}}
                                         />
                                         <div className="btn-group">
-                                            <span className="btn btn-default material-icons plus" type="button"
+                                            <span className="btn btn-default material-icons" type="button"
                                                 onClick={this.addImg}
                                             >add</span>
-                                            <span className="btn btn-default material-icons minus" type="button"
+                                            <span className="btn btn-default material-icons" type="button"
                                                 onClick={e => {this.deleteImg(e, index);}}
-                                            >-</span>
+                                            >remove</span>
                                         </div>
                                     </div>
                                 )

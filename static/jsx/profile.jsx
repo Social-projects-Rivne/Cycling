@@ -250,8 +250,9 @@ let editBikeButton = function(bike){
         return null;
     };
     return (
-        <span className="material-icons pencil">
+        <span className="btn-group material-icons pencil">
             <Link type="button" className="btn btn-default btn-xs" to={'/bike/' + bike.id}>edit</Link>
+            <a type="button" className="btn btn-default btn-xs" onClick={null}>delete</a>
         </span>
     );
 };
