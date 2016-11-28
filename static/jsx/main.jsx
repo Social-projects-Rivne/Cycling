@@ -12,8 +12,16 @@ import Home from './home.jsx';
 import { MarkerDetails } from './marker_detail_page.jsx';
 import { Profile } from './profile.jsx';
 import { MapSettings } from './map/map_settings.jsx';
-import layers_list from './map/layers.jsx';
+import layers_list          from './map/layers.jsx';
+import CreateBike, {EditBike} from './bikes/create_bike.jsx';
+import FailNotification from './notifications/fail.jsx';
+import SuccessNotification from './notifications/success.jsx';
+
 import { SideBar } from './sidebar.jsx';
+
+const PLACES_MARKER_NAME = "Places";
+const PARKINGS_MARKER_NAME = "Parkings";
+const STOLEN_BICYCLES_MARKER_NAME = "Stolen bicycles";
 
 
 class APP extends React.Component{
@@ -63,11 +71,15 @@ class APP extends React.Component{
       //Render main component
       return (
         <div className={this.state.showHideSidenav} id="wrapper">
+
+            <SuccessNotification ref="successNotification" father={this} />
+            <FailNotification ref="failNotification" father={this} />
+
               <Header onButtonClick={this.handleClick}/>
               <SideBar app={this} map_settings={this.state.map_settings}/>
 
               <div className="page-content-wrapper">
-                {React.cloneElement(this.props.children, this.getChildProps())}
+                {React.cloneElement(this.props.children, this.getChildProps(), {father: this})}
               </div>
         </div>
         );
@@ -164,7 +176,10 @@ ReactDOM.render(
          <Route path = "/registration" component = {RegistrationComponent} />
          <Route path = "/marker_details/:id" component = {MarkerDetails} />
          <Route path = "/user/:user_id" component = {Profile} />
-         <Route path = "*" component={NotFound} />
+         <Route path = "/bike/create" component = {CreateBike} />
+         <Route path = "/bike/:bike_id" component = {EditBike} />
+         <Route path = '/404' component={NotFound} />
+         <Route path = '*' component={NotFound} />
       </Route>
   </Router>),
   document.getElementById('app'));

@@ -7,7 +7,13 @@ from .users import User
 # Create your models here.
 
 class Bicycle(models.Model):
+    """Fields:
+    name char
+    description text
+    is_deleted  boolean
+    owner User model
 
+    also available the Image connected via foreign key"""
     name = models.CharField(max_length=255, db_index=True)
     description = models.TextField(blank=True)
     is_deleted = models.BooleanField(default=False)
