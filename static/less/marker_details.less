@@ -180,7 +180,7 @@
     width: 25px;
 }
 
-#edit-input
+.edit-input
 {
     border-top: none;
     border-right: none;
@@ -194,14 +194,25 @@
     -webkit-appearance:none;
 }
 
-#edit-input:focus
+.edit-input:focus
 {
     border-bottom: 1px solid @deep-blue;
 }
 
-.edit-div:hover label
+/*.edit-input:focus + .edit-label
 {
     color: @deep-blue;
+}*/
+
+textarea.edit-input
+{
+    line-height: 20px;
+    margin-top: 25px;
+}
+
+.desc-icon
+{
+    top: -15px;
 }
 
 .select-div
@@ -217,7 +228,8 @@
     top: 20px;
     font-weight: 100;
     color: @deep-grey;
-    right: 27%;
+    text-align: left;
+    left: 18%;
     font-size: 12px;
 }
 
