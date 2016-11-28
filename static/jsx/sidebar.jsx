@@ -2,6 +2,9 @@ import React from 'react';
 import { browserHistory, Link } from 'react-router';
 import layers_list from './map/layers.jsx';
 import ReactDOM from 'react-dom';
+import CategoryItem from "./sidebar_items/category_item.jsx";
+import LayerItem from "./sidebar_items/layer_item.jsx";
+import DisplayItem from "./sidebar_items/display_item.jsx";
 
 
 const PLACES_MARKER_NAME = "Places";
@@ -82,16 +85,17 @@ export class SideBar extends React.Component {
     }
 
     getCategoriesView() {
-      let context = this;
-      let categories_list;
-      if (this.props.map_settings.categories) {
+        let context = this;
+        let categories_list;
 
-          categories_list = this.props.map_settings.categories.map((category, index) =>
-            (<CategoryItem categoryName={category.name} isActive={category.active}
-                              onClick={context.handleCategoryItemClick.bind(context, category.id)} key={index}/>)
-          );
-      }
-      return categories_list;
+        let is_active = this.props.map_settings.show_places();
+        if (this.props.map_settings.categories) {
+            categories_list = this.props.map_settings.categories.map((category, index) =>
+                (<CategoryItem categoryName={category.name} isActive={category.active && is_active} disabled={this.props.map_settings.show_places()}
+                                  onClick={is_active? context.handleCategoryItemClick.bind(context, category.id) : null} key={index}/>)
+            );
+        }
+        return categories_list;
     }
 
     getProfileUrlString() {
@@ -160,12 +164,12 @@ export class SideBar extends React.Component {
                 <DisplayItem markerName={STOLEN_BICYCLES_MARKER_NAME} isActive={this.props.map_settings.show_stolens()}
                     onClick={context.handleMarkerItemClick.bind(context, "show_stolens")}/>
                 <DisplayItem markerName={PLACES_MARKER_NAME} isActive={show_places}
-                    onClick={context.handleMarkerItemClick.bind(context, "show_places")} additionalClasses={additionalClassesPlaces.join(" ")}
-                    data_toggle="collapse" data_target="#display-list">
+                    onClick={context.handleMarkerItemClick.bind(context, "show_places")}>
 
-                    <ul className={placesUlClasses.join(" ")} id="display-list">
+                    <ul className="categories-ul">
                       {this.getCategoriesView()}
                     </ul>
+
                 </DisplayItem>
             </ul>
 
@@ -200,60 +204,5 @@ export class SideBar extends React.Component {
             </ul>
         </div>
       );
-    }
-}
-
-class CategoryItem extends React.Component {
-
-  render() {
-    let liStyleClass = "categories-li-unactive";
-    if (this.props.isActive){
-       liStyleClass = "categories-li-active";
-    }
-
-    return (
-       <li className={ ["categories-li ", liStyleClass].join("")} onClick={this.props.onClick}>{this.props.categoryName}</li>
-    );
-  }
-
-}
-
-class LayerItem extends React.Component {
-
-    render() {
-        let liStyleClass = "layers-li-unactive";
-        if (this.props.isActive){
-            liStyleClass = "layers-li-active";
-        }
-
-        return (
-            <li className={["layers-li ", liStyleClass].join("")} onClick={this.props.onClick}>
-                {this.props.layerName}
-            </li>
-        );
-    }
-}
-
-class DisplayItem extends React.Component {
-
-    render() {
-        let liStyleClass = "display-li-unactive";
-        if (this.props.isActive){
-            liStyleClass = "display-li-active";
-        }
-
-        if (this.props.additionalClasses){
-            liStyleClass = [liStyleClass, this.props.additionalClasses].join(" ");
-        }
-
-        return (
-            <li>
-                <div className={["display-li ", liStyleClass].join("")} onClick={this.props.onClick}
-                    id={this.props.id} data-toggle={this.props.data_toggle} data-target={this.props.data_target}>
-                    <span className="li-name">{this.props.markerName}</span>
-                </div>
-                {this.props.children}
-            </li>
-        );
     }
 }
