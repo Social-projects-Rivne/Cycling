@@ -32,7 +32,6 @@ class APP extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-          showHideSidenav: false,
           map_settings: new MapSettings()
         };
 
@@ -44,7 +43,9 @@ class APP extends React.Component{
        * Change main div class in case of clicking on button,
        * to provide posibility of hidding and opening sidevar
        */
-      this.setState({showHideSidenav: !this.state.showHideSidenav ? "toggled" : ""});
+      var wrapper = document.querySelector('.wrapper-div');
+      wrapper.classList.toggle('toggled');
+      wrapper.classList.toggle('overlay');
     }
 
     setDisplay(display) {
@@ -70,7 +71,7 @@ class APP extends React.Component{
     render(){
       //Render main component
       return (
-        <div className={this.state.showHideSidenav} id="wrapper">
+        <div className="wrapper-div" id="wrapper">
 
             <SuccessNotification ref="successNotification" father={this} />
             <FailNotification ref="failNotification" father={this} />

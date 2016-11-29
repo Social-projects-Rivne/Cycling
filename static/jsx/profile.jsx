@@ -636,11 +636,9 @@ let addBikeButton = function(user_id){
         return null;
     };
     return (
-        <small style={{marginLeft: "20px", display: "inline-block", verticalAlign: "middle", float: "none"}}>
-            <span className="btn-group">
-                <Link type="button" className="btn btn-default btn-xs" to='/bike/create'>Add</Link>
-            </span>
-        </small>
+        <div className="add-bike-button">
+            <Link type="button" id="add-bike-link" to='/bike/create'>Add</Link>
+        </div>
     );
 };
 

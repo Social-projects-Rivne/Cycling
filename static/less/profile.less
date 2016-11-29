@@ -93,3 +93,33 @@ h1, h2, h4 {
     vertical-align: middle;
     height: 100%;
 }
+
+.add-bike-button
+{
+    margin-left: 20px;
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+    width: 60px;
+    height: 22px;
+    text-align: center;
+    background-color: lighten(@deep-blue, 5%);
+    cursor: pointer;
+}
+
+.add-bike-button:hover
+{
+    background-color: @deep-blue;
+}
+
+.add-bike-button:active
+{
+    background-color: darken(@deep-blue, 5%);
+}
+
+#add-bike-link
+{
+    color: #fff;
+    text-decoration: none;
+    font-size: 12px;
+}
