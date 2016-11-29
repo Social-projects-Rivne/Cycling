@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^bike/create$', bike.create, name='create_bike'),
     url(r'^bike/(?P<bike_id>[0-9]+)/$', bike.by_id, name='get_bike'),
     url(r'^bike/edit$', bike.edit, name='edit_bike'),
+    url(r'^bike/delete$', bike.delete, name='delete_bike'),
     url(r'^tokenvalid$', user.check_token, name='check_token'),
     url(r'^categories$', points.get_categories, name='get_categories'),
     url(r'^avatar$', user.get_avatar, name='get_avatar'),

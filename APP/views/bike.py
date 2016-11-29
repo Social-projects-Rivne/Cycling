@@ -91,3 +91,23 @@ def edit(request):
         return HttpResponse(data, content_type="application/json")
     except Exception as e:
         return HttpResponseServerError(content=str(e))
+
+@need_token
+def delete(request):
+    """Deletes a Bicycle object fromin DB
+
+    The url is built like this:
+    https://cycling.com/api/bike/delete
+    it's a POST request
+    """
+    if request.method != 'POST':
+        return HttpResponseBadRequest(content='Expected POST')
+    params = json.loads(request.body)
+    bike = get_object_or_404(Bicycle, pk=params['pk'])
+    if not request.user == bike.owner:
+        return HttpResponseBadRequest(content="Trying to delete somebody's else bicycle")
+    try:
+        bike.delete()
+        return HttpResponse(json.dumps({'ok': 200}))
+    except Exception as e:
+        return HttpResponseServerError(content=str(e))

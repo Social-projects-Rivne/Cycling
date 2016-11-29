@@ -275,12 +275,7 @@ class Bike extends React.Component {
         super(props);
         this.renderImg = this.renderImg.bind(this);
         this.onDelete = this.onDelete.bind(this);
-        this.deleteMe = this.deleteMe.bind(this);
     }
-
-    deleteMe(){
-        
-    };
 
     onDelete(e){
         this.confirmDeleteBike.showMe();
@@ -308,6 +303,7 @@ class Bike extends React.Component {
                 titleText='Confirm deleting'
                 question={`You are about to delete the bike ${this.props.bike.name}`}
                 okText='Proceed'
+                onOk={e => {this.props.deleteBike(this.props.bike.index); this.confirmDeleteBike.closeMe();}}
             />
             <div>
                 <h4 className="item-name">{this.props.bike.name}</h4>
@@ -330,7 +326,7 @@ class BikesRow extends React.Component {
             <div className="row">
                 {
                     this.props.bikesPair.map((bike, index) => (
-                        <Bike key={index} bike={bike} />
+                        <Bike key={index} bike={bike} deleteBike={this.props.deleteBike}/>
                     ))
                 }
             </div>
@@ -340,9 +336,13 @@ class BikesRow extends React.Component {
 
 class BicycleData extends React.Component {
     // Render data about all user's bikes.
-
-    state = {
-        api_output: ''
+    constructor(props) {
+        super(props);
+        this.state = {
+            api_output: ''
+        }
+        this.deleteBike = this.deleteBike.bind(this);
+        this.indexBikes = this.indexBikes.bind(this);
     }
 
     componentWillMount() {
@@ -358,10 +358,52 @@ class BicycleData extends React.Component {
 
     }
 
+    componentWillUnmount() {
+        if (this.serverRequest)
+        this.serverRequest.abort();
+    };
+
+    deleteBike(index){
+        this.serverRequest = $.post(
+            {
+                url: '/api/bike/delete',
+                data: JSON.stringify(
+                    {pk: this.state.api_output[index].id,
+                        token: localStorage['token']}
+                    ),
+                dataType: "json",
+                success: function (data) {
+                            let message = "The bicycle " + this.state.api_output[index].name + " is deleted";
+                            // console.log(message);
+                            this.props.successNotification.showMe(message);
+                            let api_output = this.state.api_output;
+                            api_output.splice(index, 1);
+                            this.setState({api_output: api_output});
+                        }.bind(this)
+                        }
+            ).fail(function(data) {
+                // console.log(data);
+                let message = "Sorry. Something is wrong: " + data.responseText;
+                this.props.failNotification.showMe(message);
+            }.bind(this)
+            );
+    };
+
+    indexBikes(){
+        let i = 0;
+        for (i = 0; i < this.state.api_output.length; i++){
+            this.state.api_output[i].index = i;
+        }
+    };
+
     render() {
         if (this.state.api_output[0] == undefined) {
             return (<p>No bikes were added</p>);
         } else {
+            this.indexBikes();
+            let deleteBike = this.deleteBike;
+            let successNotification = this.props.successNotification;
+            let failNotification = this.props.failNotification;
             return (
                 <div className="container">
                 {
@@ -372,7 +414,7 @@ class BicycleData extends React.Component {
                         pairs[pairs.length -1].push(bike);
                         return pairs;
                     }, []).map(function(pair, index) {
-                        return (<BikesRow key={index} bikesPair={pair} />)
+                        return (<BikesRow key={index} bikesPair={pair} deleteBike={deleteBike}/>)
                     })
                 }
                 </div>
@@ -616,7 +658,11 @@ class Profile extends React.Component {
                 {addBikeButton(this.props.params['user_id'])}
             </h4>
                 
-            <BicycleData owner_id={this.user_id} />
+            <BicycleData owner_id={this.user_id} 
+                successNotification={this.props.children.father.refs.successNotification}
+                failNotification={this.props.children.father.refs.failNotification}
+                history={this.props.history}
+            />
 
             <h4>Places added by me</h4>
             <PlacesData owner_id={this.user_id} />
