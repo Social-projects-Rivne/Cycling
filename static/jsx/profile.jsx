@@ -99,7 +99,6 @@ class UserData extends React.Component {
         // Event for modal pop-up appearance when user has clicked on the 
         // "Edit user" button.
         this.setState({showModal: true });
-    a
     }
     _revert () {
         // Event for Revert button which restores after edits all old user's 
@@ -120,34 +119,40 @@ class UserData extends React.Component {
     
     _handleSubmit(event) {
         // Catch modal popup form submit, get data from it, add user's token
-        // and send to it to the server with POST method.
+        // and send it to the server with POST method.
         event.preventDefault();
-        let data_to_send = JSON.stringify({
-            full_name: event.target.elements[0].value,
-            avatar_url: event.target.elements[1].value,
-            token: localStorage['token']
-        });
-        $.ajax({
-                type: 'POST',
-                url: `/api/edit_user_data/${this.props.user_id}/`,
-                // url: '/api/edit_user_data/' + this.props.user_id + '/',
-                dataType: "json",
-                data: data_to_send,
-                success: function(response) {
-                    // INSERT SUCCESS CONFIRMATION NOTIFICATION
-                    console.log('success!!!');
-                    this._close();
-                    //let path = `/user/${this.props.user_id}`;
-                    //browserHistory.push(path);
-                    
-                    // browserHistory.push doesn't work for urls with dynamic 
-                    // ids. Need to do more research, refresh the page for now.
-                    window.location.reload()
-                }.bind(this),
-                error: function(response) {
-                    console.log('error');
-                }
-        });
+        let full_name_from_input = event.target.elements[0].value;
+        let avatar_url_from_input = event.target.elements[1].value;
+        // Check if data isn't differ from the old state, if that's true -
+        // just close the modal popup, else - send POST.
+        if (full_name_from_input == this.state.fullName && avatar_url_from_input == this.state.avatarSrc) {
+            this._close();
+        } else {
+            let data_to_send = JSON.stringify({
+                full_name: full_name_from_input,
+                avatar_url: avatar_url_from_input,
+                token: localStorage['token']
+            });
+            $.ajax({
+                    type: 'POST',
+                    url: `/api/edit_user_data/${this.props.user_id}/`,
+                    // url: '/api/edit_user_data/' + this.props.user_id + '/',
+                    dataType: "json",
+                    data: data_to_send,
+                    success: function(response) {
+                        // INSERT SUCCESS CONFIRMATION NOTIFICATION
+                        console.log('success!!!');
+                        this.setState({
+                            fullName: full_name_from_input,
+                            avatarSrc: avatar_url_from_input
+                        });
+                        this._close();
+                    }.bind(this),
+                    error: function(response) {
+                        console.log('error');
+                    }
+            });
+        }
     }
 
     render() {
@@ -166,7 +171,7 @@ class UserData extends React.Component {
 
                         <div className="col-md-3">
                             <span>
-                                <p id="headerFullName">{this.state.api_output.full_name}</p>
+                                <p id="headerFullName">{this.state.fullName}</p>
                                 <p id="headerEmail">{this.state.api_output.email}</p>
                             </span>
                         </div>
@@ -233,7 +238,7 @@ class UserData extends React.Component {
                     </form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <button className="btn btn-default" onClick={this._close}>Close</button>
+                    <button className="btn btn-default" onClick={this._close}>Cancel</button>
                     <button className="btn btn-danger" onClick={this._revert} type="button">Revert</button>
                     <label className="btn btn-success" htmlFor="submit-form">Save</label>
                </Modal.Footer>
