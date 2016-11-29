@@ -129,7 +129,7 @@ class UserData extends React.Component {
         // just close the modal popup, else - send POST.
         if (full_name_from_input == this.state.fullName && avatar_url_from_input == this.state.avatarSrc) {
             this._close();
-            this.refs.successNotification.showMe("Your data was not changed, cause no new edits were found. Anyway you're awesome!");
+            this.refs.successNotification.showMe('Successfully updated your data!');
         } else {
             let data_to_send = JSON.stringify({
                 full_name: full_name_from_input,
