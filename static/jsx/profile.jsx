@@ -2,6 +2,8 @@ import React from 'react';
 import { Modal } from 'react-bootstrap';
 import { browserHistory } from 'react-router';
 import { Link }           from 'react-router';
+import SuccessNotification from './notifications/success.jsx';
+import FailNotification from './notifications/fail.jsx';
 
 class UserData extends React.Component {
     // Render header of profile page which contains user's avatar, full name
@@ -127,6 +129,7 @@ class UserData extends React.Component {
         // just close the modal popup, else - send POST.
         if (full_name_from_input == this.state.fullName && avatar_url_from_input == this.state.avatarSrc) {
             this._close();
+            this.refs.successNotification.showMe("Your data was not changed, cause no new edits were found. Anyway you're awesome!");
         } else {
             let data_to_send = JSON.stringify({
                 full_name: full_name_from_input,
@@ -140,16 +143,16 @@ class UserData extends React.Component {
                     dataType: "json",
                     data: data_to_send,
                     success: function(response) {
-                        // INSERT SUCCESS CONFIRMATION NOTIFICATION
-                        console.log('success!!!');
                         this.setState({
                             fullName: full_name_from_input,
                             avatarSrc: avatar_url_from_input
                         });
                         this._close();
+                        this.refs.successNotification.showMe('Successfully updated your data!');
                     }.bind(this),
                     error: function(response) {
-                        console.log('error');
+                        // fail notification
+                        this.refs.failNotification.showMe('Server replied with error!');
                     }
             });
         }
@@ -158,6 +161,8 @@ class UserData extends React.Component {
     render() {
         return (
             <div>
+            <SuccessNotification ref="successNotification" />
+            <FailNotification ref="failNotification" />
             <div className="profile-header">
                 <div id="data-container" className="container">
 
