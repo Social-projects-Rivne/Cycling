@@ -2,6 +2,7 @@ import React from 'react';
 import { Modal } from 'react-bootstrap';
 import { browserHistory } from 'react-router';
 import { Link }           from 'react-router';
+import ConfirmModal       from './modals/confirm.jsx';
 
 class UserData extends React.Component {
     // Render header of profile page which contains user's avatar, full name
@@ -245,14 +246,14 @@ class UserData extends React.Component {
 
 };
 
-let editBikeButton = function(bike){
+let editBikeButton = function(bike, onDeleteCallBack){
     if(bike.owner_id != localStorage['id']){
         return null;
     };
     return (
         <span className="btn-group material-icons pencil">
             <Link type="button" className="btn btn-default btn-xs" to={'/bike/' + bike.id}>edit</Link>
-            <a type="button" className="btn btn-default btn-xs" onClick={null}>delete</a>
+            <a type="button" className="btn btn-default btn-xs" onClick={onDeleteCallBack}>delete</a>
         </span>
     );
 };
@@ -263,10 +264,18 @@ class Bike extends React.Component {
     constructor(props) {
         super(props);
         this.renderImg = this.renderImg.bind(this);
+        this.onDelete = this.onDelete.bind(this);
+        this.deleteMe = this.deleteMe.bind(this);
     }
 
+    deleteMe(){
+        
+    };
 
-    
+    onDelete(e){
+        this.confirmDeleteBike.showMe();
+    };
+
     renderImg() {
         if (this.props.bike.images_urls == null) {
             return (
@@ -285,10 +294,14 @@ class Bike extends React.Component {
     render () {
         return (
         <div className="my-card col-md-5">
-
+            <ConfirmModal ref={(modal) => { this.confirmDeleteBike = modal; }}
+                titleText='Confirm deleting'
+                question={`You are about to delete the bike ${this.props.bike.name}`}
+                okText='Proceed'
+            />
             <div>
                 <h4 className="item-name">{this.props.bike.name}</h4>
-                { editBikeButton(this.props.bike) }
+                { editBikeButton(this.props.bike, this.onDelete) }
             </div>
             {this.renderImg()}
             <div className="card-block">
