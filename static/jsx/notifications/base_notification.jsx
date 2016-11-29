@@ -35,7 +35,8 @@ class BaseNotification extends React.Component{
       background: this.background || "#fde073",
       textAlign: "center",
       lineHeight: "4.0",
-      overflow: "hidden"
+      overflow: "hidden",
+      height: "51px"
     };
 
     let closeButtonStyle = {

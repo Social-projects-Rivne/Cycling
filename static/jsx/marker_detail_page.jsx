@@ -180,9 +180,9 @@ export class MarkerDetails extends React.Component {
 					<div className="control-group reg-log edit-div">
           				<div className="controls">
 						    <label className="edit-label">Edit description</label>
-              				<span className="material-icons input-icons">content_paste</span>
-              				<input type="text" id="edit-input" name="desc_change" placeholder="Edit description of the marker"
-              				className="input-xlarge value-input" value={this.state.desc_change} onChange={this.changeValue}/>
+              				<span className="material-icons input-icons desc-icon">content_paste</span>
+              				<textarea className="edit-input" rows="2" type="text" name="desc_change" placeholder="Edit description of the marker"
+              				className="input-xlarge edit-input" value={this.state.desc_change} onChange={this.changeValue}></textarea>
           				</div>
       				</div>
 				);
@@ -194,21 +194,19 @@ export class MarkerDetails extends React.Component {
 			return (
 				<div className="select-div">
 					<div className="edit-div">
-						<label className="edit-label">Edit description</label>
+						<label className="edit-label">Edit works to...</label>
 						<span className="material-icons input-icons">hourglass_empty</span>
-						<select name="from_hour_select" onChange={this.changeValue}
-						value={this.state.from_hour_select} id="edit-input">
-                    	    <option>--</option>
+						<select className="edit-input" name="from_hour_select" onChange={this.changeValue}
+						value={this.state.from_hour_select}>
                     		{this.state.hoursList.map((hour)=>(<option key={hour} value={hour}>{hour}</option>))}
                     	</select>
 					</div>
 
 					<div className="edit-div">
-						<label className="edit-label">Edit description</label>
+						<label className="edit-label">Edit works to...</label>
 						<span className="material-icons input-icons">hourglass_full</span>
-						<select name="to_hour_select" onChange={this.changeValue}
-						value={this.state.to_hour_select} id="edit-input">
-                    	    <option>--</option>
+						<select className="edit-input" name="to_hour_select" onChange={this.changeValue}
+						value={this.state.to_hour_select}>
                     		{this.state.hoursList.map((hour)=>(<option key={hour} value={hour}>{hour}</option>))}
                     	</select>
 					</div>
@@ -222,8 +220,7 @@ export class MarkerDetails extends React.Component {
 						<label className="edit-label">Edit cost</label>
 						<span className="material-icons input-icons">attach_money</span>
 						<select name="is_free_select" onChange={this.changeValue}
-						value={this.state.is_free_select} id="edit-input"> 
-                    	    <option>--</option>
+						value={this.state.is_free_select} className="edit-input"> 
                     		<option value="0">not free</option>
                             <option value="1">free</option>
                     	</select>
@@ -233,8 +230,7 @@ export class MarkerDetails extends React.Component {
 						<label className="edit-label">Edit security</label>
 						<span className="material-icons input-icons">security</span>
 						<select name="is_secure_select" onChange={this.changeValue}
-						value={this.state.is_secure_select} id="edit-input">
-                    	    <option>--</option>
+						value={this.state.is_secure_select} className="edit-input">
                     		<option value="0">no</option>
                             <option value="1">yes</option>
                     	</select>
@@ -243,8 +239,8 @@ export class MarkerDetails extends React.Component {
           			    <div className="controls">
 						  <label className="edit-label">Edit number of places</label>
               				<span className="material-icons input-icons">directions_bike</span>
-              				<input type="number" id="edit-input" name="number_change" placeholder="Edit amount of parking places"
-              				className="input-xlarge value-input" value={this.state.number_change} onChange={this.changeValue}/>
+              				<input type="number" name="number_change" placeholder="Edit amount of parking places"
+              				className="input-xlarge edit-input" value={this.state.number_change} onChange={this.changeValue}/>
           				</div>
       				</div>
 				</div>
@@ -313,10 +309,10 @@ export class MarkerDetails extends React.Component {
 					      <div className="modal-body">
 							  <div className="control-group reg-log edit-div">
           					      <div className="controls">
-									  <label className="edit-label">Edit description</label>
+									  <label className="edit-label">Edit marker name</label>
               				          <span className="material-icons input-icons">account_circle</span>
-              				          <input type="text" id="edit-input" name="name_change" placeholder="Edit your name"
-              				          className="input-xlarge value-input" value={this.state.name_change} onChange={this.changeValue}/>
+              				          <input type="text" name="name_change" placeholder="Edit your name"
+              				          className="input-xlarge edit-input" value={this.state.name_change} onChange={this.changeValue}/>
           				          </div>
       				          </div>
 						      { this.descriptionEditCondition() }
