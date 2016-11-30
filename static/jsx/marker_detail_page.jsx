@@ -31,6 +31,7 @@ export class MarkerDetails extends React.Component {
 		this.changeValue = this.changeValue.bind(this);
 		this.confirmEdit = this.confirmEdit.bind(this);
 		this.ajaxEditSuccess = this.ajaxEditSuccess.bind(this);
+		this.handleRevert = this.handleRevert.bind(this);
 	}
 
 	markerData(){
@@ -248,6 +249,19 @@ export class MarkerDetails extends React.Component {
 		}
 	}
 
+	handleRevert(event){
+		event.preventDefault;
+		this.setState({
+			name_change: this.state.marker_value.name,
+			number_change: this.state.marker_value.amount,
+			desc_change: this.state.marker_value.description,
+			from_hour_select: this.state.marker_value.from_hour,
+			to_hour_select: this.state.marker_value.to_hour,
+			is_free_select: this.state.marker_value.is_free ? 1 : 0,
+			is_secure_select: parseInt(this.state.marker_value.security)
+		});
+	}
+
 	ajaxEditSuccess(response){
 		if(response["Success"]){
 			this.markerData();
@@ -319,8 +333,8 @@ export class MarkerDetails extends React.Component {
 							  { this.infoEditCondition() }
 						  </div>
 				         <div className="modal-footer">
-						 	  <div name="cancel" type="submit" className="btn" id="edit-modal-button" className="edit-close" onClick={this.submitEdit} data-dismiss="modal"><span>Cancel</span></div>
-							  <div name="revert" type="submit" className="btn" id="edit-modal-button" className="edit-revert" onClick={this.submitEdit} data-dismiss="modal"><span>Revert</span></div>
+						 	  <div name="cancel" type="submit" className="btn" id="edit-modal-button" className="edit-close" data-dismiss="modal"><span>Cancel</span></div>
+							  <div name="revert" type="submit" className="btn" id="edit-modal-button" className="edit-revert" onClick={this.handleRevert}><span>Revert</span></div>
 							  <div name="confirm" type="submit" className="btn" id="edit-modal-button" className="edit-confirm" onClick={this.confirmEdit} data-dismiss="modal"><span>Confirm</span></div>
 				         </div>
 				    </div>

@@ -45,7 +45,8 @@ class APP extends React.Component{
        */
       var wrapper = document.querySelector('.wrapper-div');
       wrapper.classList.toggle('toggled');
-      wrapper.classList.toggle('overlay');
+      setTimeout(() => wrapper.classList.toggle('overlay'), 300);
+      
     }
 
     setDisplay(display) {
