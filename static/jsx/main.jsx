@@ -10,9 +10,10 @@ import { RegistrationComponent } from './registration.jsx';
 import { LoginComponent } from './login.jsx';
 import Home from './home.jsx';
 import { MarkerDetails } from './marker_detail_page.jsx';
+import StolenBike from './stolen_page.jsx';
 import { Profile } from './profile.jsx';
 import { MapSettings } from './map/map_settings.jsx';
-import layers_list          from './map/layers.jsx';
+import layers_list from './map/layers.jsx';
 import CreateBike, {EditBike} from './bikes/create_bike.jsx';
 import FailNotification from './notifications/fail.jsx';
 import SuccessNotification from './notifications/success.jsx';
@@ -176,6 +177,7 @@ ReactDOM.render(
          <Route path = "/login" component = {LoginComponent} />
          <Route path = "/registration" component = {RegistrationComponent} />
          <Route path = "/marker_details/:id" component = {MarkerDetails} />
+         <Route path = "/stolen" component = {StolenBike} />
          <Route path = "/user/:user_id" component = {Profile} />
          <Route path = "/bike/create" component = {CreateBike} />
          <Route path = "/bike/:bike_id" component = {EditBike} />

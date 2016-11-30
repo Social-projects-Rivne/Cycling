@@ -10,6 +10,7 @@ from APP.models import (User, Bicycle, StolenBike, Parking, Place, Image,
                         Attachment)
 from APP.utils.need_token import need_token
 
+
 def get_user_data(request, user_id):
     """Gets User data from db (except password column) and returns it
     as JsonResponse
@@ -33,6 +34,7 @@ def get_user_data(request, user_id):
         raise Http404("No user with such id in the database.")
     return JsonResponse(user_data)
 
+
 def get_user_bikes_data(request, user_id):
     """Gets bicycles data from db using id and returns it as JsonResponse"""
     # retrieve only non deleted vehicles
@@ -48,6 +50,7 @@ def get_user_bikes_data(request, user_id):
             bike['images_urls'] = None
         bike['is_stolen'] = StolenBike.objects.filter(bike_id=bike['id']).exists()
     return JsonResponse(user_bikes_list, safe = False)
+
 
 def get_user_parkings_data(request, user_id):
     """Gets data from db about Parkings and their images from
@@ -65,6 +68,7 @@ def get_user_parkings_data(request, user_id):
         except:
             parking['images_urls'] = None
     return JsonResponse(user_parks_list, safe = False)
+
 
 def get_user_places_data(request, user_id):
     """Gets data from db about user's Places and their images from
@@ -84,6 +88,7 @@ def get_user_places_data(request, user_id):
         except:
             place['images_urls'] = None
     return JsonResponse(user_places_list, safe = False)
+
 
 @need_token
 def edit_user_data(request, user_id):

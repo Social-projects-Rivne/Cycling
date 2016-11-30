@@ -6,6 +6,7 @@ from .users import User
 
 # Create your models here.
 
+
 class Bicycle(models.Model):
     """Fields:
     name char
@@ -19,8 +20,15 @@ class Bicycle(models.Model):
     is_deleted = models.BooleanField(default=False)
     owner = models.ForeignKey(User)
 
+    def get_by_natural_key(self, name, description, is_deleted, owner):
+        return self.get(
+            name=name,
+            description=description,
+            is_deleted=is_deleted,
+            owner=owner)
+
     class Meta:
         """This class gives some options (metadata) attached to the model."""
-        
+
         app_label = 'APP'
         db_table = 'Bicycles'

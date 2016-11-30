@@ -198,6 +198,7 @@ export class SideBar extends React.Component {
                     </div>
                     {this.getDisplayView()}
                 </li>
+                <li><Link onlyActiveOnIndex activeStyle={{color: "#53acff"}} to="/stolen">Stolen Bicycles</Link></li>
                 <li><a href="#">Races Table</a></li>
                 <li><Link onlyActiveOnIndex activeStyle={{color: "#53acff"}} to={this.getProfileUrlString()}>Profile</Link></li>
                 {this.renderSignOutBtn()}
