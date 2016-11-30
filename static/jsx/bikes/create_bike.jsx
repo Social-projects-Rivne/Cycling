@@ -146,7 +146,7 @@ class BikeForm extends React.Component{
                                             value={image.url}
                                             onChange={e => {this.urlChange(e, index);}}
                                         />
-                                        <div className="btn-group">
+                                        <div className="btn-group add-remove">
                                             <span className="add-bike-button plus-minus material-icons" type="button"
                                                 onClick={this.addImg}
                                             >add</span>

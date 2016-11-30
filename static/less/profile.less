@@ -161,19 +161,26 @@ h1, h2, h4 {
     padding: 3px; 
 }
 
-.pencil a:first-child
+.pencil a
 {
-    color: @white;
-    border-right: 5px solid #fff;
+    color: @black;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 30px;
 }
 
-.pencil a:last-child
+.pencil a:hover
 {
-    color: @white;
-    padding: 0px !important;
+    color: @black;
+    text-decoration: none;
 }
 
 .pencil.add-bike-button
 {
     float: right;
+}
+
+.btn-group.add-remove
+{
+    display: block;
 }

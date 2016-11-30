@@ -261,10 +261,10 @@ let editBikeButton = function(bike, onDeleteCallBack){
         return null;
     };
     return (
-        <span className="add-bike-button material-icons pencil">
-            <Link type="button" className="add-bike-link" to={'/bike/' + bike.id}>edit</Link>
-            <a type="button" className="add-bike-link" onClick={onDeleteCallBack}>delete</a>
-        </span>
+        <div className="pencil">
+            <Link type="button" className="material-icons add-bike-link" to={'/bike/' + bike.id}>edit</Link>
+            <a type="button" className="material-icons add-bike-link" onClick={onDeleteCallBack}>delete</a>
+        </div>
     );
 };
 
