@@ -51,5 +51,5 @@ def create_stolen(request):
         stolen = StolenBike.objects.create(**kwargs)
         data = serializers.serialize("json", [stolen,])
         return HttpResponse(data, content_type="application/json")
-    except Exception as e:
-        return HttpResponseServerError(content=str(e))
+    except Exception as err:
+        return HttpResponseServerError(content=str(err))
