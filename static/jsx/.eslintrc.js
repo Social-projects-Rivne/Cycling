@@ -1,7 +1,8 @@
 module.exports = {
     "env": {
         "browser": true,
-        "es6": true
+        "es6": true,
+        "jquery": true
     },
     "extends": "eslint:recommended",
     "parserOptions": {
@@ -26,7 +27,7 @@ module.exports = {
         "brace-style": "off",
         "callback-return": "error",
         "camelcase": "off",
-        "class-methods-use-this": "error",
+        "class-methods-use-this": "off",
         "comma-dangle": "off",
         "comma-spacing": [
             "error",
@@ -50,14 +51,11 @@ module.exports = {
         "default-case": "error",
         "dot-location": "error",
         "dot-notation": "off",
-        "eol-last": [
-            "error",
-            "never"
-        ],
+        "eol-last": "off",
         "eqeqeq": "error",
         "func-call-spacing": "error",
         "func-name-matching": "error",
-        "func-names": "error",
+        "func-names": "off",
         "func-style": "error",
         "generator-star-spacing": "error",
         "global-require": "error",
@@ -101,6 +99,7 @@ module.exports = {
         "no-catch-shadow": "error",
         "no-confusing-arrow": "error",
         "no-continue": "error",
+        "no-console": "off",
         "no-div-regex": "error",
         "no-duplicate-imports": "error",
         "no-else-return": "off",
@@ -171,6 +170,7 @@ module.exports = {
         "no-unmodified-loop-condition": "error",
         "no-unneeded-ternary": "error",
         "no-unused-expressions": "error",
+        "no-unused-vars": "off",
         "no-use-before-define": "error",
         "no-useless-call": "error",
         "no-useless-computed-key": "error",

@@ -23,8 +23,7 @@
 .sidebar-nav
 {
     float: left;
-    margin-top: 51px;
-    position: fixed;
+    position: absolute;
 }
 
 .leaflet-control-layers-base label, 
@@ -61,6 +60,19 @@
 .page-content-wrapper
 {
     margin-top: 51px;
+}
+
+@media screen and (min-width: 900px)
+{
+    .page-content-wrapper
+    {
+        margin-left: 250px;
+    }
+
+    #wrapper.toggled #sidebar-wrapper
+    {
+        border-right: none;
+    }
 }
 
 .header-right {

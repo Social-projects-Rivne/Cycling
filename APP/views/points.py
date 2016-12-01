@@ -34,6 +34,30 @@ def marker_details(request):
             return JsonResponse({"error": 1})
 
 
+def edit_marker_details(request):
+    """Method, that recieve type, id of marker,
+    modified data of marker and update info of marker."""
+
+
+    if request.method == "POST":
+        result_dict = dict()
+        try:
+            table = str(request.POST["type"])
+            ID = int(request.POST["id"])
+            target_class = None
+            if table == "Place":
+                Place.objects.filter(pk=ID).update(name=request.POST["name"],
+                description=request.POST["description"], from_hour=request.POST["from_hour"], 
+                to_hour=request.POST["to_hour"])
+            elif table == "Parking":
+                Parking.objects.filter(pk=ID).update(name=request.POST["name"],
+                security=request.POST["security"], amount=request.POST["amount"], 
+                is_free=request.POST["is_free"])
+            return JsonResponse({"Success": 1})
+        except:
+            return JsonResponse({"Error": 1})
+
+
 def get_points(request, model_cls):
     """Returns entities with location within rectangle
     of sw and ne points. For more info on points look

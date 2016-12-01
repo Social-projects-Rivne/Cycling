@@ -9,7 +9,7 @@
     width: 920px;
     height: 250px;
     background-image: url(../images/bicycle.jpg);
-    background-position: 30% 60%;
+    background-position: 50% 60%;
     margin: 0 auto;
 }
 
@@ -55,10 +55,6 @@
 }
 
 @media screen and (max-width: 800px) {
-    .photo-container
-    {
-        background-position: 50% 60%;
-    }
     .marker-edit-button
     {
         float: none;
@@ -180,27 +176,86 @@
     width: 25px;
 }
 
-#hour-select
+.edit-input
 {
     border-top: none;
     border-right: none;
     border-left: none;
     border-bottom: 1px solid @simple-grey;
     margin: 15px;
-    width: 70%;
+    width: 70% !important;
     line-height: 3;
     background-color: #fff;
     outline: 0px !important;
     -webkit-appearance:none;
 }
 
-#hour-select:focus
+.edit-input:focus
 {
     border-bottom: 1px solid @deep-blue;
+}
+
+textarea.edit-input
+{
+    line-height: 20px;
+    margin-top: 25px;
+}
+
+.desc-icon
+{
+    top: -15px;
 }
 
 .select-div
 {
     text-align: center;
+}
+
+.edit-label
+{
+    margin: 0;
+    display: block;
+    position: relative;
+    top: 20px;
+    font-weight: 100;
+    color: @deep-grey;
+    text-align: left;
+    left: 18%;
+    font-size: 12px;
+}
+
+#edit-modal-button
+{
+    background-color: lighten(@deep-blue, 5%);
+    color: @white;
+    display: inline-block;
+    margin: 0px 10px;
+    background-image: none;
+    width: 100px;
+    border-radius: 0px;
+    border: none;
+    margin-top: 35px;
+    font-size: 16px;
+    height: 40px;
+    text-align: center;
+    cursor: pointer;
+}
+
+#edit-modal-button:hover
+{
+    background-color: @deep-blue;
+}
+
+#edit-modal-button:active
+{
+    background-color: darken(@deep-blue, 5%);
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+#edit-modal-button span
+{
+    position: relative;
+    top: 9px;   
 }
 /*End of modal*/

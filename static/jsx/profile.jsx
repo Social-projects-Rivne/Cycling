@@ -1,6 +1,10 @@
 import React from 'react';
 import { Modal } from 'react-bootstrap';
 import { browserHistory } from 'react-router';
+import { Link }           from 'react-router';
+import ConfirmModal       from './modals/confirm.jsx';
+import SuccessNotification from './notifications/success.jsx';
+import FailNotification from './notifications/fail.jsx';
 
 class UserData extends React.Component {
     // Render header of profile page which contains user's avatar, full name
@@ -98,7 +102,6 @@ class UserData extends React.Component {
         // Event for modal pop-up appearance when user has clicked on the 
         // "Edit user" button.
         this.setState({showModal: true });
-    a
     }
     _revert () {
         // Event for Revert button which restores after edits all old user's 
@@ -119,39 +122,48 @@ class UserData extends React.Component {
     
     _handleSubmit(event) {
         // Catch modal popup form submit, get data from it, add user's token
-        // and send to it to the server with POST method.
+        // and send it to the server with POST method.
         event.preventDefault();
-        let data_to_send = {
-            full_name: event.target.elements[0].value,
-            avatar_url: event.target.elements[1].value,
-            token: localStorage['token']
-        };
-        $.ajax({
-                type: 'POST',
-                url: `/api/edit_user_data/${this.props.user_id}/`,
-                // url: '/api/edit_user_data/' + this.props.user_id + '/',
-                dataType: "json",
-                data: data_to_send,
-                success: function(response) {
-                    // INSERT SUCCESS CONFIRMATION NOTIFICATION
-                    console.log('success!!!');
-                    this._close();
-                    //let path = `/user/${this.props.user_id}`;
-                    //browserHistory.push(path);
-                    
-                    // browserHistory.push doesn't work for urls with dynamic 
-                    // ids. Need to do more research, refresh the page for now.
-                    window.location.reload()
-                }.bind(this),
-                error: function(response) {
-                    console.log('error');
-                }
-        });
+        let full_name_from_input = event.target.elements[0].value;
+        let avatar_url_from_input = event.target.elements[1].value;
+        // Check if data isn't differ from the old state, if that's true -
+        // just close the modal popup, else - send POST.
+        if (full_name_from_input == this.state.fullName && avatar_url_from_input == this.state.avatarSrc) {
+            this._close();
+            this.refs.successNotification.showMe('Successfully updated your data!');
+        } else {
+            let data_to_send = JSON.stringify({
+                full_name: full_name_from_input,
+                avatar_url: avatar_url_from_input,
+                token: localStorage['token']
+            });
+            $.ajax({
+                    type: 'POST',
+                    url: `/api/edit_user_data/${this.props.user_id}/`,
+                    // url: '/api/edit_user_data/' + this.props.user_id + '/',
+                    dataType: "json",
+                    data: data_to_send,
+                    success: function(response) {
+                        this.setState({
+                            fullName: full_name_from_input,
+                            avatarSrc: avatar_url_from_input
+                        });
+                        this._close();
+                        this.refs.successNotification.showMe('Successfully updated your data!');
+                    }.bind(this),
+                    error: function(response) {
+                        // fail notification
+                        this.refs.failNotification.showMe('Server replied with error!');
+                    }
+            });
+        }
     }
 
     render() {
         return (
             <div>
+            <SuccessNotification ref="successNotification" />
+            <FailNotification ref="failNotification" />
             <div className="profile-header">
                 <div id="data-container" className="container">
 
@@ -165,7 +177,7 @@ class UserData extends React.Component {
 
                         <div className="col-md-3">
                             <span>
-                                <p id="headerFullName">{this.state.api_output.full_name}</p>
+                                <p id="headerFullName">{this.state.fullName}</p>
                                 <p id="headerEmail">{this.state.api_output.email}</p>
                             </span>
                         </div>
@@ -232,7 +244,7 @@ class UserData extends React.Component {
                     </form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <button className="btn btn-default" onClick={this._close}>Close</button>
+                    <button className="btn btn-default" onClick={this._close}>Cancel</button>
                     <button className="btn btn-danger" onClick={this._revert} type="button">Revert</button>
                     <label className="btn btn-success" htmlFor="submit-form">Save</label>
                </Modal.Footer>
@@ -244,6 +256,17 @@ class UserData extends React.Component {
 
 };
 
+let editBikeButton = function(bike, onDeleteCallBack){
+    if(bike.owner_id != localStorage['id']){
+        return null;
+    };
+    return (
+        <div className="pencil">
+            <Link type="button" className="material-icons add-bike-link" to={'/bike/' + bike.id}>edit</Link>
+            <a type="button" className="material-icons add-bike-link" onClick={onDeleteCallBack}>delete</a>
+        </div>
+    );
+};
 
 class Bike extends React.Component {
     // Render single card for the bike.
@@ -251,10 +274,13 @@ class Bike extends React.Component {
     constructor(props) {
         super(props);
         this.renderImg = this.renderImg.bind(this);
+        this.onDelete = this.onDelete.bind(this);
     }
 
+    onDelete(e){
+        this.confirmDeleteBike.showMe();
+    };
 
-    
     renderImg() {
         if (this.props.bike.images_urls == null) {
             return (
@@ -273,10 +299,15 @@ class Bike extends React.Component {
     render () {
         return (
         <div className="my-card col-md-5">
-
+            <ConfirmModal ref={(modal) => { this.confirmDeleteBike = modal; }}
+                titleText='Confirm deleting'
+                question={`You are about to delete the bike ${this.props.bike.name}`}
+                okText='Proceed'
+                onOk={e => {this.props.deleteBike(this.props.bike.index); this.confirmDeleteBike.closeMe();}}
+            />
             <div>
                 <h4 className="item-name">{this.props.bike.name}</h4>
-                <span id="location-icon" className="material-icons pencil">edit</span>
+                { editBikeButton(this.props.bike, this.onDelete) }
             </div>
             {this.renderImg()}
             <div className="card-block">
@@ -295,7 +326,7 @@ class BikesRow extends React.Component {
             <div className="row">
                 {
                     this.props.bikesPair.map((bike, index) => (
-                        <Bike key={index} bike={bike} />
+                        <Bike key={index} bike={bike} deleteBike={this.props.deleteBike}/>
                     ))
                 }
             </div>
@@ -305,9 +336,13 @@ class BikesRow extends React.Component {
 
 class BicycleData extends React.Component {
     // Render data about all user's bikes.
-
-    state = {
-        api_output: ''
+    constructor(props) {
+        super(props);
+        this.state = {
+            api_output: ''
+        }
+        this.deleteBike = this.deleteBike.bind(this);
+        this.indexBikes = this.indexBikes.bind(this);
     }
 
     componentWillMount() {
@@ -315,8 +350,6 @@ class BicycleData extends React.Component {
         //  $.get("/api/user_bikes_data/"+this.props.owner_id+"/",
         $.get(`/api/user_bikes_data/${this.props.owner_id}/`,   
             function (response) {
-                console.log('user_bikes_data api output: ');
-                console.log(JSON.stringify(response));
                 this.setState ({
                         api_output: response
                     });
@@ -325,10 +358,52 @@ class BicycleData extends React.Component {
 
     }
 
+    componentWillUnmount() {
+        if (this.serverRequest)
+        this.serverRequest.abort();
+    };
+
+    deleteBike(index){
+        this.serverRequest = $.post(
+            {
+                url: '/api/bike/delete',
+                data: JSON.stringify(
+                    {pk: this.state.api_output[index].id,
+                        token: localStorage['token']}
+                    ),
+                dataType: "json",
+                success: function (data) {
+                            let message = "The bicycle " + this.state.api_output[index].name + " is deleted";
+                            // console.log(message);
+                            this.props.successNotification.showMe(message);
+                            let api_output = this.state.api_output;
+                            api_output.splice(index, 1);
+                            this.setState({api_output: api_output});
+                        }.bind(this)
+                        }
+            ).fail(function(data) {
+                // console.log(data);
+                let message = "Sorry. Something is wrong: " + data.responseText;
+                this.props.failNotification.showMe(message);
+            }.bind(this)
+            );
+    };
+
+    indexBikes(){
+        let i = 0;
+        for (i = 0; i < this.state.api_output.length; i++){
+            this.state.api_output[i].index = i;
+        }
+    };
+
     render() {
         if (this.state.api_output[0] == undefined) {
             return (<p>No bikes were added</p>);
         } else {
+            this.indexBikes();
+            let deleteBike = this.deleteBike;
+            let successNotification = this.props.successNotification;
+            let failNotification = this.props.failNotification;
             return (
                 <div className="container">
                 {
@@ -339,7 +414,7 @@ class BicycleData extends React.Component {
                         pairs[pairs.length -1].push(bike);
                         return pairs;
                     }, []).map(function(pair, index) {
-                        return (<BikesRow key={index} bikesPair={pair} />)
+                        return (<BikesRow key={index} bikesPair={pair} deleteBike={deleteBike}/>)
                     })
                 }
                 </div>
@@ -556,6 +631,17 @@ class ParkingsData extends React.Component {
 
 };
 
+let addBikeButton = function(user_id){
+    if(user_id != localStorage['id']){
+        return null;
+    };
+    return (
+        <div className="add-bike-button">
+            <Link type="button" id="add-bike-link" to='/bike/create'>Add</Link>
+        </div>
+    );
+};
+
 class Profile extends React.Component {
     // Render components with user's data, bikes, places and parkings.
     render() {
@@ -566,8 +652,15 @@ class Profile extends React.Component {
 
             <UserData user_id={this.user_id}/>
 
-            <h4>My bikes</h4>
-            <BicycleData owner_id={this.user_id} />
+            <h4>My bikes
+                {addBikeButton(this.props.params['user_id'])}
+            </h4>
+                
+            <BicycleData owner_id={this.user_id} 
+                successNotification={this.props.children.father.refs.successNotification}
+                failNotification={this.props.children.father.refs.failNotification}
+                history={this.props.history}
+            />
 
             <h4>Places added by me</h4>
             <PlacesData owner_id={this.user_id} />

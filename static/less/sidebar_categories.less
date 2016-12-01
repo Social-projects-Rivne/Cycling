@@ -1,10 +1,159 @@
-/*ACTIVE CATEGORIES LIST STYLE*/
+/* SIDEBAR CONTROLLER */
+
+/* common styles */
+.toggle-arrow
+{
+  float: right;
+  margin: 10px 10px 0px 0px;
+  cursor: pointer;
+}
+/* end of common styles */
+
+/* map layers styles */
+.layers-expand {
+    color: #999999;
+}
+
+.layers-expand:hover {
+    background-color: #ccc;
+    cursor: pointer;
+    color: #fff;
+}
+
+.layers-expand .toggle-arrow
+{
+    transition: ease-out transform .3s;
+}
+
+.layers-expand.collapsed .toggle-arrow
+{
+    transform: rotateX(180deg);
+    transition: ease-out transform .3s;
+}
+
+.layers-ul {
+    list-style: none;
+    text-decoration: none;
+    text-transform: capitalize;
+    padding-left: 5px;
+    padding-right: 5px;
+    background-color: #d3d3d3;
+}
+
+.layers-li {
+    line-height: 25px !important;
+    cursor: pointer;
+}
+
+.layers-li-active {
+    background-color: #106CC8;
+    color: #d3d3d3;
+}
+
+.layers-li-active:hover {
+    background-color: #1E90FF;
+}
+
+.layers-li-unactive {
+    color: #0b4680;
+}
+
+.layers-li-unactive:hover {
+    background-color: #999999;
+}
+/* end of map layers styles */
+
+/* display objects list styles */
+.display-expand {
+    color: #999999;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.display-expand:hover {
+    background-color: #ccc;
+    cursor: pointer;
+    color: #fff;
+}
+
+.display-expand .toggle-arrow
+{
+    transition: ease-out transform .3s;
+}
+
+
+.display-expand.collapsed .toggle-arrow
+{
+    transform: rotateX(180deg);
+    transition: ease-out transform .3s;
+}
+
+.display-ul
+{
+    list-style: none;
+    text-decoration: none;
+    text-transform: capitalize;
+    padding-left: 5px;
+    padding-right: 5px;
+    background-color: #d3d3d3;
+}
+
+.display-li
+{
+    line-height: 25px !important;
+    cursor: pointer;
+}
+
+.display-li-active
+{
+    background-color: #106CC8;
+    color: #d3d3d3;
+}
+
+.display-li-active:hover
+{
+    background-color: #1E90FF;
+}
+
+.display-li-unactive
+{
+    color: #0b4680;
+}
+
+.display-li-unactive:hover
+{
+    background-color: #999999;
+}
+/* end of display objects list styles */
+
+/* categories list styles */
+
+.categories-expand {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+}
+
+.categories-ul.collapse {
+
+}
+
+.categories-expand:hover {
+
+}
+
 .categories-ul {
-  list-style: none;
-  text-decoration: none;
-  text-transform: capitalize;
-  padding-left: 5px;
-  background-color: @light-grey;
+    list-style: none;
+    text-decoration: none;
+    text-transform: capitalize;
+    padding-left: 5px;
+    padding-right: 5px;
+    background-color: #106CC8;
+
 }
 
 .categories-li {
@@ -12,41 +161,72 @@
   cursor: pointer;
 }
 
-.ctg-li-active {
-  background-color: @deep-blue;
-  color: @light-grey;
+.categories-li-active {
+  background-color: #094Ca8;
+  color: #d3d3d3;
 }
 
-.ctg-li-active:hover {
-  background-color: @light-blue;
+.categories-li-active:hover {
+  background-color: #1E90FF;
 }
 
-.ctg-li-unactive {
+.categories-li-unactive {
+  color: #0b4680;
+  background-color: #d3d3d3;
+}
+
+.categories-li-unactive:hover {
+  background-color: #999999;
+}
+
+/* end of categories list styles */
+
+
+/* map markers list style */
+
+#markers-obj .toggle-arrow
+{
+    transition: ease-out transform .3s;
+}
+
+#markers-obj.collapsed .toggle-arrow
+{
+    transform: rotateX(180deg);
+    transition: ease-out transform .3s;
+}
+
+#markers-obj
+{
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.markers-ul {
+  list-style: none;
+  text-decoration: none;
+  text-transform: capitalize;
+  padding-left: 5px;
+  background-color: #aaa;
+  color: #999999;
+}
+
+.markers-li{
+    line-height: 30px !important;
+    cursor: pointer;
+}
+
+.markers-li-active {
+    background-color: #106CC8;
+    color: #d3d3d3;
+}
+
+.markers-li-unactive {
   color: #0b4680;
 }
 
-.ctg-li-unactive:hover {
-  background-color: @deep-grey;
-}
-
-.toggle-arrow
-{
-    float: right;
-    margin: 10px 10px 0px 0px;
-    cursor: pointer;
-}
-
-#display-obj
-{
-    color: @deep-grey;
-}
-
-#display-obj:hover
-{
-    background-color: @simple-grey;
-    cursor: pointer;
-    color: @white;
-}
+/* end of map markers list style */
 
 #display-obj .toggle-arrow
 {
@@ -59,7 +239,7 @@
     transition: ease-out transform .3s;
 }
 
-.li-name, 
+.li-name,
 #display-obj
 {
     -webkit-user-select: none;

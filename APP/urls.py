@@ -1,17 +1,23 @@
 from django.conf.urls import url
 
-from .views import index, auth, points, place, parking, stolen_bike, user
+from .views import index, auth, points, place, parking, stolen_bike, user,\
+                   bike
 
 urlpatterns = [
     url(r'^login$', auth.login, name='login'),
     url(r'^registration$', auth.registration),
     url(r'^marker_details$', points.marker_details),
+    url(r'^edit_marker_details$', points.edit_marker_details),
     url(r'^places/search$', points.get_places_by_points, name='get_places_by_points'),
     url(r'^places/create$', place.create_place, name='create_place'),
     url(r'^parkings/search$', points.get_parkings_by_points, name='get_parkings_by_points'),
     url(r'^parkings/create$', parking.create_parking, name='create_parking'),
     url(r'^stolen/search$', points.get_stolen_bikes_by_points, name='get_stolen_bikes_by_points'),
     url(r'^stolen/create$', stolen_bike.create_stolen, name='create_stolen'),
+    url(r'^bike/create$', bike.create, name='create_bike'),
+    url(r'^bike/(?P<bike_id>[0-9]+)/$', bike.by_id, name='get_bike'),
+    url(r'^bike/edit$', bike.edit, name='edit_bike'),
+    url(r'^bike/delete$', bike.delete, name='delete_bike'),
     url(r'^tokenvalid$', user.check_token, name='check_token'),
     url(r'^categories$', points.get_categories, name='get_categories'),
     url(r'^avatar$', user.get_avatar, name='get_avatar'),

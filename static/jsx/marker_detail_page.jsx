@@ -17,19 +17,25 @@ export class MarkerDetails extends React.Component {
 			marker_id: this.props.params.id,
 			marker_value: "",
 			full_street: "",
+			name_change: "",
+			number_change: 0,
+			desc_change: "",
+			from_hour_select: 0,
+			to_hour_select: 0,
+			is_free_select: 0,
+			is_secure_select: 0,
 			hoursList: [...Array(24).keys()],
 		};
 		this.ajaxSuccess = this.ajaxSuccess.bind(this);
 		this.streetAjaxSuccess = this.streetAjaxSuccess.bind(this);
 		this.changeValue = this.changeValue.bind(this);
+		this.confirmEdit = this.confirmEdit.bind(this);
+		this.ajaxEditSuccess = this.ajaxEditSuccess.bind(this);
+		this.handleRevert = this.handleRevert.bind(this);
 	}
 
-	componentWillMount() {
-		/*
-		 * Cheks if localStorage doesn't have token
-		 * and redirect to login page
-		 */
-        if (!localStorage['token']) {
+	markerData(){
+		if (!localStorage['token']) {
             browserHistory.push("/login");
         }
         else
@@ -42,6 +48,14 @@ export class MarkerDetails extends React.Component {
       			success: this.ajaxSuccess
 			});
         }
+	}
+
+	componentWillMount() {
+		/*
+		 * Cheks if localStorage doesn't have token
+		 * and redirect to login page
+		 */
+        this.markerData();
     }
 
 	streetAjaxSuccess(response){
@@ -53,8 +67,13 @@ export class MarkerDetails extends React.Component {
 		this.setState({
 			street: response.display_name,
 			full_street: response.address,
-			selectOne: this.state.marker_value.from_hour,
-			selectTwo: this.state.marker_value.to_hour
+			name_change: this.state.marker_value.name,
+			number_change: this.state.marker_value.amount,
+			desc_change: this.state.marker_value.description,
+			from_hour_select: this.state.marker_value.from_hour,
+			to_hour_select: this.state.marker_value.to_hour,
+			is_free_select: this.state.marker_value.is_free ? 1 : 0,
+			is_secure_select: parseInt(this.state.marker_value.security)
 		});
 	}
 
@@ -124,6 +143,7 @@ export class MarkerDetails extends React.Component {
 					<h3 className="detail-cards-header">Info</h3>
 					<p>Amount of this parking is {this.state.marker_value.amount}</p>
 					<p>{parseInt(this.state.marker_value.security) ? "This parking is secure" : "This parking isn't secure"}</p>
+					<p>{this.state.marker_value.is_free ? "This parking is free" : "This parking isn't free"}</p>
 				</div>
 			)
 		}
@@ -158,37 +178,36 @@ export class MarkerDetails extends React.Component {
 	descriptionEditCondition(){
 			if(this.state.marker_type !== "Parking"){
 				return (
-					<BaseInput style="width: 70% !important" name="desc_change" valChange={this.changeValue} 
-				    icon="content_paste" value={this.state.name_change} placeholder="Edit description of the marker">
-					</BaseInput>
+					<div className="control-group reg-log edit-div">
+          				<div className="controls">
+						    <label className="edit-label">Edit description</label>
+              				<span className="material-icons input-icons desc-icon">content_paste</span>
+              				<textarea className="edit-input" rows="2" type="text" name="desc_change" placeholder="Edit description of the marker"
+              				className="input-xlarge edit-input" value={this.state.desc_change} onChange={this.changeValue}></textarea>
+          				</div>
+      				</div>
 				);
 			}
 		}
-	
-	handleSelect(event){
-		this.setState({
-			select1: event.target.value
-		});
-	}
 
 	infoEditCondition(){
 		if(this.state.marker_type === "Place"){
 			return (
 				<div className="select-div">
-					<div>
+					<div className="edit-div">
+						<label className="edit-label">Edit works to...</label>
 						<span className="material-icons input-icons">hourglass_empty</span>
-						<select name="selectOne" onChange={this.changeValue}
-						value={this.state.selectOne} id="hour-select">
-                    	    <option>--</option>
+						<select className="edit-input" name="from_hour_select" onChange={this.changeValue}
+						value={this.state.from_hour_select}>
                     		{this.state.hoursList.map((hour)=>(<option key={hour} value={hour}>{hour}</option>))}
                     	</select>
 					</div>
 
-					<div>
+					<div className="edit-div">
+						<label className="edit-label">Edit works to...</label>
 						<span className="material-icons input-icons">hourglass_full</span>
-						<select name="selectTwo" onChange={this.changeValue}
-						value={this.state.selectTwo} id="hour-select">
-                    	    <option>--</option>
+						<select className="edit-input" name="to_hour_select" onChange={this.changeValue}
+						value={this.state.to_hour_select}>
                     		{this.state.hoursList.map((hour)=>(<option key={hour} value={hour}>{hour}</option>))}
                     	</select>
 					</div>
@@ -198,32 +217,92 @@ export class MarkerDetails extends React.Component {
 		else if(this.state.marker_type === "Parking"){
 			return (
 				<div className="select-div">
-					<div>
-					<span className="material-icons input-icons">hourglass_empty</span>
-						<select name="parkingSelectOne" onChange={this.changeValue}
-						value={this.state.parkingSelectOne} id="hour-select"> 
-                    	    <option>--</option>
+					<div className="edit-div">
+						<label className="edit-label">Edit cost</label>
+						<span className="material-icons input-icons">attach_money</span>
+						<select name="is_free_select" onChange={this.changeValue}
+						value={this.state.is_free_select} className="edit-input"> 
                     		<option value="0">not free</option>
                             <option value="1">free</option>
                     	</select>
 					</div>
 
-					<div>
-						<span className="material-icons input-icons">hourglass_empty</span>
-						<select name="parkingSelectTwo" onChange={this.changeValue}
-						value={this.state.parkingSelectTwo} id="hour-select">
-                    	    <option>--</option>
+					<div className="edit-div">
+						<label className="edit-label">Edit security</label>
+						<span className="material-icons input-icons">security</span>
+						<select name="is_secure_select" onChange={this.changeValue}
+						value={this.state.is_secure_select} className="edit-input">
                     		<option value="0">no</option>
-                            <option value="1">good</option>
-                            <option value="2">high</option>
+                            <option value="1">yes</option>
                     	</select>
 					</div>
+					<div className="control-group reg-log edit-div">
+          			    <div className="controls">
+						  <label className="edit-label">Edit number of places</label>
+              				<span className="material-icons input-icons">directions_bike</span>
+              				<input type="number" name="number_change" placeholder="Edit amount of parking places"
+              				className="input-xlarge edit-input" value={this.state.number_change} onChange={this.changeValue}/>
+          				</div>
+      				</div>
 				</div>
 			);
 		}
 	}
-	
 
+	handleRevert(event){
+		event.preventDefault;
+		this.setState({
+			name_change: this.state.marker_value.name,
+			number_change: this.state.marker_value.amount,
+			desc_change: this.state.marker_value.description,
+			from_hour_select: this.state.marker_value.from_hour,
+			to_hour_select: this.state.marker_value.to_hour,
+			is_free_select: this.state.marker_value.is_free ? 1 : 0,
+			is_secure_select: parseInt(this.state.marker_value.security)
+		});
+	}
+
+	ajaxEditSuccess(response){
+		if(response["Success"]){
+			this.markerData();
+		}
+		else if(response["Error"]){
+			console.log("Error occured...");
+		}
+	}
+
+	confirmEdit(event){
+		event.preventDefault;
+		let data;
+		if(this.state.marker_type === "Parking"){
+			data = {
+				type: "Parking",
+				id: this.state.marker_id,
+				name: this.state.name_change,
+				amount: this.state.number_change,
+				security: this.state.is_secure_select,
+				is_free: this.state.is_free_select
+			}
+		}
+		else if(this.state.marker_type === "Place"){
+			data = {
+				type: "Place",
+				id: this.state.marker_id,
+				name: this.state.name_change,
+				description: this.state.desc_change,
+				from_hour: this.state.from_hour_select,
+				to_hour: this.state.to_hour_select
+			}
+		}
+		$.ajax({
+           	type: 'POST',
+           	url: '/api/edit_marker_details',
+           	dataType: "json",
+           	data: data,
+           	success: this.ajaxEditSuccess
+        });
+	}
+	
 	renderEdit()
 	{
 		if(this.state.marker_value.owner == localStorage['id']){
@@ -232,6 +311,7 @@ export class MarkerDetails extends React.Component {
 					<div className="marker-edit-button" data-toggle="modal" data-target="#myModal"><span>Edit marker</span></div>
 					{/*<button type="button" className="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>*/}
 
+					{/* Need to togle class name and/or toggle style display: none */}
 					<div id="myModal" className="modal fade" role="dialog">
 					  <div className="modal-dialog">
 				  
@@ -241,14 +321,21 @@ export class MarkerDetails extends React.Component {
 					          <h4 className="modal-title">Edit marker</h4>
 					      </div>
 					      <div className="modal-body">
-					      	  <BaseInput name="name_change" valChange={this.changeValue} 
-							   icon="account_circle" value={this.state.name_change} placeholder="Edit your name">
-							  </BaseInput>
+							  <div className="control-group reg-log edit-div">
+          					      <div className="controls">
+									  <label className="edit-label">Edit marker name</label>
+              				          <span className="material-icons input-icons">account_circle</span>
+              				          <input type="text" name="name_change" placeholder="Edit your name"
+              				          className="input-xlarge edit-input" value={this.state.name_change} onChange={this.changeValue}/>
+          				          </div>
+      				          </div>
 						      { this.descriptionEditCondition() }
 							  { this.infoEditCondition() }
 						  </div>
 				         <div className="modal-footer">
-				        	  <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
+						 	  <div name="cancel" type="submit" className="btn" id="edit-modal-button" className="edit-close" data-dismiss="modal"><span>Cancel</span></div>
+							  <div name="revert" type="submit" className="btn" id="edit-modal-button" className="edit-revert" onClick={this.handleRevert}><span>Revert</span></div>
+							  <div name="confirm" type="submit" className="btn" id="edit-modal-button" className="edit-confirm" onClick={this.confirmEdit} data-dismiss="modal"><span>Confirm</span></div>
 				         </div>
 				    </div>
 				
@@ -261,7 +348,6 @@ export class MarkerDetails extends React.Component {
 
 	render() {
 		//Render method of marker details component
-		console.log(this.state.marker_value);
 		if(!this.state.error) {
 			return (
 				<div className="container-fluid marker-details-content">

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+import logging
 from ConfigParser import SafeConfigParser
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -30,6 +31,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [i[1] for i in config.items('ALLOWED_HOSTS')]
 
+LOGGING_CONFIG = logging.config.fileConfig('logging.conf', disable_existing_loggers=False)
 # Application definition
 
 INSTALLED_APPS = [

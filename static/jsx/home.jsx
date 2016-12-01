@@ -27,7 +27,7 @@ class Home extends React.Component{
         <NewPlaceModal ref="newPlaceModal" father={this}/>
         <NewParkingModal ref="newParkingModal" father={this}/>
         <NewPointerModal ref="newPointerModal" father={this}/>
-        <MapComponent ref="map" father={this} newPointer={this.showNewPointerModal} categories = {this.props.categories}/>
+        <MapComponent ref="map" father={this} newPointer={this.showNewPointerModal} map_settings = {this.props.map_settings}/>
       </div>
     )
   }
