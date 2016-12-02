@@ -306,7 +306,7 @@ class Bike extends React.Component {
                 onOk={e => {this.props.deleteBike(this.props.bike.index); this.confirmDeleteBike.closeMe();}}
             />
             <div>
-                <h4 className="item-name">{this.props.bike.name}</h4>
+                <h4 className="item-name bike-header">{this.props.bike.name}</h4>
                 { editBikeButton(this.props.bike, this.onDelete) }
             </div>
             {this.renderImg()}
@@ -435,11 +435,11 @@ class Place extends React.Component {
     renderImg() {
         if (this.props.place.images_urls == null) {
             return (
-                <img src="" alt="No picture was provided yet" />
+                <img src="" alt="No picture was provided yet" className="img-responsive item-image"/>
             )
         } else {
             return (
-            <img src={this.props.place.images_urls[0].url} 
+            <img src={this.props.place.images_urls[0].url}
                 className="img-responsive item-image"
                 alt="image unavailable" />
             )
