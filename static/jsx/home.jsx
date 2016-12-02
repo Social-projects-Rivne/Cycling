@@ -19,7 +19,6 @@ class Home extends React.Component{
   };
 
   render(){
-    // console.log("RENDER Home, categories: ", this.props.categories);
     return (
       <div>
         <SuccessNotification ref="successNotification" father={this} />

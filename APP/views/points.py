@@ -19,15 +19,15 @@ def marker_details(request):
         result_dict = dict()
         try:
             table = str(request.GET.get("type"))
-            ID = int(request.GET.get("id"))
-            targer_class = None
+            object_id = int(request.GET.get("id"))
+            target_class = None
             if table == "StolenBike":
                 target_class = StolenBike
             elif table == "Place":
                 target_class = Place
             elif table == "Parking":
                 target_class = Parking
-            data = target_class.objects.filter(pk=ID).first()
+            data = target_class.objects.filter(pk=object_id).first()
             result_dict["marker_details"] = serializers.serialize("json", [data])
             return JsonResponse(result_dict)
         except:
@@ -73,11 +73,12 @@ def get_points(request, model_cls):
     """
 
     def str_to_point(txt_point):
+        """Docstring"""
         return [float(x) for x in txt_point.split(',')]
 
     if request.method == 'GET':
-        sw_point = str_to_point(request.GET.get('sw', '44.3, 37.2'))
-        ne_point = str_to_point(request.GET.get('ne', '44.1, 37.4'))
+        sw_point = str_to_point(request.GET.get('sw'))
+        ne_point = str_to_point(request.GET.get('ne'))
 
         entities = model_cls.objects
 

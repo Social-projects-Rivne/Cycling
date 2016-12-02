@@ -123,17 +123,16 @@ class BikeForm extends React.Component{
       };
     return (
                 <div>
-                    <h4>{this.formTitle}</h4>
-                    <form>
+                    <h4 className="add-bike-header">{this.formTitle}</h4>
+                    <form className="add-bike-form">
                         <div className = "form-group">
-                            <input type = "text" className = "form-control" placeholder = "Name"
+                            <input className="edit-input" type = "text" placeholder = "Name"
                                 value={this.state.nameValue}
                                 onChange={this.nameChange}
-                                style={this.getStyle(this.state.nameError)}
-                            />
+                                style={this.getStyle(this.state.nameError)}/>
                         </div>
                         <div className="form-group">
-                            <textarea className="form-control" rows="3" id="description" placeholder="Description"
+                            <textarea className="edit-input" rows="3" id="description" placeholder="Description"
                                 value={this.state.descriptionValue}
                                 onChange={this.descriptionChange}>
                             </textarea>
@@ -143,15 +142,15 @@ class BikeForm extends React.Component{
                             {this.state.imagesList.map(
                                 (image, index)=>(image.toDelete? null :
                                     <div className="form-inline" key={index}>
-                                        <input type = "text" className = "form-control" placeholder = "Image URL"
+                                        <input className="edit-input" type = "text" placeholder = "Image URL"
                                             value={image.url}
                                             onChange={e => {this.urlChange(e, index);}}
                                         />
-                                        <div className="btn-group">
-                                            <span className="btn btn-default material-icons" type="button"
+                                        <div className="btn-group add-remove">
+                                            <span className="add-bike-button plus-minus material-icons" type="button"
                                                 onClick={this.addImg}
                                             >add</span>
-                                            <span className="btn btn-default material-icons" type="button"
+                                            <span className="add-bike-button plus-minus material-icons" type="button"
                                                 onClick={e => {this.deleteImg(e, index);}}
                                             >remove</span>
                                         </div>
@@ -160,7 +159,7 @@ class BikeForm extends React.Component{
                             )}
                         </div>
 
-                        <button type="button" className="btn btn-default" onClick={this.submit}>Submit</button>
+                        <div type="button" className="add-bike-button submit-bike-add" onClick={this.submit}>Submit</div>
                     </form>
                 </div>
     )

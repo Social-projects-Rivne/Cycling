@@ -69,7 +69,7 @@ class UserData extends React.Component {
     renderEditButtonIfLogged() {
         // Make edit button to be rendered only on the profile page
         // of logged-in user.
-        if (this.props.user_id === localStorage['id']) {
+        if (this.state.api_output.id == localStorage['id']) {
             return (
                 <button id="editUserButton" type="button"
                     className="btn btn-default center-block" onClick={this._open}>
@@ -261,10 +261,10 @@ let editBikeButton = function(bike, onDeleteCallBack){
         return null;
     };
     return (
-        <span className="btn-group material-icons pencil">
-            <Link type="button" className="btn btn-default btn-xs" to={'/bike/' + bike.id}>edit</Link>
-            <a type="button" className="btn btn-default btn-xs" onClick={onDeleteCallBack}>delete</a>
-        </span>
+        <div className="pencil">
+            <Link type="button" className="material-icons add-bike-link" to={'/bike/' + bike.id}>edit</Link>
+            <a type="button" className="material-icons add-bike-link" onClick={onDeleteCallBack}>delete</a>
+        </div>
     );
 };
 
