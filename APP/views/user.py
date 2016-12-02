@@ -13,7 +13,7 @@ from APP.utils.need_token import need_token
 def get_user_data(request, user_id):
     """Gets User data from db (except password column) and returns it
     as JsonResponse
-    { is_active: true, role_id: "0", is_logged_in: false,
+    { id: 102, is_active: true, role_id: "0", is_logged_in: false,
     full_name: "John Doe", email: "ekim0@ox.ac.uk",
     avatar: "http://road.cc/sites/default/files/…" }
     """
@@ -21,7 +21,7 @@ def get_user_data(request, user_id):
         # what about to use .filter instead of .get? cause .values loads all
         # usrs and only then select from them pk=user_id.
         # think bout it, pls
-        user_data = User.objects.values('full_name', 'email', 'is_active',
+        user_data = User.objects.values('id', 'full_name', 'email', 'is_active',
                                         'avatar', 'role_id').get(pk=user_id)
         user_data['is_logged_in'] = True if user_data['email'] in request.session else False
 
