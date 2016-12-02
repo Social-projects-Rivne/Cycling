@@ -61,7 +61,6 @@ export default class StolePage extends React.Component {
             data: dataObj,
             success: function success(data) {
 
-                console.log(data);
                 if ("data" in data){
 
                     let old_data = this.state.data;
