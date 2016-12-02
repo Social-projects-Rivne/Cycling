@@ -1,4 +1,6 @@
 @card-border: 5px;
+@card-container-bg-color: @white;
+@card-header-line-color: @light-grey;
 
 .card-container {
     cursor: pointer;
@@ -11,7 +13,7 @@
 .card-body {
     margin: 10px;
     border-radius: @card-border;
-    background-color: #fff;
+    background-color: @card-container-bg-color;
     min-width: 200px;
     width: 30%;
     position: relative;
@@ -42,9 +44,9 @@
     border-radius: @card-border @card-border 0 0;
 }
 
-.card-top-content:hover {
-    background-color: @light-grey;
-}
+// .card-top-content:hover {
+//     background-color: @light-grey;
+// }
 
 .card-icon {
 }
@@ -72,4 +74,31 @@
     margin-left: 10px;
     position: relative;
     vertical-align: super;
+    font-weight: bold;
+}
+
+.card-header-h {
+    width: 100%;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.card-header-h::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    border-top: solid 2px @card-header-line-color;
+    z-index: -1;
+}
+
+.card-header-span {
+    margin: 0;
+    padding: 0 5px;
+    border-radius: 2px;
+    color: @white;
+    background: @card-header-line-color;
+    display: inline-block;
 }

@@ -78,5 +78,9 @@ def get(request):
                 "image": image.url
             }
         })
-
-    return JsonResponse({"data": result})
+    
+    return JsonResponse({
+        "data": result,
+        "count": len(result),
+        "count_all": StolenBike.objects.count()
+    })
