@@ -8,13 +8,6 @@ import placesMarkers        from './markers/places_markers.jsx';
 import createPointerPopup, {MyPopup} from './popups/create_pointer.jsx';
 import SilverMarker            from './markers/silver_marker.jsx';
 
-let stored_layer = () => (localStorage['map_layer'] || 'MapBox');
-let show_parkings = () => (localStorage['show_parkings'] === 'true');
-let show_places = () => (localStorage['show_places'] === 'true');
-let show_stolens = () => (localStorage['show_stolens'] === 'true');
-let center_lat = () => (localStorage['center_lat'] ? parseFloat(localStorage['center_lat']) : 50.619776);
-let center_lng = () => (localStorage['center_lng'] ? parseFloat(localStorage['center_lng']) : 26.251265);
-let zoom = () => (localStorage['zoom'] ? parseInt(localStorage['zoom']) : 16);
 
 class MapComponent extends React.Component {
   constructor(props) {
@@ -231,58 +224,86 @@ class MapComponent extends React.Component {
     });
   };
 
+    getParkingMarkersView(){
+
+        if (this.props.map_settings.show_parkings()){
+            return (
+                <FeatureGroup color='green'>
+                  {parkingsMarkers(this.state.parkings)}
+                </FeatureGroup>
+            );
+        }
+        else{
+            return null;
+        }
+
+    }
+
+    getPlaceMarkersView(){
+
+        if (this.props.map_settings.show_places()){
+            return (
+                <FeatureGroup color='blue'>
+                  {placesMarkers(this.state.places, this.props.map_settings.categories)}
+                </FeatureGroup>
+            );
+        }
+        else{
+            return null;
+        }
+
+    }
+
+    getStolenMarkersView(){
+
+        if (this.props.map_settings.show_stolens()){
+            return (
+                <FeatureGroup color='purple'>
+                  {stolenMarkers(this.state.stolens)}
+                </FeatureGroup>
+
+            );
+        }
+        else{
+            return null;
+        }
+
+    }
+
+
   render() {
-    const position = [center_lat(), center_lng()];
+    const position = [this.props.map_settings.center_lat(), this.props.map_settings.center_lng()];
+    const active_layer = this.props.map_settings.active_layer();
 
     return (
-      <Map center={position} zoom={zoom()}
-              zoomControl={false}
-              ref='map'
-              style={{height: 'calc(100vh - 51px)', width:'100vw'}}
-              onOverlayadd={this.onOverlayadd}
-              onBaselayerchange={this.onBaselayerchange}
-              onOverlayremove={this.onOverlayremove}
-              onMoveend={this.onBoundsChange}
-              // onDragend={this.onBoundsChange}
-              onZoomend={this.onBoundsChange}
-              onClick={this.onMouseClick}
-              // onContextmenu={this.onRightClick}
-              >
-        <ScaleControl position='bottomright'></ScaleControl>
-        <ZoomControl position='bottomleft'></ZoomControl>
-        <LayersControl position='topleft'>
-          {
-            layers_list.map((layer)=>(
-              <LayersControl.BaseLayer key={layer.name}
-                                       name={layer.name}
-                                       checked={layer.name === stored_layer()}>
-                <TileLayer
-                  attribution={layer.attribution}
-                  url={layer.url}
-                />
-              </LayersControl.BaseLayer>
-            ))
-          }
+        <Map center={position} zoom={this.props.map_settings.zoom()}
+                zoomControl={false}
+                ref='map'
+                style={{height: 'calc(100vh - 51px)', width:'100vw'}}
+                onOverlayadd={this.onOverlayadd}
+                onBaselayerchange={this.onBaselayerchange}
+                onOverlayremove={this.onOverlayremove}
+                onMoveend={this.onBoundsChange}
+                // onDragend={this.onBoundsChange}
+                onZoomend={this.onBoundsChange}
+                onClick={this.onMouseClick}
+                // onContextmenu={this.onRightClick}
+                >
+            <TileLayer
+                attribution={active_layer.attribution}
+                url={active_layer.url}
+            />
+            <ScaleControl position='bottomright'></ScaleControl>
+            <ZoomControl position='bottomleft'></ZoomControl>
 
-          <LayersControl.Overlay name='Parkings' checked={show_parkings()} >
-            <FeatureGroup color='green'>
-              {parkingsMarkers(this.state.parkings)}
-            </FeatureGroup>
-          </LayersControl.Overlay>
+            {this.getParkingMarkersView()}
 
-          <LayersControl.Overlay name='Places' checked={show_places()} >
-            <FeatureGroup color='blue'>
-              {placesMarkers(this.state.places, this.props.categories)}
-            </FeatureGroup>
-          </LayersControl.Overlay>
+            {this.getPlaceMarkersView()}
 
-          <LayersControl.Overlay name='Stolen bicycles' checked={show_stolens()} >
-            <FeatureGroup color='purple'>
-              {stolenMarkers(this.state.stolens)}
-            </FeatureGroup>
-          </LayersControl.Overlay>
-        </LayersControl>
-        {this.state.silverMarkerLatLng ? <SilverMarker position={this.state.silverMarkerLatLng} /> : null}
+            {this.getStolenMarkersView()}
+
+
+            {this.state.silverMarkerLatLng ? <SilverMarker position={this.state.silverMarkerLatLng} /> : null}
       </Map>
     );
   }

@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
+import logging
+import logging.config
+
 
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Cycling.settings")
@@ -20,4 +23,6 @@ if __name__ == "__main__":
                 "forget to activate a virtual environment?"
             )
         raise
+    # initializing logging
+    logging.config.fileConfig('logging.conf', disable_existing_loggers=False)
     execute_from_command_line(sys.argv)

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+import logging
 from ConfigParser import SafeConfigParser
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -28,13 +29,12 @@ SECRET_KEY = '+#alll+=%$)3(0@yy*tgf264m)h-lx*sdytyst#%c$=-yf8u&o'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = [i[1] for i in config.items('ALLOWED_HOSTS')]
 
+LOGGING_CONFIG = logging.config.fileConfig('logging.conf', disable_existing_loggers=False)
 
 # Application definition
-
 INSTALLED_APPS = [
-    # 'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -47,7 +47,6 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -81,10 +80,11 @@ DB_PASSWORD = config.get('DataBase', 'PASSWORD')
 DB_HOST = config.get('DataBase', 'HOST')
 DB_PORT = config.get('DataBase', 'PORT')
 DB_NAME = config.get('DataBase', 'NAME')
+DB_ENGINE = config.get('DataBase', 'ENGINE')
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.%s' % DB_ENGINE,
         'HOST': DB_HOST,
         'USER': DB_USER,
         'PASSWORD': DB_PASSWORD,
@@ -130,11 +130,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = config.get('Site', 'STATIC_URL')
 
 STATICFILES_DIRS = ((os.path.join(BASE_DIR, 'static')),
                     (os.path.join(BASE_DIR, 'node_modules')),
-                    )
-
-#                [latitude , longitude]
-RIVNE_LOCATION = [50.619776, 26.251265]
+                   )

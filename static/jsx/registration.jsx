@@ -64,7 +64,7 @@ class RegistrationComponent extends React.Component {
         });
         if(response['EmailError']){
             this.setState({
-                email_error: true
+                error_message: "Such account already exist!"
             });
         }
         else if(response['Success']){
@@ -131,6 +131,19 @@ class RegistrationComponent extends React.Component {
         }
     }
 
+    getErrorLabel() {
+      if (this.state.error_message){
+        return (
+          <center>
+            <div className="label label-danger">{this.state.error_message}</div>
+          </center>
+        );
+      }
+      else {
+        return null;
+      }
+    }
+
     render() {
         //Render form component, in case of successful registration route to login page
         if(!this.state.isRegistrated && !this.state.modal_text) {
@@ -138,6 +151,8 @@ class RegistrationComponent extends React.Component {
             <form className="form-horizontal registration-form">
                 <fieldset>
                     <h2 className="reg-log-header">Registration</h2>
+
+                    { this.getErrorLabel() }
 
                     <BaseInput value={this.state.name} name="name" placeholder="full name" icon="person_outline"
                     type="text" id="name-input-field" valChange={this.changeValue} error={this.state.name_error}/>
@@ -159,7 +174,7 @@ class RegistrationComponent extends React.Component {
 
                     <div className="control-group reg-log">
                         <div className="controls">
-                            <button type="submit" className="btn" id="register-button" onClick={this.submitAll}>Register</button>
+                            <div type="submit" className="btn" id="register-button" onClick={this.submitAll}><span>Register</span></div>
                         </div>
                     </div>
                 </fieldset>
