@@ -19,15 +19,15 @@ def marker_details(request):
         result_dict = dict()
         try:
             table = str(request.GET.get("type"))
-            ID = int(request.GET.get("id"))
-            targer_class = None
+            marker_id = int(request.GET.get("id"))
+            target_class = None
             if table == "StolenBike":
                 target_class = StolenBike
             elif table == "Place":
                 target_class = Place
             elif table == "Parking":
                 target_class = Parking
-            data = target_class.objects.filter(pk=ID).first()
+            data = target_class.objects.filter(pk=marker_id).first()
             result_dict["marker_details"] = serializers.serialize("json", [data])
             return JsonResponse(result_dict)
         except:
@@ -43,15 +43,15 @@ def edit_marker_details(request):
         result_dict = dict()
         try:
             table = str(request.POST["type"])
-            ID = int(request.POST["id"])
+            marker_id = int(request.POST["id"])
             target_class = None
             if table == "Place":
-                Place.objects.filter(pk=ID).update(name=request.POST["name"],
-                description=request.POST["description"], from_hour=request.POST["from_hour"], 
+                Place.objects.filter(pk=marker_id).update(name=request.POST["name"],
+                description=request.POST["description"], from_hour=request.POST["from_hour"],
                 to_hour=request.POST["to_hour"])
             elif table == "Parking":
-                Parking.objects.filter(pk=ID).update(name=request.POST["name"],
-                security=request.POST["security"], amount=request.POST["amount"], 
+                Parking.objects.filter(pk=marker_id).update(name=request.POST["name"],
+                security=request.POST["security"], amount=request.POST["amount"],
                 is_free=request.POST["is_free"])
             return JsonResponse({"Success": 1})
         except:
