@@ -13,10 +13,10 @@ from APP.models import User
 from APP.utils.validator import Validator
 from APP.utils.log_util import log_request
 
+
 valid_inputs = Validator()
 password_master = PasswordMaster()
 _logger = logging.getLogger(__name__)
-
 
 @csrf_exempt
 def login(request):
@@ -80,7 +80,6 @@ def login(request):
         'ok': 200,
         'id': user.id,
         'token': user.token})
-
 
 @csrf_exempt
 def registration(request):
