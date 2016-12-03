@@ -284,7 +284,7 @@ class Bike extends React.Component {
     renderImg() {
         if (this.props.bike.images_urls == null) {
             return (
-                <img src="" alt="No picture was provided yet" />
+                <img src="" alt="No picture was provided yet" className="img-responsive item-image" />
             )
         } else {
             return (
