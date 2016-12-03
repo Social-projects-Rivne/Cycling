@@ -115,7 +115,7 @@ export class SideBar extends React.Component {
         // Clears local storage forcing current user to log out and then
         // redirects to the /login page.
         event.preventDefault();
-        localStorage["token"] = null;
+        localStorage.removeItem("token");
         browserHistory.push('/login');
     }
 

@@ -1,7 +1,5 @@
 # -*- encoding: utf-8 -*-
-
 """Contains the view for creating a new place (store, cafe or bike service)"""
-
 import json
 
 from django.http import (HttpResponseBadRequest,
@@ -51,7 +49,7 @@ def create_place(request):
     kwargs['owner'] = User.objects.get(token=params['token'])
     try:
         place = Place.objects.create(**kwargs)
-        data = serializers.serialize("json", [place,])
+        data = serializers.serialize("json", [place, ])
         return HttpResponse(data, content_type="application/json")
     except Exception as e:
         return HttpResponseServerError(content=str(e))

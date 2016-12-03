@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-"""Contains registration and login"""
+"""Contains registration and login methods"""
 
 import json
 import logging
@@ -20,7 +20,8 @@ _logger = logging.getLogger(__name__)
 
 @csrf_exempt
 def login(request):
-    """
+    """Login request handler.
+
     This method handle user authentification on server.
     This mean it generate token to user.
     Request body:
@@ -38,20 +39,20 @@ def login(request):
         "error": <error text message>,
         "code": <error code>
     }
+
     Error codes (json parse error not included):
-      101* - missing email
-      102* - missing password
+      101 - missing email
+      102 - missing password
       103 - missing user with specified email
       104 - invalid password
 
-    * - this errors should be handled by client side ...
+    Author: Olexii
     """
     _logger.info("login request")
     log_request(request, _logger)
     try:
         data = json.loads(request.body)
     except ValueError:
-        _logger.info("json parse error")
         return json_parse_error()
 
     if 'email' not in data:
@@ -84,11 +85,15 @@ def login(request):
 
 @csrf_exempt
 def registration(request):
-    """Receive json with user credentials,
+    """Registration request handler
+
+    Receive json with user credentials,
     validate and in case of success add user
     with that credentials to database
     and return json with success
     or error in case of error.
+
+    Author: Dennys
     """
 
     if request.method == "POST":

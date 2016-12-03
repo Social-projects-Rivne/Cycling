@@ -1,12 +1,15 @@
 # -*- encoding: utf-8 -*-
-
 """Contains views relaited to objects with coordinates"""
+import logging
 
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 
 from APP.models import StolenBike, Parking, Place
+
+
+logger = logging.getLogger(__name__)
 
 
 def marker_details(request):
@@ -28,7 +31,10 @@ def marker_details(request):
             elif table == "Parking":
                 target_class = Parking
             data = target_class.objects.filter(pk=object_id).first()
-            result_dict["marker_details"] = serializers.serialize("json", [data])
+
+            result_dict["marker_details"] = serializers.serialize(
+                "json", [data])
+
             return JsonResponse(result_dict)
         except:
             return JsonResponse({"error": 1})
@@ -38,7 +44,6 @@ def edit_marker_details(request):
     """Method, that recieve type, id of marker,
     modified data of marker and update info of marker."""
 
-
     if request.method == "POST":
         result_dict = dict()
         try:
@@ -46,13 +51,19 @@ def edit_marker_details(request):
             ID = int(request.POST["id"])
             target_class = None
             if table == "Place":
-                Place.objects.filter(pk=ID).update(name=request.POST["name"],
-                description=request.POST["description"], from_hour=request.POST["from_hour"], 
-                to_hour=request.POST["to_hour"])
+                Place.objects.filter(pk=ID).update(
+                    name=request.POST["name"],
+                    description=request.POST["description"],
+                    from_hour=request.POST["from_hour"],
+                    to_hour=request.POST["to_hour"])
+
             elif table == "Parking":
-                Parking.objects.filter(pk=ID).update(name=request.POST["name"],
-                security=request.POST["security"], amount=request.POST["amount"], 
-                is_free=request.POST["is_free"])
+                Parking.objects.filter(pk=ID).update(
+                    name=request.POST["name"],
+                    security=request.POST["security"],
+                    amount=request.POST["amount"],
+                    is_free=request.POST["is_free"])
+
             return JsonResponse({"Success": 1})
         except:
             return JsonResponse({"Error": 1})
@@ -73,7 +84,6 @@ def get_points(request, model_cls):
     """
 
     def str_to_point(txt_point):
-        """Docstring"""
         return [float(x) for x in txt_point.split(',')]
 
     if request.method == 'GET':
@@ -120,7 +130,7 @@ def get_places_by_points(request):
     https://cycling.com/v1/places/search?sw=44.3,37.2&ne=44.1,37.4
     latitude is first, longitude - second
     """
-    print 'place call'
+    logger.info('place call')
     return get_points(request, Place)
 
 
@@ -150,7 +160,8 @@ def get_stolen_bikes_by_points(request):
 
 @csrf_exempt
 def get_categories(request):
-    """
+    """Return all categories in json.
+
     This method returns all posible categories.
     Response example:
     {
@@ -171,11 +182,15 @@ def get_categories(request):
     }
     Error code:
       105 - unsupported method type
+
+    Author: Olexii
     """
     if request.method != "GET":
+        logger.info("Unsupported method in get categories")
         return JsonResponse({"error": "Unsupported method", "code": 105})
 
     result = []
     for category_id, category_name in Place.CATEGORY:
         result.append({"id": category_id, "name": category_name})
+
     return JsonResponse({"response": result})

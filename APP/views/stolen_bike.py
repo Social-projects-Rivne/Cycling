@@ -1,5 +1,4 @@
 # -*- encoding: utf-8 -*-
-
 """Contains views relaited to User model"""
 import json
 
@@ -29,27 +28,33 @@ def create_stolen(request):
         kwargs['lat'] = float(params.get('lat', None))
     except (TypeError, ValueError):
         return HttpResponseBadRequest(content='Lattitude value is invalid')
+
     try:
         kwargs['lng'] = float(params.get('lng', None))
     except (TypeError, ValueError):
         return HttpResponseBadRequest(content='Longitude value is invalid')
+
     kwargs['description'] = params.get('description', None)
     try:
         kwargs['day'] = datetime.strptime(params.get('day', None), "").date()
     except (TypeError, ValueError):
-        return HttpResponseBadRequest(content='The date of the event is invalid')
+        return HttpResponseBadRequest(
+            content='The date of the event is invalid')
+
     try:
         kwargs['is_found'] = bool(params.get('is_found', None))
     except (TypeError, ValueError):
         kwargs['is_found'] = None
+
     try:
         kwargs['bike'] = int(params.get('bike', None))
     except (TypeError, ValueError):
         return HttpResponseBadRequest(content='The bicycle ID is invalid')
+
     kwargs['bike'] = Bicycle.objects.get(pk=kwargs['bike'])
     try:
         stolen = StolenBike.objects.create(**kwargs)
-        data = serializers.serialize("json", [stolen,])
+        data = serializers.serialize("json", [stolen, ])
         return HttpResponse(data, content_type="application/json")
     except Exception as err:
         return HttpResponseServerError(content=str(err))

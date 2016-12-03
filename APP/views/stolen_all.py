@@ -1,6 +1,5 @@
-"""
-This module provide method to return stolen bikes by distance
-"""
+# -*- coding: utf-8 -*-
+"""This module provide method to return stolen bikes by distance"""
 import logging
 
 from django.views.decorators.csrf import csrf_exempt
@@ -10,6 +9,7 @@ from django.core import serializers
 
 from APP.models import StolenBike, Bicycle, Image
 from ..utils.need_token import need_token
+
 
 logger = logging.getLogger(__name__)
 
@@ -30,17 +30,17 @@ class Radians(Func):
     function = 'RADIANS'
 
 
-# @need_token
 @csrf_exempt
 def get(request):
-    """
-    Return points sorted by distance
+    """Return stolen bikes sorted by distance.
 
-    Take params:
+    Take get params:
     lat - center latitude
     long - center longitude
     distance - radius of data
     distancemin - minimum distance
+
+    Author: Olexii
     """
     if request.method != "GET":
         logger.info("Unsupported method returned")
@@ -55,11 +55,12 @@ def get(request):
     radflat = Radians(F('lat'))
     radflong = Radians(F('lng'))
 
-    Expression = 6371.0 * Acos(Cos(radlat) * Cos(radflat) *
+    expression = 6371.0 * Acos(Cos(radlat) * Cos(radflat) *
                                Cos(radflong - radlong) +
                                Sin(radlat) * Sin(radflat))
+
     query = StolenBike.objects.annotate(
-        distance=Expression)
+        distance=expression)
     query = query.filter(distance__range=(distance_min, distance))
     query = query.order_by('distance')
 
@@ -78,7 +79,7 @@ def get(request):
                 "image": image.url
             }
         })
-    
+
     return JsonResponse({
         "data": result,
         "count": len(result),

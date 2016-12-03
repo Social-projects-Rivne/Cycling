@@ -2,6 +2,7 @@
 """Contains index() view for returning index.html"""
 from django.shortcuts import render
 
+
 def index(request):
     """Gives the base html page with ReactJS application"""
 
