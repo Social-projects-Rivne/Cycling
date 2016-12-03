@@ -4,7 +4,6 @@ from django.db import models
 
 from .users import User
 
-# Create your models here.
 
 class Parking(models.Model):
 
@@ -15,7 +14,6 @@ class Parking(models.Model):
     )
 
     name = models.CharField(max_length=255, db_index=True)
-    # location = models.CharField(max_length=255)
     lat = models.DecimalField(max_digits=8, decimal_places=6, null=True, db_index=True)
     lng = models.DecimalField(max_digits=9, decimal_places=6, null=True, db_index=True)
     security = models.CharField(max_length=1, choices=IS_SECURE, default='0')

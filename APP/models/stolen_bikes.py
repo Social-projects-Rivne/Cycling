@@ -4,8 +4,6 @@ from django.db import models
 
 from .bicycles import Bicycle
 
-# Create your models here.
-
 
 class StolenBike(models.Model):
 

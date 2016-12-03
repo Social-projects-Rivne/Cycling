@@ -5,7 +5,6 @@ from django.db import models
 from .parkings import Parking
 from .places import Place
 
-# Create your models here.
 
 class Attachment(models.Model):
 
