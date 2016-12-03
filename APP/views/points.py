@@ -13,7 +13,9 @@ logger = logging.getLogger(__name__)
 
 
 def marker_details(request):
-    """Receive json with marker type and id,
+    """Method for fetting marker details info.
+
+    Receive json with marker type and id,
     validate, select data from database in addition
     to type and id and return that data via JsonResponse.
     """
@@ -22,7 +24,7 @@ def marker_details(request):
         result_dict = dict()
         try:
             table = str(request.GET.get("type"))
-            object_id = int(request.GET.get("id"))
+            marker_id = int(request.GET.get("id"))
             target_class = None
             if table == "StolenBike":
                 target_class = StolenBike
@@ -30,8 +32,8 @@ def marker_details(request):
                 target_class = Place
             elif table == "Parking":
                 target_class = Parking
-            data = target_class.objects.filter(pk=object_id).first()
 
+            data = target_class.objects.filter(pk=marker_id).first()
             result_dict["marker_details"] = serializers.serialize(
                 "json", [data])
 
@@ -45,11 +47,9 @@ def edit_marker_details(request):
     modified data of marker and update info of marker."""
 
     if request.method == "POST":
-        result_dict = dict()
         try:
             table = str(request.POST["type"])
-            ID = int(request.POST["id"])
-            target_class = None
+            marker_id = int(request.POST["id"])
             if table == "Place":
                 Place.objects.filter(pk=ID).update(
                     name=request.POST["name"],

@@ -4,8 +4,6 @@ from django.db import models
 
 from .users import User
 
-# Create your models here.
-
 
 class Bicycle(models.Model):
     """Fields:
@@ -19,13 +17,6 @@ class Bicycle(models.Model):
     description = models.TextField(blank=True)
     is_deleted = models.BooleanField(default=False)
     owner = models.ForeignKey(User)
-
-    def get_by_natural_key(self, name, description, is_deleted, owner):
-        return self.get(
-            name=name,
-            description=description,
-            is_deleted=is_deleted,
-            owner=owner)
 
     class Meta:
         """This class gives some options (metadata) attached to the model."""

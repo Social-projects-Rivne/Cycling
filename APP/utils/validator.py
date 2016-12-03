@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
-"""This module provide validator class"""
+"""Module, that includes validation class, that
+everybody must use or write when he need validation
+"""
 import re
 
 
 class Validator(object):
+    """Class, that include methods that validate different
+    inputs, like name, email and others.
+    """
 
     def full_name_validation(self, full_name_value):
         """Server full name field validation.
@@ -48,4 +53,3 @@ class Validator(object):
 
         Author: Dennys
         """
-        return re.match(r'^[A-z\d\._]{8,}$', password)

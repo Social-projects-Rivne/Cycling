@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
 """Contains views relaited to User model"""
+
 import json
 
 from datetime import datetime
@@ -115,5 +116,5 @@ def delete(request):
     try:
         bike.delete()
         return HttpResponse(json.dumps({'ok': 200}))
-    except Exception as e:
-        return HttpResponseServerError(content=str(e))
+    except Exception as err:
+        return HttpResponseServerError(content=str(err))
