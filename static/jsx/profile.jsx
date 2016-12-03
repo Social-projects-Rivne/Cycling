@@ -284,13 +284,14 @@ class Bike extends React.Component {
     renderImg() {
         if (this.props.bike.images_urls == null) {
             return (
-                <img src="" alt="No picture was provided yet" />
-            )
+                <img src="" alt="No picture was provided yet"
+                    className="img-responsive item-image" />
+                )
         } else {
             return (
-            <img src={this.props.bike.images_urls[0].url} 
-                className="img-responsive item-image"
-                alt="image unavailable" />
+                <img src={this.props.bike.images_urls[0].url} 
+                    className="img-responsive item-image"
+                    alt="image unavailable" />
             )
         }
     }
@@ -435,7 +436,8 @@ class Place extends React.Component {
     renderImg() {
         if (this.props.place.images_urls == null) {
             return (
-                <img src="" alt="No picture was provided yet" />
+                 <img src="" alt="No picture was provided yet"
+                     className="img-responsive item-image" />
             )
         } else {
             return (
@@ -537,7 +539,8 @@ class Parking extends React.Component {
     renderImg() {
         if (this.props.parking.images_urls == null) {
             return (
-                <img src="" alt="No picture was provided yet" />
+                  <img src="" alt="No picture was provided yet"
+                      className="img-responsive item-image" />
             )
         } else {
             return (
