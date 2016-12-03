@@ -1,0 +1,16 @@
+[DataBase]
+# sqlite3, postgresql, mysql, oracle
+ENGINE: mysql
+DB_USER: 
+PASSWORD: 
+HOST: localhost
+PORT: 3306
+NAME: CYCLINGDB
+[MailSender]
+API_TOKEN: f2b33489-0ba6-4eb5-8372-dd394b960d22
+MAIL_FROM: cycling.official@email.ua
+[Site]
+STATIC_URL: /static/
+[ALLOWED_HOSTS]
+host1: localhost
+host2: 127.0.0.1

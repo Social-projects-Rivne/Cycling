@@ -10,7 +10,9 @@ from APP.models import StolenBike, Parking, Place
 
 
 def marker_details(request):
-    """Receive json with marker type and id,
+    """Method for fetting marker details info.
+    
+    Receive json with marker type and id,
     validate, select data from database in addition
     to type and id and return that data via JsonResponse.
     """
@@ -40,11 +42,9 @@ def edit_marker_details(request):
 
 
     if request.method == "POST":
-        result_dict = dict()
         try:
             table = str(request.POST["type"])
             marker_id = int(request.POST["id"])
-            target_class = None
             if table == "Place":
                 Place.objects.filter(pk=marker_id).update(name=request.POST["name"],
                 description=request.POST["description"], from_hour=request.POST["from_hour"],
@@ -73,11 +73,12 @@ def get_points(request, model_cls):
     """
 
     def str_to_point(txt_point):
+        """Docstring"""
         return [float(x) for x in txt_point.split(',')]
 
     if request.method == 'GET':
-        sw_point = str_to_point(request.GET.get('sw', '44.3, 37.2'))
-        ne_point = str_to_point(request.GET.get('ne', '44.1, 37.4'))
+        sw_point = str_to_point(request.GET.get('sw'))
+        ne_point = str_to_point(request.GET.get('ne'))
 
         entities = model_cls.objects
 

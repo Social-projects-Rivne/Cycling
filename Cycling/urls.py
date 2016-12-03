@@ -22,5 +22,4 @@ from APP.views import index
 urlpatterns = [
     url(r'^api/', include('APP.urls')),
     url(r'^', index.index, name='index'),
-    # url(r'^admin/', admin.site.urls),
 ]

@@ -14,7 +14,7 @@ class Validator {
        * and "'" symbol
        */
 
-      return /^[A-Z][a-z-']+[A-z]\s[A-Z][A-z-']+[a-z]$/.test(full_name);
+      return /^[A-Z][a-z-']+[A-z]\s[A-Z][a-z-']+[a-z]$/.test(full_name);
     }
 
     validateEmail(email){

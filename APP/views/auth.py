@@ -13,10 +13,10 @@ from APP.models import User
 from APP.utils.validator import Validator
 from APP.utils.log_util import log_request
 
-valid_inputs = Validator()
-password_master = PasswordMaster()
-_logger = logging.getLogger(__name__)
 
+VALID_INPUTS = Validator()
+PASSWORD_MASTER = PasswordMaster()
+_logger = logging.getLogger(__name__)
 
 @csrf_exempt
 def login(request):
@@ -66,8 +66,8 @@ def login(request):
             "code": 103
             })
 
-    if password_master.check_password(data['password'], user.password):
-        user.token = password_master.generate_token()
+    if PASSWORD_MASTER.check_password(data['password'], user.password):
+        user.token = PASSWORD_MASTER.generate_token()
     else:
         return JsonResponse({
             "error": "Invalid password!",
@@ -81,27 +81,29 @@ def login(request):
         'id': user.id,
         'token': user.token})
 
-
 @csrf_exempt
 def registration(request):
-    """Receive json with user credentials,
+    """Method for registration user via requested info.
+
+    Receive json with user credentials,
     validate and in case of success add user
     with that credentials to database
     and return json with success
     or error in case of error.
     """
 
+
     if request.method == "POST":
         result_dict = dict()
-        if valid_inputs.full_name_validation(request.POST['full_name']) and \
-           valid_inputs.email_validation(request.POST['email']) and \
-           valid_inputs.password_validation(request.POST['password']):
+        if VALID_INPUTS.full_name_validation(request.POST['full_name']) and \
+           VALID_INPUTS.email_validation(request.POST['email']) and \
+           VALID_INPUTS.password_validation(request.POST['password']):
             if User.objects.filter(email=request.POST["email"]).exists():
                 result_dict['EmailError'] = 1
             if not result_dict:
-                hashed_password = password_master.hash_password(
+                hashed_password = PASSWORD_MASTER.hash_password(
                     request.POST['password'])
-                token = password_master.generate_token()
+                token = PASSWORD_MASTER.generate_token()
                 User.objects.create(
                     full_name=request.POST['full_name'],
                     email=request.POST['email'],

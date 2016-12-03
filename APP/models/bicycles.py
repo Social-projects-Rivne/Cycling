@@ -4,7 +4,6 @@ from django.db import models
 
 from .users import User
 
-# Create your models here.
 
 class Bicycle(models.Model):
     """Fields:
@@ -21,6 +20,6 @@ class Bicycle(models.Model):
 
     class Meta:
         """This class gives some options (metadata) attached to the model."""
-        
+
         app_label = 'APP'
         db_table = 'Bicycles'
