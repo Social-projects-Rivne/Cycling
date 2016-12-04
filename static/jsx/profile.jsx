@@ -346,6 +346,8 @@ class BicycleData extends React.Component {
                 this.setState ({
                         api_output: response
                     });
+                console.log('user_bikes_data api output:');
+                console.log(JSON.stringify(response));
             }.bind(this)
         )
 
