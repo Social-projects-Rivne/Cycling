@@ -123,6 +123,10 @@ class RegistrationComponent extends React.Component {
     }
 
     showServerError(){
+        /*
+         * Method that return appropriate jsx in case of
+         * server error.
+         */
         if(this.state.modal_text)
         {
             return (
@@ -132,16 +136,20 @@ class RegistrationComponent extends React.Component {
     }
 
     getErrorLabel() {
-      if (this.state.error_message){
-        return (
-          <center>
-            <div className="label label-danger">{this.state.error_message}</div>
-          </center>
-        );
-      }
-      else {
-        return null;
-      }
+        /*
+         * Method that return appropriate jsx in case of
+         * server error.
+         */
+        if (this.state.error_message){
+          return (
+            <center>
+              <div className="label label-danger">{this.state.error_message}</div>
+            </center>
+          );
+        }
+        else{
+          return null;
+        }
     }
 
     render() {

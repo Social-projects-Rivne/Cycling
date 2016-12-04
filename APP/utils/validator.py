@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Module, that includes validation class, that
-everybody must use or write when he need validation
+everybody must use or write when he need validation.
 """
 import re
 
@@ -37,7 +37,7 @@ class Validator(object):
         - have word after @
         - have domain
 
-        Author: Dennys
+        Author: Denis Grebenets
         """
         return re.match(
             r'^[A-z\d\._-]+@[A-z\d_-]+\.[a-z]+[\.a-z]*[a-z]$',
@@ -51,5 +51,6 @@ class Validator(object):
         - length at least 8 characters
         - can contain letters, numbers, '.' and '_'
 
-        Author: Dennys
+        Author: Denis Grebenets
         """
+        return re.match(r'^[A-z\d\._]{8,}$', password)

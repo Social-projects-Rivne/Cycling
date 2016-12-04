@@ -93,7 +93,7 @@ def registration(request):
     and return json with success
     or error in case of error.
 
-    Author: Dennys
+    Author: Denis Grebenets.
     """
     if request.method == "POST":
         result_dict = dict()

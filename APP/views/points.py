@@ -18,6 +18,8 @@ def marker_details(request):
     Receive json with marker type and id,
     validate, select data from database in addition
     to type and id and return that data via JsonResponse.
+
+    Author: Denis Grebenets.
     """
 
     if request.method == "GET":
@@ -44,21 +46,24 @@ def marker_details(request):
 
 def edit_marker_details(request):
     """Method, that recieve type, id of marker,
-    modified data of marker and update info of marker."""
+    modified data of marker and update info of marker.
+
+    Author: Denis Grebenets.
+    """
 
     if request.method == "POST":
         try:
             table = str(request.POST["type"])
             marker_id = int(request.POST["id"])
             if table == "Place":
-                Place.objects.filter(pk=ID).update(
+                Place.objects.filter(pk=marker_id).update(
                     name=request.POST["name"],
                     description=request.POST["description"],
                     from_hour=request.POST["from_hour"],
                     to_hour=request.POST["to_hour"])
 
             elif table == "Parking":
-                Parking.objects.filter(pk=ID).update(
+                Parking.objects.filter(pk=marker_id).update(
                     name=request.POST["name"],
                     security=request.POST["security"],
                     amount=request.POST["amount"],
