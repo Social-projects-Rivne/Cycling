@@ -1,16 +1,27 @@
-import React              from 'react';
+import React from 'react';
 import { Router,
   Route,
   Link,
   hashHistory,
   browserHistory,
-  IndexRoute }            from 'react-router';
-import ReactDOM           from 'react-dom';
-import { RegistrationComponent }  from './registration.jsx';
+  IndexRoute } from 'react-router';
+import ReactDOM from 'react-dom';
+import { RegistrationComponent } from './registration.jsx';
 import { LoginComponent } from './login.jsx';
-import Home               from './home.jsx';
+import Home from './home.jsx';
 import { MarkerDetails } from './marker_detail_page.jsx';
-import { Profile }        from './profile.jsx';
+import { Profile } from './profile.jsx';
+import { MapSettings } from './map/map_settings.jsx';
+import layers_list          from './map/layers.jsx';
+import CreateBike, {EditBike} from './bikes/create_bike.jsx';
+import FailNotification from './notifications/fail.jsx';
+import SuccessNotification from './notifications/success.jsx';
+
+import { SideBar } from './sidebar.jsx';
+
+const PLACES_MARKER_NAME = "Places";
+const PARKINGS_MARKER_NAME = "Parkings";
+const STOLEN_BICYCLES_MARKER_NAME = "Stolen bicycles";
 
 
 class APP extends React.Component{
@@ -21,7 +32,7 @@ class APP extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-          showHideSidenav: false
+          map_settings: new MapSettings()
         };
 
         this.handleClick = this.handleClick.bind(this);
@@ -32,23 +43,45 @@ class APP extends React.Component{
        * Change main div class in case of clicking on button,
        * to provide posibility of hidding and opening sidevar
        */
-      this.setState({showHideSidenav:!this.state.showHideSidenav ? "toggled" : ""});
+      var wrapper = document.querySelector('.wrapper-div');
+      wrapper.classList.toggle('toggled');
+      setTimeout(() => wrapper.classList.toggle('overlay'), 300);
+      
+    }
+
+    setDisplay(display) {
+          this.state.map_settings.display = display;
+          this.setState({map_settings: this.state.map_settings});
+    }
+
+    refreshMap() {
+        this.setState({map_settings: this.state.map_settings})
     }
 
     setActiveCategories(categories) {
-      // console.log("setActiveCategories() call\nNew categories:", categories);
-      this.setState({categories: categories});
+      this.state.map_settings.categories = categories;
+      this.setState({map_settings: this.state.map_settings});
+    }
+
+    getChildProps() {
+      if (this.props.children.type === Home) {
+        return { map_settings: this.state.map_settings };
+      }
     }
 
     render(){
       //Render main component
       return (
-        <div className={this.state.showHideSidenav} id="wrapper">
+        <div className="wrapper-div" id="wrapper">
+
+            <SuccessNotification ref="successNotification" father={this} />
+            <FailNotification ref="failNotification" father={this} />
+
               <Header onButtonClick={this.handleClick}/>
-              <SideBar app={this} categories={this.state.categories}/>
+              <SideBar app={this} map_settings={this.state.map_settings}/>
 
               <div className="page-content-wrapper">
-                {React.cloneElement(this.props.children, { categories: this.state.categories })}
+                {React.cloneElement(this.props.children, this.getChildProps(), {father: this})}
               </div>
         </div>
         );
@@ -68,7 +101,7 @@ class Header extends React.Component {
       // we need to check if user is logged in
       // if yes we should instead of login and registration buttons return
       // avatar image
-      var headerRightContent;
+      let headerRightContent;
 
       if (localStorage['token']) {
 
@@ -84,18 +117,18 @@ class Header extends React.Component {
           $.get(
           {
             url: '/api/avatar',
-            data: {token: localStorage['token']}
-          },
-          function (data) {
-            if ("error" in data){
-              localStorage.removeItem('token');
-              this.setState({avatar: null});
-              browserHistory.push("/login");
-            }
-            else{
-              this.setState({avatar: data.result.avatar});
-            }
-          }.bind(this));
+            data: {token: localStorage['token']},
+            success: function success(data) {
+              if ("error" in data){
+                localStorage.removeItem('token');
+                this.setState({avatar: null});
+                browserHistory.push("/login");
+              }
+              else{
+                this.setState({avatar: data.result.avatar});
+              }
+            }.bind(this)
+          });
 
           return (
             <div className="spinner header-right">
@@ -110,8 +143,8 @@ class Header extends React.Component {
       else {
         return (
           <div className="header-right">
-            <div className="header-button"><Link id="header-button-a" to='/login'>Login</Link></div>
-            <div className="header-button"><Link id="header-button-a" to='/registration'>Registration</Link></div>
+            <Link className="header-button" id="header-button-a" to="/login">Login</Link>
+            <Link className="header-button" id="header-button-a" to="/registration">Registration</Link>
           </div>
         );
       }
@@ -123,7 +156,7 @@ class Header extends React.Component {
           <div className="navbar navbar-fixed-top main-header" role="navigation">
             <div className="navbar-header">
                 <a onClick={this.props.onButtonClick} id="menu-toggle" className="logo-a"><span className="icon material-icons">menu</span></a>
-                <Link className="navbar-brand logo-line" to='/'>Cycling</Link>
+                <Link className="navbar-brand logo-line" to="/">Cycling</Link>
                 {this.headerRightContent()}
             </div>
           </div>
@@ -131,125 +164,6 @@ class Header extends React.Component {
     }
 }
 
-class SideBar extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {};
-        // this.getProfileUrl = this.getProfileUrl.bind(this);
-        // this.handleCategoryItemClick = this.handleCategoryItemClick.bind(this);
-    }
-
-    /*
-    * This method fetch all categories from server and update state
-    */
-    getCategories() {
-      let context = this;
-      $.ajax({
-              type: 'GET',
-              url: '/api/categories',
-              contentType: 'application/json',
-              dataType: "json",
-              success: function(response) {
-                  if ("response" in response) {
-                    for(let i = 0; i < response.response.length; i++){
-                      response.response[i].active = true;
-                    }
-                    context.props.app.setActiveCategories(response.response);
-                  }
-              },
-              error: function(response) {
-                console.log("getCategories() response: ");
-                console.log(response);
-              }
-
-          });
-    }
-
-    componentDidMount() {
-      this.getCategories();
-    }
-
-    handleCategoryItemClick(id) {
-      // creating new active categories object
-      let newCategories = [];
-      for (let i = 0; i < this.props.categories.length; i+=1) {
-        newCategories[i] = {};
-        if (this.props.categories[i].id === id){
-          newCategories[i].active = !this.props.categories[i].active;
-        }
-        else{
-          newCategories[i].active = this.props.categories[i].active;
-        }
-        newCategories[i].name = this.props.categories[i].name;
-        newCategories[i].id = this.props.categories[i].id;
-      }
-
-      // send to father new active categories which cause rerender of sidebar and map
-      this.props.app.setActiveCategories(newCategories);
-    }
-
-    getCategoriesView() {
-      let context = this;
-      let categories_list;
-      if (this.props.categories) {
-
-          categories_list = this.props.categories.map(function(category, index){
-            return (<CategoryItem categoryName={category.name} isActive={category.active}
-                              onClick={context.handleCategoryItemClick.bind(context, category.id)} key={index}/>);
-          });
-      }
-      return categories_list;
-    }
-
-    getProfileUrlString() {
-        /* Function for 'to' attribute of profile Link button in the sidebar.
-         * Returns user's profile URL if he's logged in,
-         * otherwise redirects him to the /login page
-         */
-        if (localStorage['token']) {
-            return '/user/' + localStorage['id']
-        } else {
-            return '/login'
-        }
-    }
-
-    render() {
-        return (
-        <div id="sidebar-wrapper" role="navigation">
-            <ul className="sidebar-nav">
-                <li><Link onlyActiveOnIndex activeStyle={{color:'#53acff'}} to='/'>Home</Link></li>
-                <li>
-                  <div className="collapsed" id="display-obj" data-toggle="collapse" data-target="#display-list">
-                    <span className="li-name">Places to Display</span>
-                    <span className="toggle-arrow material-icons">keyboard_arrow_up</span>
-                  </div>
-                  <ul className="collapse categories-ul" id="display-list">
-                    {this.getCategoriesView()}
-                  </ul>
-                </li>
-                <li><a href="#">Stolen Bycicles</a></li>
-                <li><a href="#">Races Table</a></li>
-                <li><Link onlyActiveOnIndex activeStyle={{color:'#53acff'}} to={this.getProfileUrlString()}>Profile</Link></li>
-            </ul>
-        </div>
-      );
-    }
-};
-
-class CategoryItem extends React.Component {
-
-  render() {
-    let liStyleClass = "ctg-li-unactive";
-    if (this.props.isActive)
-      liStyleClass = "ctg-li-active";
-
-    return (
-      <li className={"categories-li " + liStyleClass} onClick={this.props.onClick}>{this.props.categoryName}</li>
-    );
-  }
-
-}
 
 const NotFound = () => (
   <h1>404.. This page is not found!</h1>)
@@ -264,6 +178,9 @@ ReactDOM.render(
          <Route path = "/registration" component = {RegistrationComponent} />
          <Route path = "/marker_details/:id" component = {MarkerDetails} />
          <Route path = "/user/:user_id" component = {Profile} />
+         <Route path = "/bike/create" component = {CreateBike} />
+         <Route path = "/bike/:bike_id" component = {EditBike} />
+         <Route path = '/404' component={NotFound} />
          <Route path = '*' component={NotFound} />
       </Route>
   </Router>),

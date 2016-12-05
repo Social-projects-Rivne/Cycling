@@ -2,18 +2,18 @@
 
 """Contains views relaited to User model"""
 
-from django.http import (JsonResponse,
-                         HttpResponse, Http404)
+import json
+
+from django.http import JsonResponse, Http404
 
 from APP.models import (User, Bicycle, StolenBike, Parking, Place, Image,
                         Attachment)
 from APP.utils.need_token import need_token
 
-
 def get_user_data(request, user_id):
     """Gets User data from db (except password column) and returns it
     as JsonResponse
-    { is_active: true, role_id: "0", is_logged_in: false,
+    { id: 102, is_active: true, role_id: "0", is_logged_in: false,
     full_name: "John Doe", email: "ekim0@ox.ac.uk",
     avatar: "http://road.cc/sites/default/files/…" }
     """
@@ -21,7 +21,7 @@ def get_user_data(request, user_id):
         # what about to use .filter instead of .get? cause .values loads all
         # usrs and only then select from them pk=user_id.
         # think bout it, pls
-        user_data = User.objects.values('full_name', 'email', 'is_active',
+        user_data = User.objects.values('id', 'full_name', 'email', 'is_active',
                                         'avatar', 'role_id').get(pk=user_id)
         user_data['is_logged_in'] = True if user_data['email'] in request.session else False
 
@@ -87,13 +87,13 @@ def get_user_places_data(request, user_id):
 
 @need_token
 def edit_user_data(request, user_id):
-    """Accept POST request for user data changes and then updates these changes
-    in the database."""
+    """Accept POST request for user data changes and then updates these
+    changes in the database."""
+    data = json.loads(request.body)
     user = User.objects.get(pk=user_id)
-    user.full_name = request.POST['full_name']
-    user.avatar = request.POST['avatar_url']
+    user.full_name = data.get('full_name')
+    user.avatar = data.get('avatar_url')
     user.save()
-    # return HttpResponse(status=200)
     return JsonResponse({'status': 'ok'})
 
 @need_token

@@ -16,19 +16,46 @@ def marker_details(request):
     """
 
     if request.method == "GET":
-        print "It's me"
-        table = str(request.GET.get("type"))
-        ID = int(request.GET.get("id"))
-        targer_class = None
-        if table == "StolenBike":
-            target_class = StolenBike
-        elif table == "Place":
-            target_class = Place
-        elif table == "Parking":
-            target_class = Parking
-        data = target_class.objects.filter(pk=ID).first()
-        return JsonResponse({
-            "marker_details": serializers.serialize("json", [data])})
+        result_dict = dict()
+        try:
+            table = str(request.GET.get("type"))
+            object_id = int(request.GET.get("id"))
+            target_class = None
+            if table == "StolenBike":
+                target_class = StolenBike
+            elif table == "Place":
+                target_class = Place
+            elif table == "Parking":
+                target_class = Parking
+            data = target_class.objects.filter(pk=object_id).first()
+            result_dict["marker_details"] = serializers.serialize("json", [data])
+            return JsonResponse(result_dict)
+        except:
+            return JsonResponse({"error": 1})
+
+
+def edit_marker_details(request):
+    """Method, that recieve type, id of marker,
+    modified data of marker and update info of marker."""
+
+
+    if request.method == "POST":
+        result_dict = dict()
+        try:
+            table = str(request.POST["type"])
+            ID = int(request.POST["id"])
+            target_class = None
+            if table == "Place":
+                Place.objects.filter(pk=ID).update(name=request.POST["name"],
+                description=request.POST["description"], from_hour=request.POST["from_hour"], 
+                to_hour=request.POST["to_hour"])
+            elif table == "Parking":
+                Parking.objects.filter(pk=ID).update(name=request.POST["name"],
+                security=request.POST["security"], amount=request.POST["amount"], 
+                is_free=request.POST["is_free"])
+            return JsonResponse({"Success": 1})
+        except:
+            return JsonResponse({"Error": 1})
 
 
 def get_points(request, model_cls):
@@ -46,11 +73,12 @@ def get_points(request, model_cls):
     """
 
     def str_to_point(txt_point):
+        """Docstring"""
         return [float(x) for x in txt_point.split(',')]
 
     if request.method == 'GET':
-        sw_point = str_to_point(request.GET.get('sw', '44.3, 37.2'))
-        ne_point = str_to_point(request.GET.get('ne', '44.1, 37.4'))
+        sw_point = str_to_point(request.GET.get('sw'))
+        ne_point = str_to_point(request.GET.get('ne'))
 
         entities = model_cls.objects
 

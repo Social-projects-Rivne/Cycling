@@ -22,18 +22,21 @@ export class LoginComponent extends React.Component {
     // this part check if user is already logged in...
     // and if it is redirect on home page
     componentWillMount() {
+
         if (localStorage['token']) {
           $.get(
           {
             url: '/api/tokenvalid',
-            data: {token: localStorage['token']}
-          },
-          function (data) {
+            data: {token: localStorage['token']},
+            success: function success(data) {
+              if (data["result"] === "ok"){
+                browserHistory.push("/");
+              }
+            }
 
-            if (data["result"] === "ok")
-              browserHistory.push("/");
-          }.bind(this));
+          });
         }
+
     }
 
     login(event){
@@ -63,13 +66,9 @@ export class LoginComponent extends React.Component {
                 contentType: 'application/json',
                 dataType: "json",
                 data: JSON.stringify(data),
-                success: function(response) {
-                    console.log("Server responsed with: ");
-                    console.log(response);
+                success: function success(response) {
                     if ("error" in response) {
-                      if (response.code !== 102 && response.code !== 101){
                         context.setState({error_message: response.error});
-                      }
                     }
                     else {
                       localStorage['token'] = response.token;
@@ -77,7 +76,7 @@ export class LoginComponent extends React.Component {
                       browserHistory.push("/");
                     }
                 },
-                error: function(response) {
+                error: function error(response) {
                   console.log(response);
                 }
 
