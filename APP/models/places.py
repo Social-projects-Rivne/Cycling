@@ -4,7 +4,6 @@ from django.db import models
 
 from .users import User
 
-# Create your models here.
 
 class Place(models.Model):
 
@@ -14,12 +13,15 @@ class Place(models.Model):
         ('2', 'cafe'),
     )
 
-    HOURS = tuple((x, "%02d"%x) for x in xrange(24))
+    HOURS = tuple((x, "%02d" % x) for x in xrange(24))
 
     name = models.CharField(max_length=255, db_index=True)
-    # location = models.CharField(max_length=255)
-    lat = models.DecimalField(max_digits=8, decimal_places=6, null=True, db_index=True)
-    lng = models.DecimalField(max_digits=9, decimal_places=6, null=True, db_index=True)
+    lat = models.DecimalField(
+        max_digits=8, decimal_places=6, null=True, db_index=True)
+
+    lng = models.DecimalField(
+        max_digits=9, decimal_places=6, null=True, db_index=True)
+
     description = models.TextField(null=True, blank=True)
     from_hour = models.IntegerField(choices=HOURS, null=True, blank=True)
     to_hour = models.IntegerField(choices=HOURS, null=True, blank=True)

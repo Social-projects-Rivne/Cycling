@@ -52,6 +52,7 @@ export class LoginComponent extends React.Component {
             email_error: !valid_email,
             password_error: !valid_pass
           });
+            return;
         }
 
         let data = {

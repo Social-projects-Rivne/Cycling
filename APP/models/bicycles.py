@@ -4,7 +4,6 @@ from django.db import models
 
 from .users import User
 
-# Create your models here.
 
 class Bicycle(models.Model):
     """Fields:

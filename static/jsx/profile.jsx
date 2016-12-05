@@ -96,28 +96,25 @@ class UserData extends React.Component {
     _close() {
         // Event for modal pop-up closing.
         this.setState({ showModal: false });
+        //this._revert();
     }
 
     _open () {
         // Event for modal pop-up appearance when user has clicked on the 
         // "Edit user" button.
-        this.setState({showModal: true });
+        this.setState({
+            showModal: true,
+            avatarPreviewSrc: this.state.api_output.avatar    
+        });
     }
     _revert () {
         // Event for Revert button which restores after edits all old user's 
         // data which came from API initial request.
         this.setState({
             avatarPreviewSrc: this.state.avatarSrc
-        // I can't change state of .defaultValue attribute of input tag cause it's purpose is
-            // only for component initialization. On the other hand, I can't use .value attribute,
-            // because it makes text inside this input non-editable by the user. That's why instead
-            // changes of component's state I'm getting value of the input using non-react methods
-            // but DOM and pure JS below (avoiding jQuery for now too, cause it may be excluded from
-            // project's scripts).
-            // This thing makes me crazy.
-        // fullName: this.state.api_output.full_name,
         });
         document.getElementById("modalFullName").value = this.state.api_output.full_name;
+        document.getElementById("modalAvatarUrl").value = this.state.api_output.avatar;
     }
     
     _handleSubmit(event) {
@@ -192,17 +189,26 @@ class UserData extends React.Component {
                 </div>
             </div>
             </div>
+            <EditUserPopup show={this.state.showModal} onHide={this._close} 
+                father={this} />
+            </div>
+        )
+    }
 
-            {/* make this modal as separate component later */}
-            {/*<EditUserPopup api_output={this.state.api_output} /> */}
+};
 
-            <Modal show={this.state.showModal} onHide={this._close}>
+class EditUserPopup extends React.Component {
+    // This class renders modal popup for user edit.
+
+    render() {
+        return (
+            <Modal show={this.props.father.state.showModal} onHide={this.props.father._close}>
                 <Modal.Header closeButton>
                     <Modal.Title>Edit profile</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <form id="edit_user_form" className="form-horizontal"
-                        onSubmit={this._handleSubmit}>
+                        onSubmit={this.props.father._handleSubmit}>
                         <div className="form-group">
                             <label className="control-label col-sm-3" htmlFor="fullName">
                                 Full name:
@@ -210,7 +216,7 @@ class UserData extends React.Component {
                             <div className="col-sm-5">
                                 <input type="text" name="full_name" id="modalFullName"
                                     className="form-control"
-                                    defaultValue={this.state.fullName} />
+                                    defaultValue={this.props.father.state.fullName} />
                             </div>
                         </div>
 
@@ -220,23 +226,12 @@ class UserData extends React.Component {
                             </label>
                             <div className="col-sm-5">
                                 <input type="text" name="avatar_url" id="modalAvatarUrl"
-                                    className="form-control" onChange={this._avatarUrlPreview}
-                                    defaultValue={this.state.api_output.avatar} />
-                            </div>
-                        </div>
-                        <div className="form-group row">
-                            <label className="control-label col-sm-3"> Upload:</label>
-                            <div className="col-sm-5">
-                                <label className="btn btn-default btn-file">
-                                    Browse...
-                                    <input type="file" accept="image/*" style={{"display": "none"}}
-                                        onChange={this._avatarPreview}/>
-                                </label>
-                                <span className="label label-info" id="upload-file-info"></span>
+                                    className="form-control" onChange={this.props.father._avatarUrlPreview}
+                                    defaultValue={this.props.father.state.api_output.avatar} />
                             </div>
                         </div>
                         <div className="row">
-                            <img id="avatarPreview" src={this.state.avatarPreviewSrc}
+                            <img id="avatarPreview" src={this.props.father.state.avatarPreviewSrc}
                                 className="img-responsive img-circle margin"
                                 width="150px" height="150px" alt="image unavailable"/>
                         </div>
@@ -244,17 +239,14 @@ class UserData extends React.Component {
                     </form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <button className="btn btn-default" onClick={this._close}>Cancel</button>
-                    <button className="btn btn-danger" onClick={this._revert} type="button">Revert</button>
+                    <button className="btn btn-default" onClick={this.props.father._close}>Cancel</button>
+                    <button className="btn btn-danger" onClick={this.props.father._revert} type="button">Revert</button>
                     <label className="btn btn-success" htmlFor="submit-form">Save</label>
                </Modal.Footer>
             </Modal>
-
-            </div>
-        )
+        ) 
     }
-
-};
+}
 
 let editBikeButton = function(bike, onDeleteCallBack){
     if(bike.owner_id != localStorage['id']){
@@ -284,13 +276,14 @@ class Bike extends React.Component {
     renderImg() {
         if (this.props.bike.images_urls == null) {
             return (
-                <img src="" alt="No picture was provided yet" />
-            )
+                <img src="" alt="No picture was provided yet"
+                    className="img-responsive item-image" />
+                );
         } else {
             return (
-            <img src={this.props.bike.images_urls[0].url} 
-                className="img-responsive item-image"
-                alt="image unavailable" />
+                <img src={this.props.bike.images_urls[0].url} 
+                    className="img-responsive item-image"
+                    alt="image unavailable" />
             )
         }
     }
@@ -306,7 +299,7 @@ class Bike extends React.Component {
                 onOk={e => {this.props.deleteBike(this.props.bike.index); this.confirmDeleteBike.closeMe();}}
             />
             <div>
-                <h4 className="item-name">{this.props.bike.name}</h4>
+                <h4 className="item-name bike-header">{this.props.bike.name}</h4>
                 { editBikeButton(this.props.bike, this.onDelete) }
             </div>
             {this.renderImg()}
@@ -353,6 +346,8 @@ class BicycleData extends React.Component {
                 this.setState ({
                         api_output: response
                     });
+                console.log('user_bikes_data api output:');
+                console.log(JSON.stringify(response));
             }.bind(this)
         )
 
@@ -435,11 +430,12 @@ class Place extends React.Component {
     renderImg() {
         if (this.props.place.images_urls == null) {
             return (
-                <img src="" alt="No picture was provided yet" />
-            )
+                 <img src="" alt="No picture was provided yet"
+                     className="img-responsive item-image" />
+            );
         } else {
             return (
-            <img src={this.props.place.images_urls[0].url} 
+            <img src={this.props.place.images_urls[0].url}
                 className="img-responsive item-image"
                 alt="image unavailable" />
             )
@@ -537,7 +533,8 @@ class Parking extends React.Component {
     renderImg() {
         if (this.props.parking.images_urls == null) {
             return (
-                <img src="" alt="No picture was provided yet" />
+                  <img src="" alt="No picture was provided yet"
+                      className="img-responsive item-image" />
             )
         } else {
             return (

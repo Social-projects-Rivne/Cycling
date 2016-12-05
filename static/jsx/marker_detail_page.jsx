@@ -35,6 +35,10 @@ export class MarkerDetails extends React.Component {
 	}
 
 	markerData(){
+		/*
+		 * Method, that get data from server, 
+		 * if user is logged in.
+		 */
 		if (!localStorage['token']) {
             browserHistory.push("/login");
         }
@@ -105,6 +109,7 @@ export class MarkerDetails extends React.Component {
 	}
 
 	changeValue(event) {
+	   //Method, that make appropriate state variable for input value.
        let state = [];
        state[event.target.name] = event.target.value;
        this.setState(state);
@@ -150,6 +155,7 @@ export class MarkerDetails extends React.Component {
 	}
 
 	renderLocationCondition(){
+		//Method, that return location value in different cases.
 		if(this.state.full_street.house_number && this.state.full_street.road){
 			return [this.state.full_street.house_number, this.state.full_street.road].join(', ');
 		}
@@ -176,6 +182,7 @@ export class MarkerDetails extends React.Component {
 	}
 
 	descriptionEditCondition(){
+		//Method, that return jsx of description edit input, if the active marker is not parking.
 			if(this.state.marker_type !== "Parking"){
 				return (
 					<div className="control-group reg-log edit-div">
@@ -191,6 +198,7 @@ export class MarkerDetails extends React.Component {
 		}
 
 	infoEditCondition(){
+		//Method, that return jsx of info edit in different cases(different marker types)
 		if(this.state.marker_type === "Place"){
 			return (
 				<div className="select-div">
@@ -250,6 +258,7 @@ export class MarkerDetails extends React.Component {
 	}
 
 	handleRevert(event){
+		//Method, that handle click on revert button and set state of inputs to old
 		event.preventDefault;
 		this.setState({
 			name_change: this.state.marker_value.name,
@@ -263,6 +272,7 @@ export class MarkerDetails extends React.Component {
 	}
 
 	ajaxEditSuccess(response){
+		//Realod info in page in case of successful edit
 		if(response["Success"]){
 			this.markerData();
 		}
@@ -272,6 +282,7 @@ export class MarkerDetails extends React.Component {
 	}
 
 	confirmEdit(event){
+		//Handle confirm button and make response to server for edit info
 		event.preventDefault;
 		let data;
 		if(this.state.marker_type === "Parking"){
@@ -305,6 +316,7 @@ export class MarkerDetails extends React.Component {
 	
 	renderEdit()
 	{
+		//Render edit button and popup, if that marker is owned by logged in
 		if(this.state.marker_value.owner == localStorage['id']){
 			return (
 				<div>

@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-This module provides token require decorator
-"""
+"""This module provides token require decorator."""
 import json
 import logging
 
@@ -16,21 +14,19 @@ logger = logging.getLogger(__name__)
 
 
 def need_token(decorated_func):
-    """
-    This is decorator which check if parameters contain valid token
-    and if it valid add user to request param
+    """Django request decorator, check request token.
+
+    This decorator check if parameters contain valid token.
+    If it is valid add user to request param.
+
+    Author: Olexii
     """
     def wrapper(*args, **kwargs):
-        """
-        Wrapper to function
-        """
+
         logger.debug("called check token")
 
         request = args[0]
 
-        # if it`s post method then we should parse body
-        # else
-        # params
         if request.method == "POST":
             try:
                 json_body = json.loads(request.body)

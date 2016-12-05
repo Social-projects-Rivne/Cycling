@@ -123,6 +123,10 @@ class RegistrationComponent extends React.Component {
     }
 
     showServerError(){
+        /*
+         * Method that return appropriate jsx in case of
+         * server error.
+         */
         if(this.state.modal_text)
         {
             return (
@@ -132,16 +136,20 @@ class RegistrationComponent extends React.Component {
     }
 
     getErrorLabel() {
-      if (this.state.error_message){
-        return (
-          <center>
-            <div className="label label-danger">{this.state.error_message}</div>
-          </center>
-        );
-      }
-      else {
-        return null;
-      }
+        /*
+         * Method that return appropriate jsx in case of
+         * server error.
+         */
+        if (this.state.error_message){
+          return (
+            <center>
+              <div className="label label-danger">{this.state.error_message}</div>
+            </center>
+          );
+        }
+        else{
+          return null;
+        }
     }
 
     render() {
@@ -174,7 +182,7 @@ class RegistrationComponent extends React.Component {
 
                     <div className="control-group reg-log">
                         <div className="controls">
-                            <div type="submit" className="btn" id="register-button" onClick={this.submitAll}><span>Register</span></div>
+                            <input type="submit" value="Register" disabled="" className="btn" id="register-button" onClick={this.submitAll}/>
                         </div>
                     </div>
                 </fieldset>
