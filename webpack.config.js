@@ -1,5 +1,4 @@
 var path = require('path');
-var webpack = require('webpack');
 
 module.exports = {
   context: __dirname,
@@ -7,7 +6,7 @@ module.exports = {
     javascript: './static/jsx/main.jsx'
   },
   output: {
-      path: path.resolve('./static/js/app/'),
+      path: path.join(__dirname, 'static/js/app/'),
       filename: 'bundle.js'
     },
   module: {    
