@@ -1,3 +1,4 @@
+const css = require('../less/main.less');
 import React from 'react';
 import { Router,
   Route,

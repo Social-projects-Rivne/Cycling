@@ -1,4 +1,5 @@
 var path = require('path');
+var extract_text_plugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   context: __dirname,
@@ -10,38 +11,31 @@ module.exports = {
       filename: 'bundle.js'
     },
   module: {    
-    preLoaders: [
-        {
-            test: /\.jsx?$/,
-            exclude: /(node_modules|bower_components)/,
-            loader: 'source-map'
-        }
-    ],
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
-        loader: 'babel-loader',
-        exclude: /node_modules/,
-        query: {
-          presets: ['es2015', 'stage-0', 'react']
-        }
+        use: 'babel-loader',
+        exclude: /node_modules/
       },
-      {
-        test: /\.css$/, 
-        loader: "style-loader!css-loader" 
-      },
-      {
-        test: /\.scss$/,
-        loaders: ['style', 'css', 'postcss', 'sass']
-      }, 
       {
         test: /\.less$/,
-        loaders: ['style', 'css', 'less']
+        use: extract_text_plugin.extract({
+          fallback: "style-loader",
+          use: ["css-loader", "less-loader"],
+          publicPath: "/dist"
+        })
       },
       {
         test: /\.(jpg|png)$/,
-        loader: 'url-loader?limit=25000',
+        use: 'url-loader?limit=25000',
       }
     ]
   },
+  plugins: [
+      new extract_text_plugin({
+        filename: "main.css",
+        disable: false,
+        allChunks: true
+      })
+    ],
 };
